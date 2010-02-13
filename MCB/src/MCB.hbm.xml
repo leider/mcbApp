@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping default-access="field" default-lazy="false"
+	package="mcb.persistenz">
+
+	<class name="Besuch" table="besuch">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="fruehstueckSamstag" column="fruehstueck_sa"></property>
+		<property name="fruehstueckSonntag" column="fruehstueck_so"></property>
+		<many-to-one name="adresse" column="adresse_id" class="Adresse"
+			not-null="true" />
+		<many-to-one name="treffen" column="treffen_id" class="Treffen"
+			not-null="true" />
+	</class>
+
+	<class name="Treffen" table="Treffen">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name" column="name"></property>
+		<property name="ersterTag" column="ersterTag"></property>
+		<property name="letzterTag" column="letzterTag"></property>
+		<property name="emailText" column="emailtext"></property>
+		<property name="beschreibung" column="beschreibung"></property>
+	</class>
+	
+	<class name="Adresse" table="adresse">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name" column="name"></property>
+		<property name="vorname" column="vorname"></property>
+		<property name="strasse" column="strasse"></property>
+		<property name="ort" column="ort"></property>
+		<property name="plz" column="plz"></property>
+		<property name="land" column="land"></property>
+		<property name="geburtstag" column="geburtstag"></property>
+		<property name="gespann" column="gespann"></property>
+		<property name="solo" column="solo"></property>
+		<property name="email" column="email"></property>
+		<property name="fehlergrund" column="fehlergrund"></property>
+		<bag name="besuchteTreffen" inverse="true" cascade="all">
+			<key column="adresse_id" />
+			<one-to-many class="Besuch" />
+		</bag>
+	</class>
+
+</hibernate-mapping>
