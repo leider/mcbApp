@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/core"/>
+	<classpathentry kind="src" path="src/tutorial"/>
+	<classpathentry kind="src" path="src/test"/>
+	<classpathentry kind="src" path="src/extras"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
+	<classpathentry exported="true" kind="lib" path="forms-1.2.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
