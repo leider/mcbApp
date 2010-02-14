@@ -1,11 +1,11 @@
 package mcb.frame;
 
 import java.awt.EventQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+
+import org.apache.log4j.Logger;
 
 public class McbApp extends JFrame {
 	static final Logger LOGGER = Logger.getLogger(McbApp.class.getName());
@@ -34,7 +34,7 @@ public class McbApp extends JFrame {
 				try {
 					new AdresseFrame();
 				} catch (Exception e) {
-					McbApp.LOGGER.log(Level.SEVERE, "Failed to launch App", e);
+					McbApp.LOGGER.fatal("Failed to launch App", e);
 				}
 			}
 		};

@@ -1,7 +1,6 @@
 package mcb.frame;
 
 import java.awt.event.ActionEvent;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -15,10 +14,11 @@ import javax.swing.SwingUtilities;
 
 import mcb.mail.MailSender;
 import mcb.mail.SendCompleteListener;
+import mcb.model.Adresse;
 import mcb.panel.AdresseMitListePanel;
-import mcb.persistenz.Adresse;
 import mcb.persistenz.ApplicationData;
 import mcb.persistenz.HibernateStarter;
+import mcb.persistenz.ImAndExporter;
 import mcb.persistenz.filter.AuslandFilter;
 import mcb.persistenz.filter.DeutschlandFilter;
 import mcb.persistenz.filter.EinladungEmailFilter;
@@ -134,11 +134,7 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 
 	@Override
 	public void dispose() {
-		try {
-			HibernateStarter.stopHibernate();
-		} catch (SQLException e) {
-			// so what?
-		}
+		HibernateStarter.stopHibernate();
 		super.dispose();
 	}
 
@@ -154,7 +150,7 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 		JFileChooser chooser = new JFileChooser();
 		int result = chooser.showSaveDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
-			ApplicationData.exportAdressen(chooser.getSelectedFile(), alleAdressen);
+			ImAndExporter.exportAdressen(chooser.getSelectedFile(), alleAdressen);
 		}
 	}
 
@@ -167,7 +163,7 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 		JFileChooser chooser = new JFileChooser();
 		int result = chooser.showOpenDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
-			ApplicationData.importiere(chooser.getSelectedFile());
+			ImAndExporter.importiere(chooser.getSelectedFile());
 		}
 	}
 

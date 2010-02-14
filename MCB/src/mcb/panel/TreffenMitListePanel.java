@@ -1,7 +1,7 @@
 package mcb.panel;
 
+import mcb.model.Treffen;
 import mcb.persistenz.ApplicationData;
-import mcb.persistenz.Treffen;
 
 import com.jgoodies.binding.PresentationModel;
 

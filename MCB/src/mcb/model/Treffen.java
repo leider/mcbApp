@@ -1,12 +1,12 @@
-package mcb.persistenz;
+package mcb.model;
 
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.jgoodies.binding.beans.Model;
+import mcb.persistenz.ApplicationData;
 
-public class Treffen extends Model implements Comparable<Treffen> {
+public class Treffen extends McbModel implements Comparable<Treffen> {
 
 	private static Calendar cal = Calendar.getInstance();
 
@@ -18,7 +18,6 @@ public class Treffen extends Model implements Comparable<Treffen> {
 
 	private static final long serialVersionUID = -2962721510670946939L;
 
-	private Long id;
 	private String name;
 	private Date ersterTag;
 	private Date letzterTag;
@@ -60,10 +59,6 @@ public class Treffen extends Model implements Comparable<Treffen> {
 			return ApplicationData.DATE_FORMAT.format(this.ersterTag);
 		}
 		return "";
-	}
-
-	public Long getId() {
-		return this.id;
 	}
 
 	public int getJahr() {

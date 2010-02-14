@@ -19,9 +19,9 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import mcb.persistenz.Adresse;
+import mcb.model.Adresse;
+import mcb.model.Besuch;
 import mcb.persistenz.ApplicationData;
-import mcb.persistenz.Besuch;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;

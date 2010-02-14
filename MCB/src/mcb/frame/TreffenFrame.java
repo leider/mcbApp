@@ -2,8 +2,8 @@ package mcb.frame;
 
 import javax.swing.JMenuBar;
 
+import mcb.model.Treffen;
 import mcb.panel.TreffenMitListePanel;
-import mcb.persistenz.Treffen;
 
 public class TreffenFrame extends SimpleFrame<Treffen> {
 

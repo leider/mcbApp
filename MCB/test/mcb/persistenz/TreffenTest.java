@@ -3,6 +3,8 @@ package mcb.persistenz;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
+import mcb.model.Treffen;
+
 import org.junit.Test;
 
 public class TreffenTest {

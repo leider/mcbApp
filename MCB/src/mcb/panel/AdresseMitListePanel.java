@@ -10,9 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
-import mcb.persistenz.Adresse;
+import mcb.model.Adresse;
+import mcb.model.Summaries;
 import mcb.persistenz.ApplicationData;
-import mcb.persistenz.Summaries;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;

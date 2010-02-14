@@ -2,8 +2,8 @@ package mcb.panel;
 
 import java.util.List;
 
+import mcb.model.Treffen;
 import mcb.persistenz.ApplicationData;
-import mcb.persistenz.Treffen;
 
 public class TreffenSelectionInListPanel extends SelectionInListPanel<Treffen> {
 

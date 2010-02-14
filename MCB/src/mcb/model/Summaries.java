@@ -1,8 +1,7 @@
-package mcb.persistenz;
+package mcb.model;
 
-import com.jgoodies.binding.beans.Model;
 
-public class Summaries extends Model {
+public class Summaries extends McbModel {
 
 	private static final long serialVersionUID = 2313140187842313961L;
 

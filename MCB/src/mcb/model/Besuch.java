@@ -1,12 +1,9 @@
-package mcb.persistenz;
+package mcb.model;
 
-import com.jgoodies.binding.beans.Model;
 
-public class Besuch extends Model implements Comparable<Besuch> {
+public class Besuch extends McbModel implements Comparable<Besuch> {
 
 	private static final long serialVersionUID = -941602649174788569L;
-
-	private Long id;
 
 	private Adresse adresse;
 
@@ -40,10 +37,6 @@ public class Besuch extends Model implements Comparable<Besuch> {
 
 	public int getFruehstueckSonntag() {
 		return this.fruehstueckSonntag;
-	}
-
-	public Long getId() {
-		return this.id;
 	}
 
 	public Treffen getTreffen() {

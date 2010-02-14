@@ -2,7 +2,7 @@ package mcb.panel;
 
 import java.util.List;
 
-import mcb.persistenz.Adresse;
+import mcb.model.Adresse;
 import mcb.persistenz.ApplicationData;
 
 public class AdressenSelectionInListPanel extends SelectionInListPanel<Adresse> {

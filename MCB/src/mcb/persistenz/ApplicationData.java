@@ -1,26 +1,22 @@
 package mcb.persistenz;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import mcb.model.Adresse;
+import mcb.model.McbModel;
+import mcb.model.Summaries;
+import mcb.model.Treffen;
 import mcb.persistenz.filter.AdresseFilter;
 import mcb.persistenz.filter.AlleFilter;
 import mcb.persistenz.filter.SucheFilter;
 
 import org.hibernate.Query;
-import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
 
-import com.jgoodies.binding.beans.Model;
 import com.jgoodies.binding.list.ArrayListModel;
 
 public class ApplicationData {
@@ -29,11 +25,11 @@ public class ApplicationData {
 
 	public static final SucheFilter SUCHE_FILTER = new SucheFilter();
 
-	public static DateFormat DATE_FORMAT = DateFormat.getDateInstance();
+	public static final DateFormat DATE_FORMAT = DateFormat.getDateInstance();
 
-	private static List<Adresse> adressen = new ArrayListModel<Adresse>();
+	static List<Adresse> adressen = new ArrayListModel<Adresse>();
 
-	private static List<Treffen> treffen = new ArrayListModel<Treffen>();
+	static List<Treffen> treffen = new ArrayListModel<Treffen>();
 
 	private static Summaries summaries = new Summaries();
 
@@ -44,7 +40,7 @@ public class ApplicationData {
 		ApplicationData.loadDaten();
 	}
 
-	private static void closeSession(Session session) {
+	static void closeSession(Session session) {
 		session.close();
 		int samstag = 0;
 		int sonntag = 0;
@@ -60,68 +56,6 @@ public class ApplicationData {
 		ApplicationData.summaries.setFruehstueckSamstag(samstag);
 		ApplicationData.summaries.setFruehstueckSonntag(sonntag);
 		ApplicationData.summaries.setAnzahlMeldungen(meldungen);
-	}
-
-	private static Adresse createAdresse(String line) {
-		Adresse result = new Adresse();
-		result.parse(line);
-		if (result.getName().equals("")) {
-			return null;
-		}
-		return result;
-	}
-
-	private static Treffen createOrGetTreffen(int i) {
-		for (Treffen theTreffen : ApplicationData.getAlleTreffen()) {
-			if (theTreffen.getJahr() == i) {
-				return theTreffen;
-			}
-		}
-		Treffen result = new Treffen();
-		result.setErsterTagString("1.1." + i);
-		result.setLetzterTagString("31.12." + i);
-		result.setName("Dummy " + i);
-		ApplicationData.saveTreffen(result);
-		ApplicationData.getAlleTreffen().add(result);
-		return result;
-	}
-
-	public static void exportAdressen(File file, boolean alle) {
-		try {
-			FileOutputStream stream = new FileOutputStream(file);
-			OutputStreamWriter writer = new OutputStreamWriter(stream, "ISO-8859-1");
-			Adresse.writeHeaderOn(writer);
-			for (Adresse adresse : alle ? ApplicationData.adressen : ApplicationData.getAlleAdressen()) {
-				adresse.writeOn(writer, alle);
-			}
-			writer.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static List<Treffen> findAlleTreffen(String line) {
-		List<Treffen> result = new ArrayList<Treffen>();
-		String[] tokens = line.split(";");
-		if (ApplicationData.istWahr(tokens[12])) {
-			result.add(ApplicationData.createOrGetTreffen(2004));
-		}
-		if (ApplicationData.istWahr(tokens[13])) {
-			result.add(ApplicationData.createOrGetTreffen(2005));
-		}
-		if (ApplicationData.istWahr(tokens[14])) {
-			result.add(ApplicationData.createOrGetTreffen(2006));
-		}
-		if (ApplicationData.istWahr(tokens[15])) {
-			result.add(ApplicationData.createOrGetTreffen(2007));
-		}
-		if (ApplicationData.istWahr(tokens[16])) {
-			result.add(ApplicationData.createOrGetTreffen(2008));
-		}
-		if (ApplicationData.istWahr(tokens[17])) {
-			result.add(ApplicationData.createOrGetTreffen(2009));
-		}
-		return result;
 	}
 
 	public static Treffen getAktuellesTreffen() {
@@ -165,8 +99,8 @@ public class ApplicationData {
 		List<Treffen> treffenCopy = new ArrayList<Treffen>(ApplicationData.getAlleTreffen());
 		Collections.sort(treffenCopy, new Comparator<Treffen>() {
 
-			public int compare(Treffen o1, Treffen o2) {
-				return -1 * o1.getErsterTag().compareTo(o2.getErsterTag());
+			public int compare(Treffen t1, Treffen t2) {
+				return -1 * t1.getErsterTag().compareTo(t2.getErsterTag());
 			}
 		});
 		return treffenCopy.get(0);
@@ -174,34 +108,6 @@ public class ApplicationData {
 
 	public static Summaries getSummaries() {
 		return ApplicationData.summaries;
-	}
-
-	public static void importiere(File file) {
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line = reader.readLine();
-			if (line.startsWith("id")) {
-				line = reader.readLine();
-			}
-			while (line != null) {
-				Adresse adresse = ApplicationData.createAdresse(line);
-				if (adresse != null) {
-					ApplicationData.saveAdresse(adresse);
-					List<Treffen> findTreffen = ApplicationData.findAlleTreffen(line);
-					for (Treffen theTreffen : findTreffen) {
-						adresse.addTreffen(theTreffen);
-					}
-					ApplicationData.saveAdresse(adresse);
-				}
-				line = reader.readLine();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static boolean istWahr(String zwoelf) {
-		return !zwoelf.trim().equals("-");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -215,48 +121,56 @@ public class ApplicationData {
 		ApplicationData.closeSession(session);
 	}
 
-	public static void loescheModel(Model model) {
-		Session session = HibernateStarter.getSessionFactory().openSession();
-		Transaction transe = session.beginTransaction();
-		session.delete(model);
-		if (model instanceof Adresse) {
-			ApplicationData.adressen.remove(model);
-		}
-		if (model instanceof Treffen) {
-			ApplicationData.treffen.remove(model);
-		}
-		transe.commit();
-		ApplicationData.closeSession(session);
+	public static void loescheModel(final McbModel model) {
+		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
+
+			@Override
+			public void runIn(PersistenceActionPerformer persistenceActionPerformer) {
+				persistenceActionPerformer.delete(model);
+				if (model instanceof Adresse) {
+					ApplicationData.adressen.remove(model);
+				}
+				if (model instanceof Treffen) {
+					ApplicationData.treffen.remove(model);
+				}
+			}
+		});
 	}
 
-	public static void saveAdresse(Adresse adresse) {
-		Session session = HibernateStarter.getSessionFactory().openSession();
-		Transaction transe = session.beginTransaction();
-		for (Besuch besuch : adresse.getBesuchteTreffen()) {
-			session.saveOrUpdate(besuch);
-		}
-		boolean neu = adresse.getId() == null;
-		session.saveOrUpdate(adresse);
-		transe.commit();
-		if (neu) {
-			ApplicationData.adressen.add(adresse);
-		}
-		ApplicationData.closeSession(session);
+	public static void saveAdresse(final Adresse adresse) {
+		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
+
+			@Override
+			public void runIn(PersistenceActionPerformer persistenceActionPerformer) {
+				for (McbModel besuch : adresse.getBesuchteTreffen()) {
+					persistenceActionPerformer.saveOrUpdate(besuch);
+				}
+				boolean neu = adresse.getId() == null;
+				persistenceActionPerformer.saveOrUpdate(adresse);
+				if (neu) {
+					ApplicationData.adressen.add(adresse);
+				}
+			}
+		});
 	}
 
-	public static void saveTreffen(Treffen theTreffen) {
-		Session session = HibernateStarter.getSessionFactory().openSession();
-		Transaction transe = session.beginTransaction();
-		boolean neu = theTreffen.getId() == null;
-		session.saveOrUpdate(theTreffen);
-		transe.commit();
-		if (neu) {
-			ApplicationData.treffen.add(theTreffen);
-		}
-		ApplicationData.closeSession(session);
+	public static void saveTreffen(final Treffen theTreffen) {
+		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
+
+			@Override
+			public void runIn(PersistenceActionPerformer persistenceActionPerformer) {
+				boolean neu = theTreffen.getId() == null;
+				persistenceActionPerformer.saveOrUpdate(theTreffen);
+				if (neu) {
+					ApplicationData.treffen.add(theTreffen);
+				}
+
+			}
+		});
 	}
 
-	public static void setFilter(AdresseFilter filter2) {
-		ApplicationData.filter = filter2;
+	public static void setFilter(AdresseFilter theFilter) {
+		ApplicationData.filter = theFilter;
 	}
+
 }

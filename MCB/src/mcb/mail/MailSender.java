@@ -8,14 +8,17 @@ import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import mcb.persistenz.Adresse;
+import mcb.model.Adresse;
 import mcb.persistenz.ApplicationData;
+
+import org.apache.log4j.Logger;
 
 public class MailSender implements Runnable {
 
 	private Session session;
 	private Date jetzt = new Date();
 	private SendCompleteListener listener;
+	static final Logger LOGGER = Logger.getLogger(MailSender.class.getName());
 
 	public MailSender(SendCompleteListener theListener) {
 		super();
@@ -38,7 +41,7 @@ public class MailSender implements Runnable {
 			try {
 				this.send(to, subject, body);
 			} catch (Exception e) {
-				e.printStackTrace();
+				MailSender.LOGGER.fatal(e.getMessage(), e);
 			}
 		}
 		this.listener.messagesSent();

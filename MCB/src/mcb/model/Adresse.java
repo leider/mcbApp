@@ -1,4 +1,4 @@
-package mcb.persistenz;
+package mcb.model;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.jgoodies.binding.beans.Model;
+import mcb.persistenz.ApplicationData;
 
-public class Adresse extends Model {
+public class Adresse extends McbModel {
 
 	private static final long serialVersionUID = -6192828255610806898L;
 
@@ -55,7 +55,6 @@ public class Adresse extends Model {
 		writer.write("\n");
 	}
 
-	private Long id;
 	private String name;
 	private String vorname;
 	private String strasse;
@@ -157,10 +156,6 @@ public class Adresse extends Model {
 			return ApplicationData.DATE_FORMAT.format(this.geburtstag);
 		}
 		return "";
-	}
-
-	public Long getId() {
-		return this.id;
 	}
 
 	public String getLand() {

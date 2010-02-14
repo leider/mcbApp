@@ -1,6 +1,6 @@
 package mcb.persistenz.filter;
 
-import mcb.persistenz.Adresse;
+import mcb.model.Adresse;
 
 public interface AdresseFilter {
 

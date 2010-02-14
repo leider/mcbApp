@@ -1,7 +1,7 @@
 package mcb.persistenz.filter;
 
+import mcb.model.Adresse;
 import mcb.panel.McbAction;
-import mcb.persistenz.Adresse;
 
 public class EinladungPostFilter implements AdresseFilter {
 

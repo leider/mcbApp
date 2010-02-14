@@ -3,6 +3,8 @@ package mcb.persistenz;
 import java.sql.SQLException;
 import java.util.List;
 
+import mcb.model.Adresse;
+
 import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
 
