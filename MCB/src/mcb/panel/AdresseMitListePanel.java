@@ -45,6 +45,7 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 		suchText.addKeyListener(new KeyListener() {
 
 			public void keyPressed(KeyEvent e) {
+				// don't needed
 			}
 
 			public void keyReleased(KeyEvent e) {
@@ -55,10 +56,11 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 					ApplicationData.SUCHE_FILTER.setSucheText(text);
 					ApplicationData.setFilter(ApplicationData.SUCHE_FILTER);
 				}
-				updateListe();
+				AdresseMitListePanel.this.updateListe();
 			}
 
 			public void keyTyped(KeyEvent e) {
+				// don't needed
 			}
 		});
 		toolBar.addSeparator();
@@ -84,7 +86,7 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 		toolBar.add(meldungen);
 		meldungen.setPreferredSize(new Dimension(3 * kantenlaenge, kantenlaenge));
 		meldungen.setEditable(false);
-		add(toolBar, BorderLayout.NORTH);
+		this.add(toolBar, BorderLayout.NORTH);
 	}
 
 	@Override

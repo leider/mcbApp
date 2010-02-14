@@ -27,74 +27,74 @@ public class Treffen extends Model implements Comparable<Treffen> {
 
 	public Treffen() {
 		super();
-		setErsterTagString("01.01.2000");
-		setLetzterTagString("01.01.2001");
+		this.setErsterTagString("01.01.2000");
+		this.setLetzterTagString("01.01.2001");
 	}
 
 	public int compareTo(Treffen o) {
-		return o.getErsterTag().compareTo(getErsterTag());
+		return o.getErsterTag().compareTo(this.getErsterTag());
 	}
 
 	public String getBeschreibung() {
-		return beschreibung;
+		return this.beschreibung;
 	}
 
 	public String getEmailPreviewText() {
-		return getEmailPreviewText("Vorname");
+		return this.getEmailPreviewText("Vorname");
 	}
 
 	public String getEmailPreviewText(String vorname) {
-		return String.format(emailText, getVonBisString(), getBeschreibung(), vorname);
+		return String.format(this.emailText, this.getVonBisString(), this.getBeschreibung(), vorname);
 	}
 
 	public String getEmailText() {
-		return emailText;
+		return this.emailText;
 	}
 
 	public Date getErsterTag() {
-		return ersterTag;
+		return this.ersterTag;
 	}
 
 	public String getErsterTagString() {
-		if (ersterTag != null) {
-			return ApplicationData.DATE_FORMAT.format(ersterTag);
+		if (this.ersterTag != null) {
+			return ApplicationData.DATE_FORMAT.format(this.ersterTag);
 		}
 		return "";
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public int getJahr() {
-		cal.setTime(ersterTag);
-		return cal.get(Calendar.YEAR);
+		Treffen.cal.setTime(this.ersterTag);
+		return Treffen.cal.get(Calendar.YEAR);
 	}
 
 	public Date getLetzterTag() {
-		return letzterTag;
+		return this.letzterTag;
 	}
 
 	public String getLetzterTagString() {
-		if (letzterTag != null) {
-			return ApplicationData.DATE_FORMAT.format(letzterTag);
+		if (this.letzterTag != null) {
+			return ApplicationData.DATE_FORMAT.format(this.letzterTag);
 		}
 		return "";
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public String getVonBisString() {
-		return getErsterTagString() + " - " + getLetzterTagString();
+		return this.getErsterTagString() + " - " + this.getLetzterTagString();
 	}
 
 	public boolean isAktuell() {
 		try {
 			String heuteString = ApplicationData.DATE_FORMAT.format(new Date());
 			Date heute = ApplicationData.DATE_FORMAT.parse(heuteString);
-			if (heute.compareTo(getErsterTag()) < 0 || heute.compareTo(getLetzterTag()) > 0) {
+			if (heute.compareTo(this.getErsterTag()) < 0 || heute.compareTo(this.getLetzterTag()) > 0) {
 				return false;
 			}
 			return true;
@@ -106,9 +106,9 @@ public class Treffen extends Model implements Comparable<Treffen> {
 
 	public boolean isGespann() {
 		try {
-			String ersterJuliString = "01.07." + getJahr();
+			String ersterJuliString = "01.07." + this.getJahr();
 			Date ersterJuli = ApplicationData.DATE_FORMAT.parse(ersterJuliString);
-			return getErsterTag().compareTo(ersterJuli) < 0;
+			return this.getErsterTag().compareTo(ersterJuli) < 0;
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -129,11 +129,11 @@ public class Treffen extends Model implements Comparable<Treffen> {
 
 	public void setErsterTagString(String erster) {
 		try {
-			String oldValue = getErsterTagString();
-			ersterTag = ApplicationData.DATE_FORMAT.parse(erster);
-			firePropertyChange(ERSTER_TAG, oldValue, getErsterTagString());
+			String oldValue = this.getErsterTagString();
+			this.ersterTag = ApplicationData.DATE_FORMAT.parse(erster);
+			this.firePropertyChange(Treffen.ERSTER_TAG, oldValue, this.getErsterTagString());
 		} catch (ParseException e) {
-			firePropertyChange(ERSTER_TAG, null, getErsterTagString());
+			this.firePropertyChange(Treffen.ERSTER_TAG, null, this.getErsterTagString());
 		}
 	}
 
@@ -143,11 +143,11 @@ public class Treffen extends Model implements Comparable<Treffen> {
 
 	public void setLetzterTagString(String letzter) {
 		try {
-			String oldValue = getLetzterTagString();
-			letzterTag = ApplicationData.DATE_FORMAT.parse(letzter);
-			firePropertyChange(LETZTER_TAG, oldValue, getLetzterTagString());
+			String oldValue = this.getLetzterTagString();
+			this.letzterTag = ApplicationData.DATE_FORMAT.parse(letzter);
+			this.firePropertyChange(Treffen.LETZTER_TAG, oldValue, this.getLetzterTagString());
 		} catch (ParseException e) {
-			firePropertyChange(LETZTER_TAG, null, getLetzterTagString());
+			this.firePropertyChange(Treffen.LETZTER_TAG, null, this.getLetzterTagString());
 		}
 	}
 
@@ -157,6 +157,6 @@ public class Treffen extends Model implements Comparable<Treffen> {
 
 	@Override
 	public String toString() {
-		return getName();
+		return this.getName();
 	}
 }

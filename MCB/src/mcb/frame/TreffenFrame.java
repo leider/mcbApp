@@ -15,6 +15,7 @@ public class TreffenFrame extends SimpleFrame<Treffen> {
 
 	@Override
 	protected void addExtraMenu(JMenuBar bar) {
+		// don't needed here
 	}
 
 	@Override

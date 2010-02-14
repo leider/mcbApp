@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 public abstract class McbAction extends AbstractAction {
@@ -27,11 +28,11 @@ public abstract class McbAction extends AbstractAction {
 
 	public McbAction(String name, int aKeyEventConstant) {
 		super(name);
-		setAccelerator(aKeyEventConstant);
+		this.setAccelerator(aKeyEventConstant);
 	}
 
 	public KeyStroke getAccelerator() {
-		return accelerator;
+		return this.accelerator;
 	}
 
 	private boolean isRunningOnMac() {
@@ -40,9 +41,9 @@ public abstract class McbAction extends AbstractAction {
 
 	protected void setAccelerator(int aKeyEventConstant) {
 		if (aKeyEventConstant != 0) {
-			accelerator = KeyStroke.getKeyStroke(aKeyEventConstant, (isRunningOnMac() ? ActionEvent.META_MASK
+			this.accelerator = KeyStroke.getKeyStroke(aKeyEventConstant, (this.isRunningOnMac() ? ActionEvent.META_MASK
 					: ActionEvent.CTRL_MASK));
-			putValue(ACCELERATOR_KEY, accelerator);
+			this.putValue(Action.ACCELERATOR_KEY, this.accelerator);
 		}
 	}
 

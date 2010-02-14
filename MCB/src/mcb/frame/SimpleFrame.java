@@ -3,7 +3,12 @@ package mcb.frame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.WindowConstants;
 
 import mcb.panel.ModelMitListePanel;
 import mcb.persistenz.filter.AdresseFilter;
@@ -20,8 +25,8 @@ public abstract class SimpleFrame<T extends Model> extends JFrame {
 
 	public SimpleFrame(String string) {
 		super(string);
-		initialize();
-		packCenterAndShow();
+		this.initialize();
+		this.packCenterAndShow();
 	}
 
 	protected abstract void addExtraMenu(JMenuBar bar);
@@ -30,38 +35,38 @@ public abstract class SimpleFrame<T extends Model> extends JFrame {
 		JMenuBar bar = new JMenuBar();
 		JMenu aktionen = new JMenu("Aktionen");
 		bar.add(aktionen);
-		aktionen.add(panel.getNeuAction());
-		aktionen.add(panel.getLoeschenAction());
-		aktionen.add(panel.getBearbeitenAction());
-		addExtraMenu(bar);
-		setJMenuBar(bar);
+		aktionen.add(this.panel.getNeuAction());
+		aktionen.add(this.panel.getLoeschenAction());
+		aktionen.add(this.panel.getBearbeitenAction());
+		this.addExtraMenu(bar);
+		this.setJMenuBar(bar);
 	}
 
 	protected abstract ModelMitListePanel<T> getPanel();
 
 	private void initialize() {
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		panel = getPanel();
-		getContentPane().add(panel, BorderLayout.CENTER);
-		addMenu();
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		this.panel = this.getPanel();
+		this.getContentPane().add(this.panel, BorderLayout.CENTER);
+		this.addMenu();
 	}
 
 	private void packCenterAndShow() {
-		pack();
-		Dimension paneSize = getSize();
-		Dimension screenSize = getToolkit().getScreenSize();
-		setLocation((screenSize.width - paneSize.width) / 2, (int) ((screenSize.height - paneSize.height) * 0.45));
-		setVisible(true);
+		this.pack();
+		Dimension paneSize = this.getSize();
+		Dimension screenSize = this.getToolkit().getScreenSize();
+		this.setLocation((screenSize.width - paneSize.width) / 2, (int) ((screenSize.height - paneSize.height) * 0.45));
+		this.setVisible(true);
 	}
 
 	protected JCheckBoxMenuItem radioForFilter(AdresseFilter filter) {
 		JCheckBoxMenuItem radioButtonMenuItem = new JCheckBoxMenuItem(new FilterAction<T>(filter, this));
-		group.add(radioButtonMenuItem);
+		this.group.add(radioButtonMenuItem);
 		return radioButtonMenuItem;
 	}
 
 	public void updateListe() {
-		panel.updateListe();
+		this.panel.updateListe();
 	}
 
 }

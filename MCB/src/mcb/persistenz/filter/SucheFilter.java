@@ -17,14 +17,14 @@ public class SucheFilter implements AdresseFilter {
 	}
 
 	public boolean matches(Adresse adresse) {
-		if (listener != null) {
-			listener.matchesSuchePerformed();
+		if (this.listener != null) {
+			this.listener.matchesSuchePerformed();
 		}
-		return matches(adresse.getName()) || matches(adresse.getVorname());
+		return this.matches(adresse.getName()) || this.matches(adresse.getVorname());
 	}
 
 	private boolean matches(String string) {
-		return string.toLowerCase().contains(sucheText.toLowerCase());
+		return string.toLowerCase().contains(this.sucheText.toLowerCase());
 	}
 
 	public void setMatchesListener(MatchesSucheListener listener) {

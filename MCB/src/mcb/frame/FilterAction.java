@@ -17,12 +17,12 @@ public class FilterAction<T extends Model> extends McbAction {
 	public FilterAction(AdresseFilter filter, SimpleFrame<T> simpleFrame) {
 		super(filter.getLabel(), filter.getKeyMask());
 		this.filter = filter;
-		frame = simpleFrame;
+		this.frame = simpleFrame;
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		ApplicationData.setFilter(filter);
-		frame.updateListe();
+		ApplicationData.setFilter(this.filter);
+		this.frame.updateListe();
 	}
 
 }

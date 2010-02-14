@@ -4,7 +4,12 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.jgoodies.binding.beans.Model;
 
@@ -29,23 +34,23 @@ public class Adresse extends Model {
 	public static void writeHeaderOn(Writer writer) throws IOException {
 		writer.write("id");
 		writer.write(";");
-		writer.write(VORNAME);
+		writer.write(Adresse.VORNAME);
 		writer.write(";");
-		writer.write(NAME);
+		writer.write(Adresse.NAME);
 		writer.write(";");
-		writer.write(EMAIL);
+		writer.write(Adresse.EMAIL);
 		writer.write(";");
-		writer.write(STRASSE);
+		writer.write(Adresse.STRASSE);
 		writer.write(";");
-		writer.write(LAND);
+		writer.write(Adresse.LAND);
 		writer.write(";");
-		writer.write(PLZ);
+		writer.write(Adresse.PLZ);
 		writer.write(";");
-		writer.write(ORT);
+		writer.write(Adresse.ORT);
 		writer.write(";");
-		writer.write(GESPANN);
+		writer.write(Adresse.GESPANN);
 		writer.write(";");
-		writer.write(SOLO);
+		writer.write(Adresse.SOLO);
 		writer.write(";");
 		writer.write("\n");
 	}
@@ -67,29 +72,29 @@ public class Adresse extends Model {
 	private static Map<String, String> landNameMap;
 
 	static {
-		landNameMap = new HashMap<String, String>();
-		landNameMap.put("D", "");
-		landNameMap.put("F", "Frankreich");
-		landNameMap.put("NL", "Niederlande");
-		landNameMap.put("A", "÷sterreich");
-		landNameMap.put("B", "Belgien");
-		landNameMap.put("CH", "Schweiz");
-		landNameMap.put("CZ", "Tschechien");
-		landNameMap.put("DK", "D‰nemark");
-		landNameMap.put("E", "Spanien");
-		landNameMap.put("FIN", "Finnland");
-		landNameMap.put("FL", "Liechtenstein");
-		landNameMap.put("GB", "Groﬂbritannien");
-		landNameMap.put("GR", "Griechenland");
-		landNameMap.put("H", "Ungarn");
-		landNameMap.put("HR", "Kroatien");
-		landNameMap.put("I", "Italien");
-		landNameMap.put("IRL", "Irland");
-		landNameMap.put("L", "Luxemburg");
-		landNameMap.put("N", "Norwegen");
-		landNameMap.put("P", "Portugal");
-		landNameMap.put("PL", "Polen");
-		landNameMap.put("S", "Schweden");
+		Adresse.landNameMap = new HashMap<String, String>();
+		Adresse.landNameMap.put("D", "");
+		Adresse.landNameMap.put("F", "Frankreich");
+		Adresse.landNameMap.put("NL", "Niederlande");
+		Adresse.landNameMap.put("A", "÷sterreich");
+		Adresse.landNameMap.put("B", "Belgien");
+		Adresse.landNameMap.put("CH", "Schweiz");
+		Adresse.landNameMap.put("CZ", "Tschechien");
+		Adresse.landNameMap.put("DK", "D‰nemark");
+		Adresse.landNameMap.put("E", "Spanien");
+		Adresse.landNameMap.put("FIN", "Finnland");
+		Adresse.landNameMap.put("FL", "Liechtenstein");
+		Adresse.landNameMap.put("GB", "Groﬂbritannien");
+		Adresse.landNameMap.put("GR", "Griechenland");
+		Adresse.landNameMap.put("H", "Ungarn");
+		Adresse.landNameMap.put("HR", "Kroatien");
+		Adresse.landNameMap.put("I", "Italien");
+		Adresse.landNameMap.put("IRL", "Irland");
+		Adresse.landNameMap.put("L", "Luxemburg");
+		Adresse.landNameMap.put("N", "Norwegen");
+		Adresse.landNameMap.put("P", "Portugal");
+		Adresse.landNameMap.put("PL", "Polen");
+		Adresse.landNameMap.put("S", "Schweden");
 	}
 
 	public Adresse() {
@@ -97,20 +102,20 @@ public class Adresse extends Model {
 	}
 
 	public void addAktuellesTreffen() {
-		addTreffen(ApplicationData.getAktuellesTreffen());
+		this.addTreffen(ApplicationData.getAktuellesTreffen());
 	}
 
 	public void addTreffen(Treffen treffen) {
 		if (treffen == null) {
 			return;
 		}
-		for (Besuch besuch : besuchteTreffen) {
+		for (Besuch besuch : this.besuchteTreffen) {
 			if (besuch.getTreffen().equals(treffen)) {
 				return;
 			}
 		}
-		if (!besuchteTreffen.contains(treffen)) {
-			besuchteTreffen.add(new Besuch(this, treffen));
+		if (!this.besuchteTreffen.contains(treffen)) {
+			this.besuchteTreffen.add(new Besuch(this, treffen));
 		}
 	}
 
@@ -119,7 +124,7 @@ public class Adresse extends Model {
 	}
 
 	public Besuch getAktuellesTreffen() {
-		for (Besuch besuch : getBesuchteTreffen()) {
+		for (Besuch besuch : this.getBesuchteTreffen()) {
 			if (besuch.getTreffen().isAktuell()) {
 				return besuch;
 			}
@@ -128,59 +133,59 @@ public class Adresse extends Model {
 	}
 
 	public List<Besuch> getBesuchteTreffen() {
-		return besuchteTreffen;
+		return this.besuchteTreffen;
 	}
 
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	public String getFehlergrund() {
-		return fehlergrund;
+		return this.fehlergrund;
 	}
 
 	private String getFullnameFor(String landText) {
-		return landNameMap.get(landText).toUpperCase();
+		return Adresse.landNameMap.get(landText).toUpperCase();
 	}
 
 	public Date getGeburtstag() {
-		return geburtstag;
+		return this.geburtstag;
 	}
 
 	public String getGeburtstagString() {
-		if (geburtstag != null) {
-			return ApplicationData.DATE_FORMAT.format(geburtstag);
+		if (this.geburtstag != null) {
+			return ApplicationData.DATE_FORMAT.format(this.geburtstag);
 		}
 		return "";
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public String getLand() {
-		return land;
+		return this.land;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public String getOrt() {
-		return ort;
+		return this.ort;
 	}
 
 	public String getPlz() {
-		return plz;
+		return this.plz;
 	}
 
 	public String getStrasse() {
-		return strasse;
+		return this.strasse;
 	}
 
 	public List<Besuch> getVergangeneTreffen() {
 		List<Besuch> result = new ArrayList<Besuch>();
-		for (Besuch besuch : getBesuchteTreffen()) {
+		for (Besuch besuch : this.getBesuchteTreffen()) {
 			if (!besuch.getTreffen().isAktuell()) {
 				result.add(besuch);
 			}
@@ -190,23 +195,23 @@ public class Adresse extends Model {
 	}
 
 	public String getVorname() {
-		return vorname;
+		return this.vorname;
 	}
 
 	public boolean hatGueltigeEmail() {
-		return email != null && email.trim().length() > 0 && !isEmailfehler();
+		return this.email != null && this.email.trim().length() > 0 && !this.isEmailfehler();
 	}
 
 	public boolean isEmailfehler() {
-		return getFehlergrund() != null && !getFehlergrund().equals("");
+		return this.getFehlergrund() != null && !this.getFehlergrund().equals("");
 	}
 
 	public boolean isGespann() {
-		return gespann;
+		return this.gespann;
 	}
 
 	public boolean isSolo() {
-		return solo;
+		return this.solo;
 	}
 
 	public void parse(String line) {
@@ -216,23 +221,23 @@ public class Adresse extends Model {
 			System.out.println(tokens.length);
 			String idString = tokens[0];
 			if (idString.length() > 0) {
-				id = Long.valueOf(idString);
+				this.id = Long.valueOf(idString);
 			}
-			setVorname(convertMinusToEmpty(tokens[1]));
-			setName(convertMinusToEmpty(tokens[2]));
-			setEmail(convertMinusToEmpty(tokens[3]));
-			setStrasse(convertMinusToEmpty(tokens[4]));
+			this.setVorname(this.convertMinusToEmpty(tokens[1]));
+			this.setName(this.convertMinusToEmpty(tokens[2]));
+			this.setEmail(this.convertMinusToEmpty(tokens[3]));
+			this.setStrasse(this.convertMinusToEmpty(tokens[4]));
 			String land2 = tokens[5];
-			setLand(land2.equals("-") ? "D" : land2);
-			setPlz(convertMinusToEmpty(tokens[6]));
-			setOrt(convertMinusToEmpty(tokens[7]));
-			setGespann(tokens[8].equalsIgnoreCase("x"));
-			setSolo(tokens[9].equalsIgnoreCase("x"));
+			this.setLand(land2.equals("-") ? "D" : land2);
+			this.setPlz(this.convertMinusToEmpty(tokens[6]));
+			this.setOrt(this.convertMinusToEmpty(tokens[7]));
+			this.setGespann(tokens[8].equalsIgnoreCase("x"));
+			this.setSolo(tokens[9].equalsIgnoreCase("x"));
 			DateFormat format = DateFormat.getDateInstance();
 			String tokenFuenf = tokens[10];
 			if (!tokenFuenf.equals("-")) {
 				try {
-					setGeburtstag(format.parse(tokenFuenf));
+					this.setGeburtstag(format.parse(tokenFuenf));
 				} catch (Exception e) {
 					// dann halt nicht
 				}
@@ -244,13 +249,13 @@ public class Adresse extends Model {
 	}
 
 	public void removeAktuellesTreffen() {
-		besuchteTreffen.remove(getAktuellesTreffen());
+		this.besuchteTreffen.remove(this.getAktuellesTreffen());
 	}
 
 	public void setEmail(String email) {
-		String oldValue = getEmail();
+		String oldValue = this.getEmail();
 		this.email = email.trim();
-		firePropertyChange(EMAIL, oldValue, this.email);
+		this.firePropertyChange(Adresse.EMAIL, oldValue, this.email);
 	}
 
 	public void setFehlergrund(String fehlergrund) {
@@ -263,68 +268,68 @@ public class Adresse extends Model {
 
 	public void setGeburtstagString(String geburtstag) {
 		try {
-			String oldValue = getGeburtstagString();
+			String oldValue = this.getGeburtstagString();
 			this.geburtstag = ApplicationData.DATE_FORMAT.parse(geburtstag);
-			firePropertyChange(GEBURTSTAG, oldValue, getGeburtstagString());
+			this.firePropertyChange(Adresse.GEBURTSTAG, oldValue, this.getGeburtstagString());
 		} catch (ParseException e) {
-			firePropertyChange(GEBURTSTAG, null, getGeburtstagString());
+			this.firePropertyChange(Adresse.GEBURTSTAG, null, this.getGeburtstagString());
 		}
 	}
 
 	public void setGespann(boolean gespann) {
-		boolean oldValue = isGespann();
+		boolean oldValue = this.isGespann();
 		this.gespann = gespann;
-		firePropertyChange(GESPANN, oldValue, this.gespann);
+		this.firePropertyChange(Adresse.GESPANN, oldValue, this.gespann);
 	}
 
 	public void setLand(String land) {
-		String oldValue = getLand();
+		String oldValue = this.getLand();
 		this.land = land;
-		firePropertyChange(LAND, oldValue, this.land);
+		this.firePropertyChange(Adresse.LAND, oldValue, this.land);
 	}
 
 	public void setName(String name) {
-		String oldValue = getName();
+		String oldValue = this.getName();
 		this.name = name;
-		firePropertyChange(NAME, oldValue, this.name);
+		this.firePropertyChange(Adresse.NAME, oldValue, this.name);
 	}
 
 	public void setOrt(String ort) {
-		String oldValue = getOrt();
+		String oldValue = this.getOrt();
 		this.ort = ort;
-		firePropertyChange(ORT, oldValue, this.ort);
+		this.firePropertyChange(Adresse.ORT, oldValue, this.ort);
 	}
 
 	public void setPlz(String plz) {
-		String oldValue = getPlz();
+		String oldValue = this.getPlz();
 		this.plz = plz;
-		firePropertyChange(PLZ, oldValue, this.plz);
+		this.firePropertyChange(Adresse.PLZ, oldValue, this.plz);
 	}
 
 	public void setSolo(boolean solo) {
-		boolean oldValue = isSolo();
+		boolean oldValue = this.isSolo();
 		this.solo = solo;
-		firePropertyChange(SOLO, oldValue, this.solo);
+		this.firePropertyChange(Adresse.SOLO, oldValue, this.solo);
 	}
 
 	public void setStrasse(String strasse) {
-		String oldValue = getStrasse();
+		String oldValue = this.getStrasse();
 		this.strasse = strasse;
-		firePropertyChange(STRASSE, oldValue, this.strasse);
+		this.firePropertyChange(Adresse.STRASSE, oldValue, this.strasse);
 	}
 
 	public void setVorname(String vorname) {
-		String oldValue = getVorname();
+		String oldValue = this.getVorname();
 		this.vorname = vorname;
-		firePropertyChange(VORNAME, oldValue, this.vorname);
+		this.firePropertyChange(Adresse.VORNAME, oldValue, this.vorname);
 	}
 
 	public boolean sollEinladungErhalten() {
 		Treffen neuestesTreffen = ApplicationData.getNeuestesTreffen();
-		if (neuestesTreffen.isGespann() && !isGespann()) {
+		if (neuestesTreffen.isGespann() && !this.isGespann()) {
 			return false;
 		}
-		for (Besuch besuch : getBesuchteTreffen()) {
+		for (Besuch besuch : this.getBesuchteTreffen()) {
 			if (neuestesTreffen.getJahr() - besuch.getTreffen().getJahr() < 5) {
 				return true;
 			}
@@ -338,37 +343,37 @@ public class Adresse extends Model {
 
 	@Override
 	public String toString() {
-		return (vorname != null ? vorname : "") + " " + (name != null ? name : "");
+		return (this.vorname != null ? this.vorname : "") + " " + (this.name != null ? this.name : "");
 	}
 
 	public void writeOn(Writer writer, boolean alle) throws IOException {
-		writer.write(getId().toString());
+		writer.write(this.getId().toString());
 		writer.write(";");
-		writer.write(toEmptyString(getVorname()));
+		writer.write(this.toEmptyString(this.getVorname()));
 		writer.write(";");
-		writer.write(toEmptyString(getName()));
+		writer.write(this.toEmptyString(this.getName()));
 		writer.write(";");
-		writer.write(toEmptyString(getEmail()));
+		writer.write(this.toEmptyString(this.getEmail()));
 		writer.write(";");
-		writer.write(toEmptyString(getStrasse()));
+		writer.write(this.toEmptyString(this.getStrasse()));
 		writer.write(";");
-		String landText = toEmptyString(getLand());
+		String landText = this.toEmptyString(this.getLand());
 		if (!alle) {
-			landText = getFullnameFor(landText);
+			landText = this.getFullnameFor(landText);
 		}
 		writer.write(landText);
 		writer.write(";");
-		writer.write(toEmptyString(getPlz()));
+		writer.write(this.toEmptyString(this.getPlz()));
 		writer.write(";");
-		String ortText = toEmptyString(getOrt());
+		String ortText = this.toEmptyString(this.getOrt());
 		if (!alle) {
 			ortText = ortText.toUpperCase();
 		}
 		writer.write(ortText);
 		writer.write(";");
-		writer.write(isGespann() ? "x" : "");
+		writer.write(this.isGespann() ? "x" : "");
 		writer.write(";");
-		writer.write(isSolo() ? "x" : "");
+		writer.write(this.isSolo() ? "x" : "");
 		writer.write(";");
 		writer.write("\n");
 	}

@@ -2,6 +2,8 @@ package mcb.panel;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
 import com.jgoodies.binding.beans.Model;
 
 public class BearbeitenAction<T extends Model> extends McbAction {
@@ -14,27 +16,27 @@ public class BearbeitenAction<T extends Model> extends McbAction {
 
 	public BearbeitenAction(ModelMitListePanel<T> owner) {
 		super("Bearbeiten", McbAction.BEARBEITEN);
-		panel = owner;
-		updateName();
+		this.panel = owner;
+		this.updateName();
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (!isSpeichern) {
-			if (panel.bearbeiten()) {
-				switchMode();
+		if (!this.isSpeichern) {
+			if (this.panel.bearbeiten()) {
+				this.switchMode();
 			}
 		} else {
-			panel.speichern();
-			switchMode();
+			this.panel.speichern();
+			this.switchMode();
 		}
 	}
 
 	private void switchMode() {
-		isSpeichern = !isSpeichern;
-		updateName();
+		this.isSpeichern = !this.isSpeichern;
+		this.updateName();
 	}
 
 	private void updateName() {
-		putValue(NAME, (isSpeichern ? "Speichern" : "Bearbeiten"));
+		this.putValue(Action.NAME, (this.isSpeichern ? "Speichern" : "Bearbeiten"));
 	}
 }

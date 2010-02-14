@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 public class McbApp extends JFrame {
-	private static final Logger LOGGER = Logger.getLogger(McbApp.class.getName());
+	static final Logger LOGGER = Logger.getLogger(McbApp.class.getName());
 
 	private static final long serialVersionUID = -6092233954906826211L;
 
@@ -28,13 +28,13 @@ public class McbApp extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		initializeLookAndFeel();
+		McbApp.initializeLookAndFeel();
 		Runnable runnable = new Runnable() {
 			public void run() {
 				try {
 					new AdresseFrame();
 				} catch (Exception e) {
-					LOGGER.log(Level.SEVERE, "Failed to launch App", e);
+					McbApp.LOGGER.log(Level.SEVERE, "Failed to launch App", e);
 				}
 			}
 		};

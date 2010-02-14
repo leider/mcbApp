@@ -23,44 +23,44 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
 
 	public ModelMitListePanel() {
 		super();
-		initialize();
+		this.initialize();
 	}
 
 	protected void abbrechen() {
-		detailModel.triggerFlush();
-		switchEnabledForPanels(true);
+		this.detailModel.triggerFlush();
+		this.switchEnabledForPanels(true);
 	}
 
 	/**
 	 * @return if the action has been performed
 	 */
 	protected boolean bearbeiten() {
-		if (listePanel.hasSelection()) {
-			switchEnabledForPanels(false);
+		if (this.listePanel.hasSelection()) {
+			this.switchEnabledForPanels(false);
 			return true;
 		}
 		return false;
 	}
 
 	protected void createCommonActions() {
-		neuAction = new McbAction("Neu", McbAction.NEU) {
+		this.neuAction = new McbAction("Neu", McbAction.NEU) {
 
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(ActionEvent e) {
-				neu();
+				ModelMitListePanel.this.neu();
 			}
 
 		};
 
-		bearbeitenAction = new BearbeitenAction<T>(this);
+		this.bearbeitenAction = new BearbeitenAction<T>(this);
 
-		loeschenAction = new McbAction("Löschen", McbAction.LOESCHEN) {
+		this.loeschenAction = new McbAction("Löschen", McbAction.LOESCHEN) {
 
 			private static final long serialVersionUID = -769620071952192523L;
 
 			public void actionPerformed(ActionEvent e) {
-				loeschen();
+				ModelMitListePanel.this.loeschen();
 			}
 
 		};
@@ -72,47 +72,48 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
 	protected abstract ModelPanel<T> createModelPanel(PresentationModel<T> model, BearbeitenAction<T> action);
 
 	private JPanel createPanel() {
-		detailModel = listePanel.getDetailModel();
-		modelPanel = createModelPanel(detailModel, bearbeitenAction);
-		return modelPanel;
+		this.detailModel = this.listePanel.getDetailModel();
+		this.modelPanel = this.createModelPanel(this.detailModel, this.bearbeitenAction);
+		return this.modelPanel;
 	}
 
 	private void createSplitPane() {
 		JSplitPane splitPane = new JSplitPane();
-		splitPane.setLeftComponent(listePanel);
-		splitPane.setRightComponent(createPanel());
-		add(splitPane, BorderLayout.CENTER);
+		splitPane.setLeftComponent(this.listePanel);
+		splitPane.setRightComponent(this.createPanel());
+		this.add(splitPane, BorderLayout.CENTER);
 	}
 
 	protected void createToolBar() {
+		// don't needed
 	}
 
 	public McbAction getBearbeitenAction() {
-		return bearbeitenAction;
+		return this.bearbeitenAction;
 	}
 
 	public McbAction getLoeschenAction() {
-		return loeschenAction;
+		return this.loeschenAction;
 	}
 
 	public McbAction getNeuAction() {
-		return neuAction;
+		return this.neuAction;
 	}
 
 	private void initialize() {
-		setLayout(new BorderLayout());
-		listePanel = createListePanel();
-		createCommonActions();
-		createSplitPane();
-		createToolBar();
+		this.setLayout(new BorderLayout());
+		this.listePanel = this.createListePanel();
+		this.createCommonActions();
+		this.createSplitPane();
+		this.createToolBar();
 	}
 
 	protected void loeschen() {
-		if (listePanel.hasSelection()) {
-			int showConfirmDialog = JOptionPane.showConfirmDialog(this, loeschenMessage(detailModel.getBean()),
-					"TERMINIEREN", JOptionPane.YES_NO_OPTION);
+		if (this.listePanel.hasSelection()) {
+			int showConfirmDialog = JOptionPane.showConfirmDialog(this, this
+					.loeschenMessage(this.detailModel.getBean()), "TERMINIEREN", JOptionPane.YES_NO_OPTION);
 			if (showConfirmDialog == JOptionPane.YES_OPTION) {
-				listePanel.loescheSelection();
+				this.listePanel.loescheSelection();
 			}
 		}
 	}
@@ -120,27 +121,27 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
 	protected abstract String loeschenMessage(T model);
 
 	protected void neu() {
-		listePanel.createNewAndAdd();
-		bearbeitenAction.actionPerformed(null);
+		this.listePanel.createNewAndAdd();
+		this.bearbeitenAction.actionPerformed(null);
 	}
 
 	protected abstract void speichereModel(T model);
 
 	protected void speichern() {
-		detailModel.triggerCommit();
-		speichereModel(detailModel.getBean());
-		switchEnabledForPanels(true);
-		updateListe();
+		this.detailModel.triggerCommit();
+		this.speichereModel(this.detailModel.getBean());
+		this.switchEnabledForPanels(true);
+		this.updateListe();
 	}
 
 	private void switchEnabledForPanels(boolean listEnabled) {
-		listePanel.setListEnabled(listEnabled);
-		modelPanel.setEnabled(!listEnabled);
-		neuAction.setEnabled(listEnabled);
+		this.listePanel.setListEnabled(listEnabled);
+		this.modelPanel.setEnabled(!listEnabled);
+		this.neuAction.setEnabled(listEnabled);
 	}
 
 	public void updateListe() {
-		listePanel.updateModelliste();
+		this.listePanel.updateModelliste();
 	}
 
 }

@@ -27,27 +27,27 @@ public class Besuch extends Model implements Comparable<Besuch> {
 	}
 
 	public int compareTo(Besuch o) {
-		return getTreffen().compareTo(o.getTreffen());
+		return this.getTreffen().compareTo(o.getTreffen());
 	}
 
 	public Adresse getAdresse() {
-		return adresse;
+		return this.adresse;
 	}
 
 	public int getFruehstueckSamstag() {
-		return fruehstueckSamstag;
+		return this.fruehstueckSamstag;
 	}
 
 	public int getFruehstueckSonntag() {
-		return fruehstueckSonntag;
+		return this.fruehstueckSonntag;
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public Treffen getTreffen() {
-		return treffen;
+		return this.treffen;
 	}
 
 	public void setFruehstueckSamstag(int fruehstueckSamstag) {
@@ -60,6 +60,6 @@ public class Besuch extends Model implements Comparable<Besuch> {
 
 	@Override
 	public String toString() {
-		return getTreffen().toString();
+		return this.getTreffen().toString();
 	}
 }

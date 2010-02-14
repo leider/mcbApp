@@ -19,33 +19,33 @@ public class Summaries extends Model {
 	}
 
 	public int getAnzahlMeldungen() {
-		return anzahlMeldungen;
+		return this.anzahlMeldungen;
 	}
 
 	public int getFruehstueckSamstag() {
-		return fruehstueckSamstag;
+		return this.fruehstueckSamstag;
 	}
 
 	public int getFruehstueckSonntag() {
-		return fruehstueckSonntag;
+		return this.fruehstueckSonntag;
 	}
 
 	public void setAnzahlMeldungen(int anzMeldungen) {
-		int oldValue = getAnzahlMeldungen();
-		anzahlMeldungen = anzMeldungen;
-		firePropertyChange(ANZAHL_MELDUNGEN, oldValue, anzMeldungen);
+		int oldValue = this.getAnzahlMeldungen();
+		this.anzahlMeldungen = anzMeldungen;
+		this.firePropertyChange(Summaries.ANZAHL_MELDUNGEN, oldValue, anzMeldungen);
 	}
 
 	public void setFruehstueckSamstag(int fruehstuckSamstag) {
-		int oldValue = getFruehstueckSamstag();
-		fruehstueckSamstag = fruehstuckSamstag;
-		firePropertyChange(FRUEHSTUCK_SAMSTAG, oldValue, fruehstuckSamstag);
+		int oldValue = this.getFruehstueckSamstag();
+		this.fruehstueckSamstag = fruehstuckSamstag;
+		this.firePropertyChange(Summaries.FRUEHSTUCK_SAMSTAG, oldValue, fruehstuckSamstag);
 	}
 
 	public void setFruehstueckSonntag(int fruehstuckSonntag) {
-		int oldValue = getFruehstueckSonntag();
-		fruehstueckSonntag = fruehstuckSonntag;
-		firePropertyChange(FRUEHSTUCK_SONNTAG, oldValue, fruehstuckSonntag);
+		int oldValue = this.getFruehstueckSonntag();
+		this.fruehstueckSonntag = fruehstuckSonntag;
+		this.firePropertyChange(Summaries.FRUEHSTUCK_SONNTAG, oldValue, fruehstuckSonntag);
 	}
 
 }

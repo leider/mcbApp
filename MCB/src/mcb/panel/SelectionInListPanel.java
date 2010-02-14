@@ -25,21 +25,21 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 
 	public SelectionInListPanel() {
 		super();
-		initialize();
+		this.initialize();
 	}
 
 	private void createList() {
-		list = BasicComponentFactory.createList(modelliste);
-		Dimension preferredSize = list.getPreferredSize();
+		this.list = BasicComponentFactory.createList(this.modelliste);
+		Dimension preferredSize = this.list.getPreferredSize();
 		preferredSize.width = preferredSize.width + 40;
-		setMinimumSize(preferredSize);
+		this.setMinimumSize(preferredSize);
 	}
 
 	public void createNewAndAdd() {
 		ApplicationData.setFilter(ApplicationData.ALLE_FILTER);
-		T neu = createNewModel();
-		updateModelliste();
-		list.setSelectedValue(neu, true);
+		T neu = this.createNewModel();
+		this.updateModelliste();
+		this.list.setSelectedValue(neu, true);
 	}
 
 	protected abstract T createNewModel();
@@ -47,44 +47,44 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 	protected abstract List<T> getContents();
 
 	public PresentationModel<T> getDetailModel() {
-		if (detailModel == null) {
-			detailModel = new PresentationModel<T>(modelliste);
+		if (this.detailModel == null) {
+			this.detailModel = new PresentationModel<T>(this.modelliste);
 		}
-		return detailModel;
+		return this.detailModel;
 	}
 
 	public boolean hasSelection() {
-		return modelliste.getSelection() != null;
+		return this.modelliste.getSelection() != null;
 	}
 
 	private void initialize() {
-		modelliste = new SelectionInList<T>(getContents());
-		setLayout(new BorderLayout());
-		createList();
-		JScrollPane scrollpane = new JScrollPane(list);
+		this.modelliste = new SelectionInList<T>(this.getContents());
+		this.setLayout(new BorderLayout());
+		this.createList();
+		JScrollPane scrollpane = new JScrollPane(this.list);
 		scrollpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		add(scrollpane, BorderLayout.CENTER);
-		if (!modelliste.getList().isEmpty()) {
-			modelliste.setSelectionIndex(0);
+		this.add(scrollpane, BorderLayout.CENTER);
+		if (!this.modelliste.getList().isEmpty()) {
+			this.modelliste.setSelectionIndex(0);
 		}
 	}
 
 	protected abstract void loescheObjekt(T objekt);
 
 	public void loescheSelection() {
-		loescheObjekt(modelliste.getSelection());
-		updateModelliste();
+		this.loescheObjekt(this.modelliste.getSelection());
+		this.updateModelliste();
 	}
 
 	public void refreshList() {
-		list.repaint();
+		this.list.repaint();
 	}
 
 	public void setListEnabled(boolean b) {
-		list.setEnabled(b);
+		this.list.setEnabled(b);
 	}
 
 	public void updateModelliste() {
-		modelliste.setList(getContents());
+		this.modelliste.setList(this.getContents());
 	}
 }

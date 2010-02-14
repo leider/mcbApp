@@ -30,8 +30,8 @@ public class TreffenPanel extends ModelPanel<Treffen> {
 
 	public TreffenPanel(PresentationModel<Treffen> presentationModel, BearbeitenAction<Treffen> bearbeitenAction) {
 		super(presentationModel, bearbeitenAction);
-		initComponents();
-		buildPanel();
+		this.initComponents();
+		this.buildPanel();
 	}
 
 	private void buildPanel() {
@@ -43,67 +43,68 @@ public class TreffenPanel extends ModelPanel<Treffen> {
 		PanelBuilder builder = new PanelBuilder(layout, this);
 		CellConstraints cc = new CellConstraints();
 		int row = 2;
-		builder.add(bearbeitenButton, cc.xyw(2, row, 5));
+		builder.add(this.bearbeitenButton, cc.xyw(2, row, 5));
 		row++;
 		row++;
 		builder.addSeparator("Allgemein", cc.xyw(2, row, 8));
 		row++;
 		row++;
 		builder.addLabel("Name", cc.xy(2, row));
-		builder.add(nameTextfield, cc.xyw(4, row, 3));
+		builder.add(this.nameTextfield, cc.xyw(4, row, 3));
 		row++;
 		row++;
 		builder.addLabel("Beschreibung", cc.xy(2, row));
-		builder.add(beschreibungTextfield, cc.xyw(4, row, 5));
+		builder.add(this.beschreibungTextfield, cc.xyw(4, row, 5));
 		row++;
 		row++;
 		builder.addLabel("Erster Tag", cc.xy(2, row));
-		builder.add(ersterTagTextfield, cc.xy(4, row));
+		builder.add(this.ersterTagTextfield, cc.xy(4, row));
 		row++;
 		row++;
 		builder.addLabel("Letzter Tag", cc.xy(2, row));
-		builder.add(letzterTagTextfield, cc.xy(4, row));
+		builder.add(this.letzterTagTextfield, cc.xy(4, row));
 		row++;
 		row++;
 		builder.addLabel("Emailtext", cc.xy(2, row));
-		builder.add(emailScrollfield, cc.xyw(4, row, 5));
+		builder.add(this.emailScrollfield, cc.xyw(4, row, 5));
 	}
 
 	private void initComponents() {
-		nameTextfield = BasicComponentFactory.createTextField(presentationModel.getBufferedModel(Treffen.NAME), false);
-		ersterTagTextfield = BasicComponentFactory.createTextField(presentationModel
+		this.nameTextfield = BasicComponentFactory.createTextField(this.presentationModel
+				.getBufferedModel(Treffen.NAME), false);
+		this.ersterTagTextfield = BasicComponentFactory.createTextField(this.presentationModel
 				.getBufferedModel(Treffen.ERSTER_TAG), false);
-		letzterTagTextfield = BasicComponentFactory.createTextField(presentationModel
+		this.letzterTagTextfield = BasicComponentFactory.createTextField(this.presentationModel
 				.getBufferedModel(Treffen.LETZTER_TAG), false);
-		beschreibungTextfield = BasicComponentFactory.createTextField(presentationModel
+		this.beschreibungTextfield = BasicComponentFactory.createTextField(this.presentationModel
 				.getBufferedModel(Treffen.BESCHREIBUNG), false);
-		emailTextfield = BasicComponentFactory.createTextArea(presentationModel.getBufferedModel(Treffen.EMAIL_TEXT),
-				false);
-		emailTextfield.setRows(20);
-		emailTextfield.setFont(new Font("Monospaced", Font.PLAIN, 12));
-		emailScrollfield = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+		this.emailTextfield = BasicComponentFactory.createTextArea(this.presentationModel
+				.getBufferedModel(Treffen.EMAIL_TEXT), false);
+		this.emailTextfield.setRows(20);
+		this.emailTextfield.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		this.emailScrollfield = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		emailScrollfield.setViewportView(emailTextfield);
-		bearbeitenButton = new JButton(bearbeitenAction);
-		emailPreviewTextfield = new JTextArea();
-		emailPreviewTextfield.setRows(20);
-		emailPreviewTextfield.setColumns(120);
-		emailPreviewTextfield.setLineWrap(true);
-		emailPreviewTextfield.setFont(new Font("Monospaced", Font.PLAIN, 12));
-		setEnabled(false);
+		this.emailScrollfield.setViewportView(this.emailTextfield);
+		this.bearbeitenButton = new JButton(this.bearbeitenAction);
+		this.emailPreviewTextfield = new JTextArea();
+		this.emailPreviewTextfield.setRows(20);
+		this.emailPreviewTextfield.setColumns(120);
+		this.emailPreviewTextfield.setLineWrap(true);
+		this.emailPreviewTextfield.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		this.setEnabled(false);
 	}
 
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		nameTextfield.setEditable(enabled);
-		ersterTagTextfield.setEditable(enabled);
-		letzterTagTextfield.setEditable(enabled);
-		emailTextfield.setEditable(enabled);
-		emailScrollfield.setViewportView(enabled ? emailTextfield : emailPreviewTextfield);
+		this.nameTextfield.setEditable(enabled);
+		this.ersterTagTextfield.setEditable(enabled);
+		this.letzterTagTextfield.setEditable(enabled);
+		this.emailTextfield.setEditable(enabled);
+		this.emailScrollfield.setViewportView(enabled ? this.emailTextfield : this.emailPreviewTextfield);
 		if (!enabled) {
-			emailPreviewTextfield.setText(presentationModel.getBean().getEmailPreviewText());
-			emailPreviewTextfield.setCaretPosition(0);
+			this.emailPreviewTextfield.setText(this.presentationModel.getBean().getEmailPreviewText());
+			this.emailPreviewTextfield.setCaretPosition(0);
 		}
 	}
 }

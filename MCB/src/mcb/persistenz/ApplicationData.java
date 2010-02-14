@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import mcb.mail.MailSender;
 import mcb.persistenz.filter.AdresseFilter;
 import mcb.persistenz.filter.AlleFilter;
 import mcb.persistenz.filter.SucheFilter;
@@ -38,11 +37,11 @@ public class ApplicationData {
 
 	private static Summaries summaries = new Summaries();
 
-	private static AdresseFilter filter = ALLE_FILTER;
+	private static AdresseFilter filter = ApplicationData.ALLE_FILTER;
 
 	static {
 		HibernateStarter.initHibernate();
-		loadDaten();
+		ApplicationData.loadDaten();
 	}
 
 	private static void closeSession(Session session) {
@@ -50,7 +49,7 @@ public class ApplicationData {
 		int samstag = 0;
 		int sonntag = 0;
 		int meldungen = 0;
-		for (Adresse adresse : getAlleAdressen()) {
+		for (Adresse adresse : ApplicationData.getAlleAdressen()) {
 			if (adresse.getAktuellesTreffen() != null) {
 				samstag = samstag + adresse.getAktuellesTreffen().getFruehstueckSamstag();
 				sonntag = sonntag + adresse.getAktuellesTreffen().getFruehstueckSonntag();
@@ -58,9 +57,9 @@ public class ApplicationData {
 			}
 		}
 
-		summaries.setFruehstueckSamstag(samstag);
-		summaries.setFruehstueckSonntag(sonntag);
-		summaries.setAnzahlMeldungen(meldungen);
+		ApplicationData.summaries.setFruehstueckSamstag(samstag);
+		ApplicationData.summaries.setFruehstueckSonntag(sonntag);
+		ApplicationData.summaries.setAnzahlMeldungen(meldungen);
 	}
 
 	private static Adresse createAdresse(String line) {
@@ -73,18 +72,18 @@ public class ApplicationData {
 	}
 
 	private static Treffen createOrGetTreffen(int i) {
-		for (Treffen treffen : getAlleTreffen()) {
-			if (treffen.getJahr() == i) {
-				return treffen;
+		for (Treffen theTreffen : ApplicationData.getAlleTreffen()) {
+			if (theTreffen.getJahr() == i) {
+				return theTreffen;
 			}
 		}
-		Treffen treffen = new Treffen();
-		treffen.setErsterTagString("1.1." + i);
-		treffen.setLetzterTagString("31.12." + i);
-		treffen.setName("Dummy " + i);
-		saveTreffen(treffen);
-		getAlleTreffen().add(treffen);
-		return treffen;
+		Treffen result = new Treffen();
+		result.setErsterTagString("1.1." + i);
+		result.setLetzterTagString("31.12." + i);
+		result.setName("Dummy " + i);
+		ApplicationData.saveTreffen(result);
+		ApplicationData.getAlleTreffen().add(result);
+		return result;
 	}
 
 	public static void exportAdressen(File file, boolean alle) {
@@ -92,7 +91,7 @@ public class ApplicationData {
 			FileOutputStream stream = new FileOutputStream(file);
 			OutputStreamWriter writer = new OutputStreamWriter(stream, "ISO-8859-1");
 			Adresse.writeHeaderOn(writer);
-			for (Adresse adresse : alle ? adressen : getAlleAdressen()) {
+			for (Adresse adresse : alle ? ApplicationData.adressen : ApplicationData.getAlleAdressen()) {
 				adresse.writeOn(writer, alle);
 			}
 			writer.flush();
@@ -104,31 +103,31 @@ public class ApplicationData {
 	private static List<Treffen> findAlleTreffen(String line) {
 		List<Treffen> result = new ArrayList<Treffen>();
 		String[] tokens = line.split(";");
-		if (istWahr(tokens[12])) {
-			result.add(createOrGetTreffen(2004));
+		if (ApplicationData.istWahr(tokens[12])) {
+			result.add(ApplicationData.createOrGetTreffen(2004));
 		}
-		if (istWahr(tokens[13])) {
-			result.add(createOrGetTreffen(2005));
+		if (ApplicationData.istWahr(tokens[13])) {
+			result.add(ApplicationData.createOrGetTreffen(2005));
 		}
-		if (istWahr(tokens[14])) {
-			result.add(createOrGetTreffen(2006));
+		if (ApplicationData.istWahr(tokens[14])) {
+			result.add(ApplicationData.createOrGetTreffen(2006));
 		}
-		if (istWahr(tokens[15])) {
-			result.add(createOrGetTreffen(2007));
+		if (ApplicationData.istWahr(tokens[15])) {
+			result.add(ApplicationData.createOrGetTreffen(2007));
 		}
-		if (istWahr(tokens[16])) {
-			result.add(createOrGetTreffen(2008));
+		if (ApplicationData.istWahr(tokens[16])) {
+			result.add(ApplicationData.createOrGetTreffen(2008));
 		}
-		if (istWahr(tokens[17])) {
-			result.add(createOrGetTreffen(2009));
+		if (ApplicationData.istWahr(tokens[17])) {
+			result.add(ApplicationData.createOrGetTreffen(2009));
 		}
 		return result;
 	}
 
 	public static Treffen getAktuellesTreffen() {
-		for (Treffen treffen : getAlleTreffen()) {
-			if (treffen.isAktuell()) {
-				return treffen;
+		for (Treffen theTreffen : ApplicationData.getAlleTreffen()) {
+			if (theTreffen.isAktuell()) {
+				return theTreffen;
 			}
 		}
 		return null;
@@ -136,8 +135,8 @@ public class ApplicationData {
 
 	public static List<Adresse> getAlleAdressen() {
 		List<Adresse> result = new ArrayList<Adresse>();
-		for (Adresse adresse : adressen) {
-			if (filter.matches(adresse)) {
+		for (Adresse adresse : ApplicationData.adressen) {
+			if (ApplicationData.filter.matches(adresse)) {
 				result.add(adresse);
 			}
 		}
@@ -145,12 +144,12 @@ public class ApplicationData {
 	}
 
 	public static List<Treffen> getAlleTreffen() {
-		return treffen;
+		return ApplicationData.treffen;
 	}
 
 	public static List<Adresse> getEmailAdressen() {
 		List<Adresse> result = new ArrayList<Adresse>();
-		List<Adresse> alleAdressen = getAlleAdressen();
+		List<Adresse> alleAdressen = ApplicationData.getAlleAdressen();
 		for (Adresse adresse : alleAdressen) {
 			if (adresse.hatGueltigeEmail()) {
 				result.add(adresse);
@@ -160,10 +159,10 @@ public class ApplicationData {
 	}
 
 	public static Treffen getNeuestesTreffen() {
-		if (getAlleTreffen().isEmpty()) {
+		if (ApplicationData.getAlleTreffen().isEmpty()) {
 			return null;
 		}
-		List<Treffen> treffenCopy = new ArrayList<Treffen>(getAlleTreffen());
+		List<Treffen> treffenCopy = new ArrayList<Treffen>(ApplicationData.getAlleTreffen());
 		Collections.sort(treffenCopy, new Comparator<Treffen>() {
 
 			public int compare(Treffen o1, Treffen o2) {
@@ -174,7 +173,7 @@ public class ApplicationData {
 	}
 
 	public static Summaries getSummaries() {
-		return summaries;
+		return ApplicationData.summaries;
 	}
 
 	public static void importiere(File file) {
@@ -185,14 +184,14 @@ public class ApplicationData {
 				line = reader.readLine();
 			}
 			while (line != null) {
-				Adresse adresse = createAdresse(line);
+				Adresse adresse = ApplicationData.createAdresse(line);
 				if (adresse != null) {
-					saveAdresse(adresse);
-					List<Treffen> findTreffen = findAlleTreffen(line);
-					for (Treffen treffen : findTreffen) {
-						adresse.addTreffen(treffen);
+					ApplicationData.saveAdresse(adresse);
+					List<Treffen> findTreffen = ApplicationData.findAlleTreffen(line);
+					for (Treffen theTreffen : findTreffen) {
+						adresse.addTreffen(theTreffen);
 					}
-					saveAdresse(adresse);
+					ApplicationData.saveAdresse(adresse);
 				}
 				line = reader.readLine();
 			}
@@ -209,11 +208,11 @@ public class ApplicationData {
 	private static void loadDaten() {
 		Session session = HibernateStarter.getSessionFactory().openSession();
 		Query query = session.createQuery("from Adresse");
-		adressen.addAll(query.list());
+		ApplicationData.adressen.addAll(query.list());
 		query = session.createQuery("from Treffen");
-		treffen.addAll(query.list());
-		Collections.sort(treffen);
-		closeSession(session);
+		ApplicationData.treffen.addAll(query.list());
+		Collections.sort(ApplicationData.treffen);
+		ApplicationData.closeSession(session);
 	}
 
 	public static void loescheModel(Model model) {
@@ -221,13 +220,13 @@ public class ApplicationData {
 		Transaction transe = session.beginTransaction();
 		session.delete(model);
 		if (model instanceof Adresse) {
-			adressen.remove(model);
+			ApplicationData.adressen.remove(model);
 		}
 		if (model instanceof Treffen) {
-			treffen.remove(model);
+			ApplicationData.treffen.remove(model);
 		}
 		transe.commit();
-		closeSession(session);
+		ApplicationData.closeSession(session);
 	}
 
 	public static void saveAdresse(Adresse adresse) {
@@ -240,49 +239,24 @@ public class ApplicationData {
 		session.saveOrUpdate(adresse);
 		transe.commit();
 		if (neu) {
-			adressen.add(adresse);
+			ApplicationData.adressen.add(adresse);
 		}
-		closeSession(session);
+		ApplicationData.closeSession(session);
 	}
 
-	public static void saveTreffen(Treffen treffen) {
+	public static void saveTreffen(Treffen theTreffen) {
 		Session session = HibernateStarter.getSessionFactory().openSession();
 		Transaction transe = session.beginTransaction();
-		boolean neu = treffen.getId() == null;
-		session.saveOrUpdate(treffen);
+		boolean neu = theTreffen.getId() == null;
+		session.saveOrUpdate(theTreffen);
 		transe.commit();
 		if (neu) {
-			ApplicationData.treffen.add(treffen);
+			ApplicationData.treffen.add(theTreffen);
 		}
-		closeSession(session);
-	}
-
-	public static void sendMail() {
-		MailSender sender = new MailSender();
-		String subject = getNeuestesTreffen().getBeschreibung();
-		for (Adresse adresse : getEmailAdressen()) {
-			String to = adresse.getEmail();
-			String body = getNeuestesTreffen().getEmailPreviewText(adresse.getVorname());
-			try {
-				sender.send(to, subject, body);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		// Properties props = new Properties();
-		// javax.mail.Session session = javax.mail.Session
-		// .getDefaultInstance(props);
-		// MimeMessage mimeMessage = new MimeMessage(session);
-		// mimeMessage.setText(getNeuestesTreffen().getEmailPreviewText());
-		// Address absender = new InternetAddress("leider@me.com");
-		// mimeMessage.setFrom(absender);
-		// mimeMessage.setRecipients(javax.mail.Message.RecipientType.BCC,
-		// getEmailAdressen());
-		// mimeMessage.setSubject(getNeuestesTreffen().getBeschreibung());
-		// Transport.send(mimeMessage);
+		ApplicationData.closeSession(session);
 	}
 
 	public static void setFilter(AdresseFilter filter2) {
-		filter = filter2;
+		ApplicationData.filter = filter2;
 	}
 }

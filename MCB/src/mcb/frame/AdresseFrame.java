@@ -2,6 +2,7 @@ package mcb.frame;
 
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -9,7 +10,11 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
+import mcb.mail.MailSender;
+import mcb.mail.SendCompleteListener;
 import mcb.panel.AdresseMitListePanel;
 import mcb.persistenz.Adresse;
 import mcb.persistenz.ApplicationData;
@@ -25,7 +30,8 @@ import mcb.persistenz.filter.MatchesAlleListener;
 import mcb.persistenz.filter.MatchesSucheListener;
 import mcb.persistenz.filter.NichtGemeldeteFilter;
 
-public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleListener, MatchesSucheListener {
+public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleListener, MatchesSucheListener,
+		SendCompleteListener {
 
 	private static final long serialVersionUID = -4920258782523646842L;
 	private JCheckBoxMenuItem alle;
@@ -42,7 +48,7 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 			private static final long serialVersionUID = 8568897588247326614L;
 
 			public void actionPerformed(ActionEvent e) {
-				exportieren(true);
+				AdresseFrame.this.exportieren(true);
 			}
 		};
 
@@ -51,16 +57,16 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 			private static final long serialVersionUID = 8568897588247326614L;
 
 			public void actionPerformed(ActionEvent e) {
-				exportieren(false);
+				AdresseFrame.this.exportieren(false);
 			}
 		};
 
-		Action emailAdressenAusgeben = new AbstractAction("Email Adressen") {
+		Action emailAdressenAusgeben = new AbstractAction("Verschicke Emails...") {
 
 			private static final long serialVersionUID = 8568897588247326614L;
 
 			public void actionPerformed(ActionEvent e) {
-				emailAdressen();
+				AdresseFrame.this.emailAdressen();
 			}
 		};
 
@@ -69,7 +75,7 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 			private static final long serialVersionUID = 8568897588247326614L;
 
 			public void actionPerformed(ActionEvent e) {
-				importieren();
+				AdresseFrame.this.importieren();
 			}
 		};
 
@@ -94,25 +100,36 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 		JMenu filter = new JMenu("Filter");
 		bar.add(filter);
 
-		alle = radioForFilter(ApplicationData.ALLE_FILTER);
+		this.alle = this.radioForFilter(ApplicationData.ALLE_FILTER);
 		ApplicationData.ALLE_FILTER.setMatchesListener(this);
-		alle.setSelected(true);
-		filter.add(alle);
-		suche = radioForFilter(ApplicationData.SUCHE_FILTER);
+		this.alle.setSelected(true);
+		filter.add(this.alle);
+		this.suche = this.radioForFilter(ApplicationData.SUCHE_FILTER);
 		ApplicationData.SUCHE_FILTER.setMatchesListener(this);
-		filter.add(suche);
+		filter.add(this.suche);
 		filter.addSeparator();
-		filter.add(radioForFilter(new DeutschlandFilter()));
-		filter.add(radioForFilter(new AuslandFilter()));
+		filter.add(this.radioForFilter(new DeutschlandFilter()));
+		filter.add(this.radioForFilter(new AuslandFilter()));
 		filter.addSeparator();
-		filter.add(radioForFilter(new EmailKaputtFilter()));
+		filter.add(this.radioForFilter(new EmailKaputtFilter()));
 		filter.addSeparator();
-		filter.add(radioForFilter(new GemeldeteFilter()));
-		filter.add(radioForFilter(new NichtGemeldeteFilter()));
+		filter.add(this.radioForFilter(new GemeldeteFilter()));
+		filter.add(this.radioForFilter(new NichtGemeldeteFilter()));
 		filter.addSeparator();
-		filter.add(radioForFilter(new EinladungEmailFilter()));
-		filter.add(radioForFilter(new EinladungPostFilter()));
-		filter.add(radioForFilter(new KeineEinladungFilter()));
+		filter.add(this.radioForFilter(new EinladungEmailFilter()));
+		filter.add(this.radioForFilter(new EinladungPostFilter()));
+		filter.add(this.radioForFilter(new KeineEinladungFilter()));
+	}
+
+	private String createEmailConfirmationMessage() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Es wird eine Einladung verschickt an: ");
+		List<Adresse> emailAdressen = ApplicationData.getEmailAdressen();
+		for (Adresse adresse : emailAdressen) {
+			buffer.append(adresse.getEmail());
+			buffer.append(", ");
+		}
+		return buffer.toString();
 	}
 
 	@Override
@@ -120,19 +137,24 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 		try {
 			HibernateStarter.stopHibernate();
 		} catch (SQLException e) {
+			// so what?
 		}
 		super.dispose();
 	}
 
 	protected void emailAdressen() {
-		ApplicationData.sendMail();
+		String message = this.createEmailConfirmationMessage();
+		int sendReally = JOptionPane.showConfirmDialog(this, message);
+		if (sendReally == JOptionPane.OK_OPTION) {
+			SwingUtilities.invokeLater(new MailSender(this));
+		}
 	}
 
-	protected void exportieren(boolean alle) {
+	protected void exportieren(boolean alleAdressen) {
 		JFileChooser chooser = new JFileChooser();
 		int result = chooser.showSaveDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
-			ApplicationData.exportAdressen(chooser.getSelectedFile(), alle);
+			ApplicationData.exportAdressen(chooser.getSelectedFile(), alleAdressen);
 		}
 	}
 
@@ -150,11 +172,16 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 	}
 
 	public void matchesAllePerformed() {
-		alle.setSelected(true);
+		this.alle.setSelected(true);
 	}
 
 	public void matchesSuchePerformed() {
-		suche.setSelected(true);
+		this.suche.setSelected(true);
+	}
+
+	@Override
+	public void messagesSent() {
+		JOptionPane.showMessageDialog(this, "Mails wurden gesendet.");
 	}
 
 }

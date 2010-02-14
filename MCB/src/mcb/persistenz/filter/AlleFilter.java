@@ -16,8 +16,8 @@ public class AlleFilter implements AdresseFilter {
 	}
 
 	public boolean matches(Adresse adresse) {
-		if (listener != null) {
-			listener.matchesAllePerformed();
+		if (this.listener != null) {
+			this.listener.matchesAllePerformed();
 		}
 		return true;
 	}
