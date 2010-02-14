@@ -1,6 +1,7 @@
 package mcb.panel;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.JList;
@@ -29,6 +30,9 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 
 	private void createList() {
 		list = BasicComponentFactory.createList(modelliste);
+		Dimension preferredSize = list.getPreferredSize();
+		preferredSize.width = preferredSize.width + 40;
+		setMinimumSize(preferredSize);
 	}
 
 	public void createNewAndAdd() {

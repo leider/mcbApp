@@ -7,7 +7,15 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.ListModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -89,10 +97,10 @@ public class AdressePanel extends ModelPanel<Adresse> {
 		row++;
 		row++;
 		builder.addLabel("Adresse", cc.xy(2, row));
-		builder.add(emailTextfield, cc.xyw(4, row, 8));
+		builder.add(emailTextfield, cc.xyw(4, row, 9));
 		row++;
 		row++;
-		builder.add(emailgrundTextfield, cc.xyw(4, row, 8));
+		builder.add(emailgrundTextfield, cc.xyw(4, row, 9));
 		row++;
 		row++;
 		builder.addSeparator("Fahrzeuge", cc.xyw(2, row, 11));

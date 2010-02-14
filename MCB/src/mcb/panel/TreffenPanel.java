@@ -2,7 +2,11 @@ package mcb.panel;
 
 import java.awt.Font;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 import mcb.persistenz.Treffen;
 
@@ -33,7 +37,7 @@ public class TreffenPanel extends ModelPanel<Treffen> {
 	private void buildPanel() {
 
 		FormLayout layout = new FormLayout(
-				"3dlu, right:pref, 3dlu, 60dlu, 3dlu, 30dlu, 3dlu, 200dlu, 3dlu", // cols
+				"3dlu, right:pref, 3dlu, 60dlu, 3dlu, 30dlu, 3dlu, pref:grow, 3dlu", // cols
 				"3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, 20dlu, 3dlu"); // rows
 
 		PanelBuilder builder = new PanelBuilder(layout, this);
@@ -83,6 +87,8 @@ public class TreffenPanel extends ModelPanel<Treffen> {
 		bearbeitenButton = new JButton(bearbeitenAction);
 		emailPreviewTextfield = new JTextArea();
 		emailPreviewTextfield.setRows(20);
+		emailPreviewTextfield.setColumns(120);
+		emailPreviewTextfield.setLineWrap(true);
 		emailPreviewTextfield.setFont(new Font("Monospaced", Font.PLAIN, 12));
 		setEnabled(false);
 	}

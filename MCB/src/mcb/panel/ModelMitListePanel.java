@@ -79,9 +79,9 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
 
 	private void createSplitPane() {
 		JSplitPane splitPane = new JSplitPane();
-		add(splitPane, BorderLayout.CENTER);
 		splitPane.setLeftComponent(listePanel);
 		splitPane.setRightComponent(createPanel());
+		add(splitPane, BorderLayout.CENTER);
 	}
 
 	protected void createToolBar() {
