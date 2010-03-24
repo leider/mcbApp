@@ -1,6 +1,5 @@
 package mcb.persistenz;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import mcb.model.Adresse;
@@ -10,7 +9,7 @@ import org.hibernate.classic.Session;
 
 public class TestDatabaseInitializer {
 
-	public static void main(String[] bullshit) throws SQLException {
+	public static void main(String[] bullshit) {
 		HibernateStarter.initHibernate();
 		Session session = HibernateStarter.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
