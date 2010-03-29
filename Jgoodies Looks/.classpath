@@ -6,7 +6,7 @@
 	<classpathentry kind="src" path="src/core"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
-	<classpathentry exported="true" kind="lib" path="looks-2.2.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Jgoodies Forms"/>
+	<classpathentry exported="true" kind="lib" path="looks-2.3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

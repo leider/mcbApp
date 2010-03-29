@@ -45,7 +45,7 @@
     <path id="classpath.tests">
         <pathelement location="${build.core.dir}"   /> 
         <pathelement location="${build.test.dir}"   /> 
-        <pathelement location="${junit.jar}"        /> 
+        <pathelement location="${junit4.jar}"       /> 
     </path>
 
     <path id="classpath.demo">
