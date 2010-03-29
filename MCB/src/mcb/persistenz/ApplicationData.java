@@ -72,6 +72,15 @@ public class ApplicationData {
 				result.add(adresse);
 			}
 		}
+		Comparator<Adresse> adresseComparator = new Comparator<Adresse>() {
+
+			@Override
+			public int compare(Adresse adresse1, Adresse adresse2) {
+				return adresse1.getName().toUpperCase().compareTo(adresse2.getName().toUpperCase());
+			}
+
+		};
+		Collections.sort(result, adresseComparator);
 		return result;
 	}
 
