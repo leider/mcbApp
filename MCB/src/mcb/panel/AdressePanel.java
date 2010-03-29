@@ -139,7 +139,11 @@ public class AdressePanel extends ModelPanel<Adresse> {
 			fruehstueckFeld.setValue(this.zero);
 			return;
 		}
-		adresse.getAktuellesTreffen().setFruehstueckSamstag(((Integer) fruehstueckFeld.getValue()).intValue());
+		if (fruehstueckFeld == this.fruehstueckSamstagIntegerField) {
+			adresse.getAktuellesTreffen().setFruehstueckSamstag(((Integer) fruehstueckFeld.getValue()).intValue());
+		} else {
+			adresse.getAktuellesTreffen().setFruehstueckSonntag(((Integer) fruehstueckFeld.getValue()).intValue());
+		}
 		ApplicationData.saveAdresse(adresse);
 	}
 
