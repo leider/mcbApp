@@ -1,5 +1,8 @@
 package mcb.model;
 
+import java.util.List;
+
+import mcb.persistenz.ApplicationData;
 
 public class Summaries extends McbModel {
 
@@ -9,42 +12,41 @@ public class Summaries extends McbModel {
 	public static final String FRUEHSTUCK_SONNTAG = "fruehstueckSonntag";
 	public static final String ANZAHL_MELDUNGEN = "anzahlMeldungen";
 
-	private int fruehstueckSamstag;
-	private int fruehstueckSonntag;
-	private int anzahlMeldungen;
+	private List<Besuch> aktuelleBesuche;
 
 	public Summaries() {
 		super();
 	}
 
+	private void firePropertyChanges() {
+		this.firePropertyChange(Summaries.ANZAHL_MELDUNGEN, -1, this.getAnzahlMeldungen());
+		this.firePropertyChange(Summaries.FRUEHSTUCK_SAMSTAG, -1, this.getFruehstueckSamstag());
+		this.firePropertyChange(Summaries.FRUEHSTUCK_SONNTAG, -1, this.getFruehstueckSonntag());
+	}
+
 	public int getAnzahlMeldungen() {
-		return this.anzahlMeldungen;
+		return this.aktuelleBesuche.size();
+	}
+
+	private int getFruehstueck(FruehstuecksTag tag) {
+		int anzahl = 0;
+		for (Besuch besuch : this.aktuelleBesuche) {
+			anzahl = anzahl + besuch.getFruehstueckFuer(tag);
+		}
+		return anzahl;
 	}
 
 	public int getFruehstueckSamstag() {
-		return this.fruehstueckSamstag;
+		return this.getFruehstueck(FruehstuecksTag.Samstag);
 	}
 
 	public int getFruehstueckSonntag() {
-		return this.fruehstueckSonntag;
+		return this.getFruehstueck(FruehstuecksTag.Sonntag);
 	}
 
-	public void setAnzahlMeldungen(int anzMeldungen) {
-		int oldValue = this.getAnzahlMeldungen();
-		this.anzahlMeldungen = anzMeldungen;
-		this.firePropertyChange(Summaries.ANZAHL_MELDUNGEN, oldValue, anzMeldungen);
-	}
-
-	public void setFruehstueckSamstag(int fruehstuckSamstag) {
-		int oldValue = this.getFruehstueckSamstag();
-		this.fruehstueckSamstag = fruehstuckSamstag;
-		this.firePropertyChange(Summaries.FRUEHSTUCK_SAMSTAG, oldValue, fruehstuckSamstag);
-	}
-
-	public void setFruehstueckSonntag(int fruehstuckSonntag) {
-		int oldValue = this.getFruehstueckSonntag();
-		this.fruehstueckSonntag = fruehstuckSonntag;
-		this.firePropertyChange(Summaries.FRUEHSTUCK_SONNTAG, oldValue, fruehstuckSonntag);
+	public void initForBesuche() {
+		this.aktuelleBesuche = ApplicationData.getAktuelleBesuche();
+		this.firePropertyChanges();
 	}
 
 }

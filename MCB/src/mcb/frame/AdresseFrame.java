@@ -155,7 +155,7 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 	}
 
 	@Override
-	protected AdresseMitListePanel getPanel() {
+	protected AdresseMitListePanel createPanel() {
 		return new AdresseMitListePanel();
 	}
 

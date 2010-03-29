@@ -1,6 +1,5 @@
 package mcb.model;
 
-
 public class Besuch extends McbModel implements Comparable<Besuch> {
 
 	private static final long serialVersionUID = -941602649174788569L;
@@ -31,6 +30,10 @@ public class Besuch extends McbModel implements Comparable<Besuch> {
 		return this.adresse;
 	}
 
+	public int getFruehstueckFuer(FruehstuecksTag tag) {
+		return tag.getFruehstueck(this);
+	}
+
 	public int getFruehstueckSamstag() {
 		return this.fruehstueckSamstag;
 	}
@@ -43,12 +46,16 @@ public class Besuch extends McbModel implements Comparable<Besuch> {
 		return this.treffen;
 	}
 
-	public void setFruehstueckSamstag(int fruehstueckSamstag) {
-		this.fruehstueckSamstag = fruehstueckSamstag;
+	public void setFruehstueckFuer(int anzahl, FruehstuecksTag tag) {
+		tag.setFruehstueck(this, anzahl);
 	}
 
-	public void setFruehstueckSonntag(int fruehstueckSonntag) {
-		this.fruehstueckSonntag = fruehstueckSonntag;
+	protected void setFruehstueckSamstag(int anzahl) {
+		this.fruehstueckSamstag = anzahl;
+	}
+
+	protected void setFruehstueckSonntag(int anzahl) {
+		this.fruehstueckSonntag = anzahl;
 	}
 
 	@Override

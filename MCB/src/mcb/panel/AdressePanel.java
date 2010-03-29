@@ -12,16 +12,15 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import mcb.model.Adresse;
 import mcb.model.Besuch;
+import mcb.model.FruehstuecksTag;
+import mcb.panel.widgets.FruehstuecksSpinner;
 import mcb.persistenz.ApplicationData;
+import mcb.persistenz.McbException;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
@@ -48,10 +47,9 @@ public class AdressePanel extends ModelPanel<Adresse> {
 	private JTextField geburtstagTextfield;
 	private JList besuchListe;
 	private JCheckBox meldungCheckbox;
-	private JSpinner fruehstueckSamstagIntegerField;
-	private JSpinner fruehstueckSonntagIntegerField;
+	private FruehstuecksSpinner fruehstueckSamstagIntegerField;
+	private FruehstuecksSpinner fruehstueckSonntagIntegerField;
 	private JButton bearbeitenButton;
-	private Integer zero = new Integer(0);
 
 	public AdressePanel(PresentationModel<Adresse> presentationModel, BearbeitenAction<Adresse> bearbeitenAction) {
 		super(presentationModel, bearbeitenAction);
@@ -127,24 +125,18 @@ public class AdressePanel extends ModelPanel<Adresse> {
 		builder.add(this.fruehstueckSonntagIntegerField, cc.xy(12, row));
 	}
 
-	private JSpinner createFruehstueckFeld() {
-		JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
-		((SpinnerNumberModel) spinner.getModel()).setMinimum(this.zero);
-		return spinner;
-	}
-
-	private void fruehstueckFeldChanged(JSpinner fruehstueckFeld) {
+	private void fruehstueckFeldChanged(FruehstuecksSpinner fruehstueckFeld) {
 		Adresse adresse = this.presentationModel.getBean();
-		if (adresse == null || adresse.getAktuellesTreffen() == null) {
-			fruehstueckFeld.setValue(this.zero);
+		if (adresse == null || adresse.getAktuellenBesuch() == null) {
+			fruehstueckFeld.setValue(0);
 			return;
 		}
-		if (fruehstueckFeld == this.fruehstueckSamstagIntegerField) {
-			adresse.getAktuellesTreffen().setFruehstueckSamstag(((Integer) fruehstueckFeld.getValue()).intValue());
-		} else {
-			adresse.getAktuellesTreffen().setFruehstueckSonntag(((Integer) fruehstueckFeld.getValue()).intValue());
+		adresse.getAktuellenBesuch().setFruehstueckFuer(fruehstueckFeld.getValue(), this.getTagFuerFruehstueckSpinner(fruehstueckFeld));
+		try {
+			ApplicationData.saveAdresse(adresse);
+		} catch (McbException e) {
+			this.handleMcbException(e);
 		}
-		ApplicationData.saveAdresse(adresse);
 	}
 
 	protected void fruehstueckSamstagChanged() {
@@ -155,77 +147,65 @@ public class AdressePanel extends ModelPanel<Adresse> {
 		this.fruehstueckFeldChanged(this.fruehstueckSonntagIntegerField);
 	}
 
+	public Adresse getAdresse() {
+		return this.presentationModel.getBean();
+	}
+
+	private FruehstuecksTag getTagFuerFruehstueckSpinner(FruehstuecksSpinner fruehstueckFeld) {
+		if (fruehstueckFeld == this.fruehstueckSamstagIntegerField) {
+			return FruehstuecksTag.Samstag;
+		}
+		return FruehstuecksTag.Sonntag;
+
+	}
+
 	private void initComponents() {
-		String[] countries = { "A", "B", "CH", "CZ", "D", "DK", "E", "F", "FIN", "FL", "GB", "GR", "H", "HR", "I",
-				"IRL", "L", "N", "NL", "P", "PL", "S" };
+		String[] countries = { "A", "B", "CH", "CZ", "D", "DK", "E", "F", "FIN", "FL", "GB", "GR", "H", "HR", "I", "IRL", "L", "N", "NL",
+				"P", "PL", "S" };
 		ListModel countryListModel = new ArrayListModel<String>(Arrays.asList(countries));
 		ValueModel countryModel = this.presentationModel.getBufferedModel(Adresse.LAND);
 		SelectionInList<String> countrySil = new SelectionInList<String>(countryListModel, countryModel);
 		this.landTextfield = BasicComponentFactory.createComboBox(countrySil);
 
-		String[] fehlergruende = { "", "Empfänger existiert nicht", "Mailbox voll",
-				"Email aus Spamgründen nicht akzeptiert" };
+		String[] fehlergruende = { "", "Empfänger existiert nicht", "Mailbox voll", "Email aus Spamgründen nicht akzeptiert" };
 		ListModel fehlerListModel = new ArrayListModel<String>(Arrays.asList(fehlergruende));
 		ValueModel fehlerModel = this.presentationModel.getBufferedModel(Adresse.FEHLERGRUND);
 		SelectionInList<String> fehlerSil = new SelectionInList<String>(fehlerListModel, fehlerModel);
 		this.emailgrundTextfield = BasicComponentFactory.createComboBox(fehlerSil);
 
-		this.vornameTextfield = BasicComponentFactory.createTextField(this.presentationModel
-				.getBufferedModel(Adresse.VORNAME), false);
-		this.nachnameTextfield = BasicComponentFactory.createTextField(this.presentationModel
-				.getBufferedModel(Adresse.NAME), false);
-		this.strasseTextfield = BasicComponentFactory.createTextField(this.presentationModel
-				.getBufferedModel(Adresse.STRASSE), false);
-		this.plzTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.PLZ),
-				false);
-		this.ortTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.ORT),
-				false);
-		this.emailTextfield = BasicComponentFactory.createTextField(this.presentationModel
-				.getBufferedModel(Adresse.EMAIL), false);
-		this.gespannCheckbox = BasicComponentFactory.createCheckBox(this.presentationModel
-				.getBufferedModel(Adresse.GESPANN), "Gespann");
-		this.soloCheckbox = BasicComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.SOLO),
-				"Solo");
-		this.geburtstagTextfield = BasicComponentFactory.createTextField(this.presentationModel
-				.getBufferedModel(Adresse.GEBURTSTAG), false);
+		this.vornameTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.VORNAME), false);
+		this.nachnameTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.NAME), false);
+		this.strasseTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.STRASSE), false);
+		this.plzTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.PLZ), false);
+		this.ortTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.ORT), false);
+		this.emailTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.EMAIL), false);
+		this.gespannCheckbox = BasicComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.GESPANN), "Gespann");
+		this.soloCheckbox = BasicComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.SOLO), "Solo");
+		this.geburtstagTextfield = BasicComponentFactory
+				.createTextField(this.presentationModel.getBufferedModel(Adresse.GEBURTSTAG), false);
 		SelectionInList<Besuch> besuchList = new SelectionInList<Besuch>(this.presentationModel
 				.getBufferedModel(Adresse.VERGANGENE_TREFFEN));
 		this.besuchListe = BasicComponentFactory.createList(besuchList);
 		this.besuchListe.setEnabled(false);
 		this.meldungCheckbox = new JCheckBox("Meldung");
-		this.fruehstueckSamstagIntegerField = this.createFruehstueckFeld();
-		this.fruehstueckSonntagIntegerField = this.createFruehstueckFeld();
+		this.fruehstueckSamstagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Samstag, this);
+		this.fruehstueckSonntagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Sonntag, this);
 		this.bearbeitenButton = new JButton(this.bearbeitenAction);
 		this.setEnabled(false);
 	}
 
 	private void initListeners() {
-		this.presentationModel.addPropertyChangeListener(PresentationModel.PROPERTYNAME_BEAN,
-				new PropertyChangeListener() {
+		this.presentationModel.addPropertyChangeListener(PresentationModel.PROPERTYNAME_BEAN, new PropertyChangeListener() {
 
-					public void propertyChange(PropertyChangeEvent evt) {
-						AdressePanel.this.updateCheckboxes();
-					}
-				});
+			public void propertyChange(PropertyChangeEvent evt) {
+				AdressePanel.this.updateCheckboxes();
+			}
+		});
 
 		this.meldungCheckbox.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				AdressePanel.this.meldungChanged();
-			}
-
-		});
-		this.fruehstueckSamstagIntegerField.addChangeListener(new ChangeListener() {
-
-			public void stateChanged(ChangeEvent e) {
-				AdressePanel.this.fruehstueckSamstagChanged();
-			}
-
-		});
-		this.fruehstueckSonntagIntegerField.addChangeListener(new ChangeListener() {
-
-			public void stateChanged(ChangeEvent e) {
-				AdressePanel.this.fruehstueckSonntagChanged();
 			}
 
 		});
@@ -237,13 +217,17 @@ public class AdressePanel extends ModelPanel<Adresse> {
 			this.meldungCheckbox.setSelected(false);
 			return;
 		}
-		if (this.meldungCheckbox.isSelected()) {
-			adresse.addAktuellesTreffen();
-			ApplicationData.saveAdresse(adresse);
-		} else {
-			ApplicationData.loescheModel(adresse.getAktuellesTreffen());
-			adresse.removeAktuellesTreffen();
-			ApplicationData.saveAdresse(adresse);
+		try {
+			if (this.meldungCheckbox.isSelected()) {
+				adresse.addAktuellesTreffen();
+				ApplicationData.saveAdresse(adresse);
+			} else {
+				ApplicationData.loescheModel(adresse.getAktuellenBesuch());
+				adresse.removeAktuellesTreffen();
+				ApplicationData.saveAdresse(adresse);
+			}
+		} catch (McbException e) {
+			this.handleMcbException(e);
 		}
 		this.updateCheckboxes();
 	}
@@ -267,18 +251,17 @@ public class AdressePanel extends ModelPanel<Adresse> {
 	protected void updateCheckboxes() {
 		Adresse adresse = this.presentationModel.getBean();
 		if (adresse != null) {
-			Besuch aktuellesTreffen = adresse.getAktuellesTreffen();
+			Besuch aktuellesTreffen = adresse.getAktuellenBesuch();
 			if (aktuellesTreffen == null) {
-				this.fruehstueckSamstagIntegerField.setValue(this.zero);
-				this.fruehstueckSonntagIntegerField.setValue(this.zero);
+				this.fruehstueckSamstagIntegerField.setValue(0);
+				this.fruehstueckSonntagIntegerField.setValue(0);
 				this.meldungCheckbox.setSelected(false);
 			} else {
 				this.meldungCheckbox.setSelected(true);
-				this.fruehstueckSamstagIntegerField.setValue(new Integer(aktuellesTreffen.getFruehstueckSamstag()));
-				this.fruehstueckSonntagIntegerField.setValue(new Integer(aktuellesTreffen.getFruehstueckSonntag()));
+				this.fruehstueckSamstagIntegerField.setValue(aktuellesTreffen.getFruehstueckSamstag());
+				this.fruehstueckSonntagIntegerField.setValue(aktuellesTreffen.getFruehstueckSonntag());
 			}
-			this.emailTextfield.setForeground(adresse.isEmailfehler() ? Color.RED : this.nachnameTextfield
-					.getForeground());
+			this.emailTextfield.setForeground(adresse.isEmailfehler() ? Color.RED : this.nachnameTextfield.getForeground());
 		}
 	}
 

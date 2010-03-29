@@ -36,8 +36,7 @@ public class TreffenPanel extends ModelPanel<Treffen> {
 
 	private void buildPanel() {
 
-		FormLayout layout = new FormLayout(
-				"3dlu, right:pref, 3dlu, 60dlu, 3dlu, 30dlu, 3dlu, pref:grow, 3dlu", // cols
+		FormLayout layout = new FormLayout("3dlu, right:pref, 3dlu, 60dlu, 3dlu, 30dlu, 3dlu, pref:grow, 3dlu", // cols
 				"3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, 20dlu, 3dlu"); // rows
 
 		PanelBuilder builder = new PanelBuilder(layout, this);
@@ -70,27 +69,26 @@ public class TreffenPanel extends ModelPanel<Treffen> {
 	}
 
 	private void initComponents() {
-		this.nameTextfield = BasicComponentFactory.createTextField(this.presentationModel
-				.getBufferedModel(Treffen.NAME), false);
-		this.ersterTagTextfield = BasicComponentFactory.createTextField(this.presentationModel
-				.getBufferedModel(Treffen.ERSTER_TAG), false);
-		this.letzterTagTextfield = BasicComponentFactory.createTextField(this.presentationModel
-				.getBufferedModel(Treffen.LETZTER_TAG), false);
-		this.beschreibungTextfield = BasicComponentFactory.createTextField(this.presentationModel
-				.getBufferedModel(Treffen.BESCHREIBUNG), false);
-		this.emailTextfield = BasicComponentFactory.createTextArea(this.presentationModel
-				.getBufferedModel(Treffen.EMAIL_TEXT), false);
+		this.nameTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Treffen.NAME), false);
+		this.ersterTagTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Treffen.ERSTER_TAG), false);
+		this.letzterTagTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Treffen.LETZTER_TAG),
+				false);
+		this.beschreibungTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Treffen.BESCHREIBUNG),
+				false);
+		this.emailTextfield = BasicComponentFactory.createTextArea(this.presentationModel.getBufferedModel(Treffen.EMAIL_TEXT), false);
 		this.emailTextfield.setRows(20);
 		this.emailTextfield.setFont(new Font("Monospaced", Font.PLAIN, 12));
 		this.emailScrollfield = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		this.emailScrollfield.setViewportView(this.emailTextfield);
 		this.bearbeitenButton = new JButton(this.bearbeitenAction);
-		this.emailPreviewTextfield = new JTextArea();
+		this.emailPreviewTextfield = BasicComponentFactory.createTextArea(this.presentationModel
+				.getBufferedModel(Treffen.EMAIL_PREVIEW_TEXT), false);
 		this.emailPreviewTextfield.setRows(20);
 		this.emailPreviewTextfield.setColumns(120);
 		this.emailPreviewTextfield.setLineWrap(true);
 		this.emailPreviewTextfield.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		this.emailPreviewTextfield.setCaretPosition(0);
 		this.setEnabled(false);
 	}
 
@@ -102,9 +100,5 @@ public class TreffenPanel extends ModelPanel<Treffen> {
 		this.letzterTagTextfield.setEditable(enabled);
 		this.emailTextfield.setEditable(enabled);
 		this.emailScrollfield.setViewportView(enabled ? this.emailTextfield : this.emailPreviewTextfield);
-		if (!enabled) {
-			this.emailPreviewTextfield.setText(this.presentationModel.getBean().getEmailPreviewText());
-			this.emailPreviewTextfield.setCaretPosition(0);
-		}
 	}
 }

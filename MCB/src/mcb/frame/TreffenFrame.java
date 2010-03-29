@@ -19,7 +19,7 @@ public class TreffenFrame extends SimpleFrame<Treffen> {
 	}
 
 	@Override
-	protected TreffenMitListePanel getPanel() {
+	protected TreffenMitListePanel createPanel() {
 		return new TreffenMitListePanel();
 	}
 

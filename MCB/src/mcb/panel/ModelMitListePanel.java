@@ -2,10 +2,15 @@ package mcb.panel;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+
+import mcb.frame.FilterAction;
+import mcb.persistenz.McbException;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.beans.Model;
@@ -18,6 +23,7 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
 	private McbAction neuAction;
 	private McbAction loeschenAction;
 	private BearbeitenAction<T> bearbeitenAction;
+	private List<FilterAction<T>> filterActions;
 
 	private static final long serialVersionUID = -8126517029418193902L;
 
@@ -29,6 +35,10 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
 	protected void abbrechen() {
 		this.detailModel.triggerFlush();
 		this.switchEnabledForPanels(true);
+	}
+
+	public void addFilterAction(FilterAction<T> filterAction) {
+		this.filterActions.add(filterAction);
 	}
 
 	/**
@@ -88,6 +98,14 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
 		// don't needed
 	}
 
+	protected List<McbAction> getAllActionsExceptBearbeiten() {
+		List<McbAction> result = new ArrayList<McbAction>();
+		result.add(this.loeschenAction);
+		result.add(this.neuAction);
+		result.addAll(this.filterActions);
+		return result;
+	}
+
 	public McbAction getBearbeitenAction() {
 		return this.bearbeitenAction;
 	}
@@ -100,7 +118,13 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
 		return this.neuAction;
 	}
 
+	void handleMcbException(McbException e) {
+		this.showError(e.getMessage());
+		ModelPanel.LOGGER.error(e.getMessage(), e.getCause());
+	}
+
 	private void initialize() {
+		this.filterActions = new ArrayList<FilterAction<T>>();
 		this.setLayout(new BorderLayout());
 		this.listePanel = this.createListePanel();
 		this.createCommonActions();
@@ -110,10 +134,14 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
 
 	protected void loeschen() {
 		if (this.listePanel.hasSelection()) {
-			int showConfirmDialog = JOptionPane.showConfirmDialog(this, this
-					.loeschenMessage(this.detailModel.getBean()), "TERMINIEREN", JOptionPane.YES_NO_OPTION);
+			int showConfirmDialog = JOptionPane.showConfirmDialog(this, this.loeschenMessage(this.detailModel.getBean()), "TERMINIEREN",
+					JOptionPane.YES_NO_OPTION);
 			if (showConfirmDialog == JOptionPane.YES_OPTION) {
-				this.listePanel.loescheSelection();
+				try {
+					this.listePanel.loescheSelection();
+				} catch (McbException e) {
+					this.handleMcbException(e);
+				}
 			}
 		}
 	}
@@ -121,23 +149,33 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
 	protected abstract String loeschenMessage(T model);
 
 	protected void neu() {
-		this.listePanel.createNewAndAdd();
-		this.bearbeitenAction.actionPerformed(null);
+		try {
+			this.listePanel.createNewAndAdd();
+			this.bearbeitenAction.actionPerformed(null);
+		} catch (McbException e) {
+			this.handleMcbException(e);
+		}
 	}
 
-	protected abstract void speichereModel(T model);
+	private void showError(String message) {
+		JOptionPane.showMessageDialog(this, message, "Fehler", JOptionPane.ERROR_MESSAGE);
+	}
 
-	protected void speichern() {
+	protected abstract void speichereModel(T model) throws McbException;
+
+	protected void speichern() throws McbException {
 		this.detailModel.triggerCommit();
 		this.speichereModel(this.detailModel.getBean());
 		this.switchEnabledForPanels(true);
 		this.updateListe();
 	}
 
-	private void switchEnabledForPanels(boolean listEnabled) {
+	protected void switchEnabledForPanels(boolean listEnabled) {
 		this.listePanel.setListEnabled(listEnabled);
 		this.modelPanel.setEnabled(!listEnabled);
-		this.neuAction.setEnabled(listEnabled);
+		for (McbAction mcbAction : this.getAllActionsExceptBearbeiten()) {
+			mcbAction.setEnabled(listEnabled);
+		}
 	}
 
 	public void updateListe() {

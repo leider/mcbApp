@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import mcb.persistenz.ApplicationData;
+import mcb.persistenz.McbException;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
@@ -35,14 +36,14 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 		this.setMinimumSize(preferredSize);
 	}
 
-	public void createNewAndAdd() {
+	public void createNewAndAdd() throws McbException {
 		ApplicationData.setFilter(ApplicationData.ALLE_FILTER);
 		T neu = this.createNewModel();
 		this.updateModelliste();
 		this.list.setSelectedValue(neu, true);
 	}
 
-	protected abstract T createNewModel();
+	protected abstract T createNewModel() throws McbException;
 
 	protected abstract List<T> getContents();
 
@@ -69,9 +70,9 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 		}
 	}
 
-	protected abstract void loescheObjekt(T objekt);
+	protected abstract void loescheObjekt(T objekt) throws McbException;
 
-	public void loescheSelection() {
+	public void loescheSelection() throws McbException {
 		this.loescheObjekt(this.modelliste.getSelection());
 		this.updateModelliste();
 	}

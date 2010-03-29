@@ -27,7 +27,7 @@ public class ImAndExporter {
 		return result;
 	}
 
-	private static Treffen createOrGetTreffen(int i) {
+	private static Treffen createOrGetTreffen(int i) throws McbException {
 		for (Treffen theTreffen : ApplicationData.getAlleTreffen()) {
 			if (theTreffen.getJahr() == i) {
 				return theTreffen;
@@ -57,7 +57,7 @@ public class ImAndExporter {
 		}
 	}
 
-	private static List<Treffen> findAlleTreffen(String line) {
+	private static List<Treffen> findAlleTreffen(String line) throws McbException {
 		List<Treffen> result = new ArrayList<Treffen>();
 		String[] tokens = line.split(";");
 		if (ImAndExporter.istWahr(tokens[12])) {
@@ -91,12 +91,16 @@ public class ImAndExporter {
 			while (line != null) {
 				Adresse adresse = ImAndExporter.createAdresse(line);
 				if (adresse != null) {
-					ApplicationData.saveAdresse(adresse);
-					List<Treffen> findTreffen = ImAndExporter.findAlleTreffen(line);
-					for (Treffen theTreffen : findTreffen) {
-						adresse.addTreffen(theTreffen);
+					try {
+						ApplicationData.saveAdresse(adresse);
+						List<Treffen> findTreffen = ImAndExporter.findAlleTreffen(line);
+						for (Treffen theTreffen : findTreffen) {
+							adresse.addTreffen(theTreffen);
+						}
+						ApplicationData.saveAdresse(adresse);
+					} catch (McbException e) {
+						ImAndExporter.LOGGER.fatal(e.getMessage(), e);
 					}
-					ApplicationData.saveAdresse(adresse);
 				}
 				line = reader.readLine();
 			}

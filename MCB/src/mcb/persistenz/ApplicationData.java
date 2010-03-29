@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import mcb.model.Adresse;
+import mcb.model.Besuch;
 import mcb.model.McbModel;
 import mcb.model.Summaries;
 import mcb.model.Treffen;
@@ -42,20 +43,17 @@ public class ApplicationData {
 
 	static void closeSession(Session session) {
 		session.close();
-		int samstag = 0;
-		int sonntag = 0;
-		int meldungen = 0;
-		for (Adresse adresse : ApplicationData.getAlleAdressen()) {
-			if (adresse.getAktuellesTreffen() != null) {
-				samstag = samstag + adresse.getAktuellesTreffen().getFruehstueckSamstag();
-				sonntag = sonntag + adresse.getAktuellesTreffen().getFruehstueckSonntag();
-				meldungen++;
+		ApplicationData.summaries.initForBesuche();
+	}
+
+	public static List<Besuch> getAktuelleBesuche() {
+		List<Besuch> result = new ArrayList<Besuch>();
+		for (Adresse adresse : ApplicationData.adressen) {
+			if (adresse.getAktuellenBesuch() != null) {
+				result.add(adresse.getAktuellenBesuch());
 			}
 		}
-
-		ApplicationData.summaries.setFruehstueckSamstag(samstag);
-		ApplicationData.summaries.setFruehstueckSonntag(sonntag);
-		ApplicationData.summaries.setAnzahlMeldungen(meldungen);
+		return result;
 	}
 
 	public static Treffen getAktuellesTreffen() {
@@ -121,7 +119,7 @@ public class ApplicationData {
 		ApplicationData.closeSession(session);
 	}
 
-	public static void loescheModel(final McbModel model) {
+	public static void loescheModel(final McbModel model) throws McbException {
 		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
 
 			@Override
@@ -137,7 +135,7 @@ public class ApplicationData {
 		});
 	}
 
-	public static void saveAdresse(final Adresse adresse) {
+	public static void saveAdresse(final Adresse adresse) throws McbException {
 		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
 
 			@Override
@@ -154,7 +152,7 @@ public class ApplicationData {
 		});
 	}
 
-	public static void saveTreffen(final Treffen theTreffen) {
+	public static void saveTreffen(final Treffen theTreffen) throws McbException {
 		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
 
 			@Override

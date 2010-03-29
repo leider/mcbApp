@@ -13,6 +13,7 @@ import javax.swing.JToolBar;
 import mcb.model.Adresse;
 import mcb.model.Summaries;
 import mcb.persistenz.ApplicationData;
+import mcb.persistenz.McbException;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
@@ -20,6 +21,7 @@ import com.jgoodies.binding.adapter.BasicComponentFactory;
 public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 
 	private static final long serialVersionUID = 444596326461558352L;
+	private JTextField suchText;
 
 	public AdresseMitListePanel() {
 		super();
@@ -39,17 +41,17 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 	protected void createToolBar() {
 		JToolBar toolBar = new JToolBar();
 		toolBar.add(new JLabel("Suche nach Vorname oder Name: "));
-		final JTextField suchText = new JTextField();
-		toolBar.add(suchText);
-		suchText.setPreferredSize(new Dimension(300, suchText.getPreferredSize().height));
-		suchText.addKeyListener(new KeyListener() {
+		this.suchText = new JTextField();
+		toolBar.add(this.suchText);
+		this.suchText.setPreferredSize(new Dimension(300, this.suchText.getPreferredSize().height));
+		this.suchText.addKeyListener(new KeyListener() {
 
 			public void keyPressed(KeyEvent e) {
 				// don't needed
 			}
 
 			public void keyReleased(KeyEvent e) {
-				String text = suchText.getText();
+				String text = AdresseMitListePanel.this.suchText.getText();
 				if ("".equals(text)) {
 					ApplicationData.setFilter(ApplicationData.ALLE_FILTER);
 				} else {
@@ -65,24 +67,20 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 		});
 		toolBar.addSeparator();
 
-		PresentationModel<Summaries> presentationModel = new PresentationModel<Summaries>(ApplicationData
-				.getSummaries());
+		PresentationModel<Summaries> presentationModel = new PresentationModel<Summaries>(ApplicationData.getSummaries());
 		toolBar.add(new JLabel("Samstag:"));
-		JFormattedTextField samstag = BasicComponentFactory.createIntegerField(presentationModel
-				.getModel(Summaries.FRUEHSTUCK_SAMSTAG));
+		JFormattedTextField samstag = BasicComponentFactory.createIntegerField(presentationModel.getModel(Summaries.FRUEHSTUCK_SAMSTAG));
 		toolBar.add(samstag);
 		int kantenlaenge = samstag.getPreferredSize().height;
 		samstag.setPreferredSize(new Dimension(3 * kantenlaenge, kantenlaenge));
 		samstag.setEditable(false);
 		toolBar.add(new JLabel("Sonntag:"));
-		JFormattedTextField sonntag = BasicComponentFactory.createIntegerField(presentationModel
-				.getModel(Summaries.FRUEHSTUCK_SONNTAG));
+		JFormattedTextField sonntag = BasicComponentFactory.createIntegerField(presentationModel.getModel(Summaries.FRUEHSTUCK_SONNTAG));
 		toolBar.add(sonntag);
 		sonntag.setPreferredSize(new Dimension(3 * kantenlaenge, kantenlaenge));
 		sonntag.setEditable(false);
 		toolBar.add(new JLabel("Meldungen:"));
-		JFormattedTextField meldungen = BasicComponentFactory.createIntegerField(presentationModel
-				.getModel(Summaries.ANZAHL_MELDUNGEN));
+		JFormattedTextField meldungen = BasicComponentFactory.createIntegerField(presentationModel.getModel(Summaries.ANZAHL_MELDUNGEN));
 		toolBar.add(meldungen);
 		meldungen.setPreferredSize(new Dimension(3 * kantenlaenge, kantenlaenge));
 		meldungen.setEditable(false);
@@ -95,8 +93,13 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 	}
 
 	@Override
-	protected void speichereModel(Adresse model) {
+	protected void speichereModel(Adresse model) throws McbException {
 		ApplicationData.saveAdresse(model);
 	}
 
+	@Override
+	protected void switchEnabledForPanels(boolean listEnabled) {
+		super.switchEnabledForPanels(listEnabled);
+		this.suchText.setEditable(listEnabled);
+	}
 }

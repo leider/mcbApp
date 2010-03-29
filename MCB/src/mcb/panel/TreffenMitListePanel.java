@@ -2,6 +2,7 @@ package mcb.panel;
 
 import mcb.model.Treffen;
 import mcb.persistenz.ApplicationData;
+import mcb.persistenz.McbException;
 
 import com.jgoodies.binding.PresentationModel;
 
@@ -29,7 +30,7 @@ public class TreffenMitListePanel extends ModelMitListePanel<Treffen> {
 	}
 
 	@Override
-	protected void speichereModel(Treffen model) {
+	protected void speichereModel(Treffen model) throws McbException {
 		ApplicationData.saveTreffen(model);
 	}
 

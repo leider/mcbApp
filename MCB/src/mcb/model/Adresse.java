@@ -122,7 +122,7 @@ public class Adresse extends McbModel {
 		return "-".equals(string) ? "" : string;
 	}
 
-	public Besuch getAktuellesTreffen() {
+	public Besuch getAktuellenBesuch() {
 		for (Besuch besuch : this.getBesuchteTreffen()) {
 			if (besuch.getTreffen().isAktuell()) {
 				return besuch;
@@ -244,7 +244,7 @@ public class Adresse extends McbModel {
 	}
 
 	public void removeAktuellesTreffen() {
-		this.besuchteTreffen.remove(this.getAktuellesTreffen());
+		this.besuchteTreffen.remove(this.getAktuellenBesuch());
 	}
 
 	public void setEmail(String email) {

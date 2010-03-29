@@ -14,7 +14,7 @@ public class NichtGemeldeteFilter implements AdresseFilter {
 	}
 
 	public boolean matches(Adresse adresse) {
-		return adresse.getAktuellesTreffen() == null;
+		return adresse.getAktuellenBesuch() == null;
 	}
 
 }

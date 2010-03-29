@@ -4,6 +4,7 @@ import java.util.List;
 
 import mcb.model.Treffen;
 import mcb.persistenz.ApplicationData;
+import mcb.persistenz.McbException;
 
 public class TreffenSelectionInListPanel extends SelectionInListPanel<Treffen> {
 
@@ -14,7 +15,7 @@ public class TreffenSelectionInListPanel extends SelectionInListPanel<Treffen> {
 	}
 
 	@Override
-	protected Treffen createNewModel() {
+	protected Treffen createNewModel() throws McbException {
 		Treffen neu = new Treffen();
 		neu.setName("");
 		ApplicationData.saveTreffen(neu);
@@ -27,7 +28,7 @@ public class TreffenSelectionInListPanel extends SelectionInListPanel<Treffen> {
 	}
 
 	@Override
-	protected void loescheObjekt(Treffen objekt) {
+	protected void loescheObjekt(Treffen objekt) throws McbException {
 		ApplicationData.loescheModel(objekt);
 	}
 

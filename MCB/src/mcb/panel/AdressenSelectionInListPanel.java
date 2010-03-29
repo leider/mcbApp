@@ -4,6 +4,7 @@ import java.util.List;
 
 import mcb.model.Adresse;
 import mcb.persistenz.ApplicationData;
+import mcb.persistenz.McbException;
 
 public class AdressenSelectionInListPanel extends SelectionInListPanel<Adresse> {
 
@@ -14,7 +15,7 @@ public class AdressenSelectionInListPanel extends SelectionInListPanel<Adresse> 
 	}
 
 	@Override
-	protected Adresse createNewModel() {
+	protected Adresse createNewModel() throws McbException {
 		Adresse neu = new Adresse();
 		neu.setVorname("");
 		neu.setName("");
@@ -28,7 +29,7 @@ public class AdressenSelectionInListPanel extends SelectionInListPanel<Adresse> 
 	}
 
 	@Override
-	protected void loescheObjekt(Adresse adresse) {
+	protected void loescheObjekt(Adresse adresse) throws McbException {
 		ApplicationData.loescheModel(adresse);
 	}
 }

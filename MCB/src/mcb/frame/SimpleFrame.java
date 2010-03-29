@@ -42,11 +42,11 @@ public abstract class SimpleFrame<T extends Model> extends JFrame {
 		this.setJMenuBar(bar);
 	}
 
-	protected abstract ModelMitListePanel<T> getPanel();
+	protected abstract ModelMitListePanel<T> createPanel();
 
 	private void initialize() {
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		this.panel = this.getPanel();
+		this.panel = this.createPanel();
 		this.getContentPane().add(this.panel, BorderLayout.CENTER);
 		this.addMenu();
 	}
@@ -60,7 +60,9 @@ public abstract class SimpleFrame<T extends Model> extends JFrame {
 	}
 
 	protected JCheckBoxMenuItem radioForFilter(AdresseFilter filter) {
-		JCheckBoxMenuItem radioButtonMenuItem = new JCheckBoxMenuItem(new FilterAction<T>(filter, this));
+		FilterAction<T> filterAction = new FilterAction<T>(filter, this);
+		this.panel.addFilterAction(filterAction);
+		JCheckBoxMenuItem radioButtonMenuItem = new JCheckBoxMenuItem(filterAction);
 		this.group.add(radioButtonMenuItem);
 		return radioButtonMenuItem;
 	}

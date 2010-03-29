@@ -15,6 +15,7 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 	public static final String ERSTER_TAG = "ersterTagString";
 	public static final String EMAIL_TEXT = "emailText";
 	public static final String BESCHREIBUNG = "beschreibung";
+	public static final String EMAIL_PREVIEW_TEXT = "emailPreviewText";
 
 	private static final long serialVersionUID = -2962721510670946939L;
 
@@ -43,7 +44,9 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 	}
 
 	public String getEmailPreviewText(String vorname) {
-		return String.format(this.emailText, this.getVonBisString(), this.getBeschreibung(), vorname);
+		String emailText2 = this.emailText == null ? "" : this.emailText;
+
+		return String.format(emailText2, this.getVonBisString(), this.getBeschreibung(), vorname);
 	}
 
 	public String getEmailText() {
@@ -115,7 +118,10 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 	}
 
 	public void setEmailText(String emailText) {
+		String oldValue = this.getEmailText();
 		this.emailText = emailText;
+		this.firePropertyChange(Treffen.EMAIL_TEXT, oldValue, this.getEmailText());
+		this.firePropertyChange(Treffen.EMAIL_PREVIEW_TEXT, oldValue, this.getEmailPreviewText());
 	}
 
 	public void setErsterTag(Date ersterTag) {

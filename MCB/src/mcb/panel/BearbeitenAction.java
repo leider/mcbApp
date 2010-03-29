@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import mcb.persistenz.McbException;
+
 import com.jgoodies.binding.beans.Model;
 
 public class BearbeitenAction<T extends Model> extends McbAction {
@@ -26,8 +28,12 @@ public class BearbeitenAction<T extends Model> extends McbAction {
 				this.switchMode();
 			}
 		} else {
-			this.panel.speichern();
-			this.switchMode();
+			try {
+				this.panel.speichern();
+				this.switchMode();
+			} catch (McbException mcbE) {
+				this.panel.handleMcbException(mcbE);
+			}
 		}
 	}
 
