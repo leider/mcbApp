@@ -168,7 +168,6 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 
 	public void matchesAllePerformed() {
 		this.alle.setSelected(true);
-		this.alle.setSelected(true);
 	}
 
 	public void matchesSuchePerformed() {
