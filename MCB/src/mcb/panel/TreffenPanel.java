@@ -82,8 +82,8 @@ public class TreffenPanel extends ModelPanel<Treffen> {
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		this.emailScrollfield.setViewportView(this.emailTextfield);
 		this.bearbeitenButton = new JButton(this.bearbeitenAction);
-		this.emailPreviewTextfield = BasicComponentFactory.createTextArea(this.presentationModel
-				.getBufferedModel(Treffen.EMAIL_PREVIEW_TEXT), false);
+		this.emailPreviewTextfield = BasicComponentFactory.createTextArea(
+				this.presentationModel.getBufferedModel(Treffen.EMAIL_PREVIEW_TEXT), false);
 		this.emailPreviewTextfield.setRows(20);
 		this.emailPreviewTextfield.setColumns(120);
 		this.emailPreviewTextfield.setLineWrap(true);

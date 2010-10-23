@@ -183,8 +183,8 @@ public class AdressePanel extends ModelPanel<Adresse> {
 		this.soloCheckbox = BasicComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.SOLO), "Solo");
 		this.geburtstagTextfield = BasicComponentFactory
 				.createTextField(this.presentationModel.getBufferedModel(Adresse.GEBURTSTAG), false);
-		SelectionInList<Besuch> besuchList = new SelectionInList<Besuch>(this.presentationModel
-				.getBufferedModel(Adresse.VERGANGENE_TREFFEN));
+		SelectionInList<Besuch> besuchList = new SelectionInList<Besuch>(
+				this.presentationModel.getBufferedModel(Adresse.VERGANGENE_TREFFEN));
 		this.besuchListe = BasicComponentFactory.createList(besuchList);
 		this.besuchListe.setEnabled(false);
 		this.meldungCheckbox = new JCheckBox("Meldung");

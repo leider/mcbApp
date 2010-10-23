@@ -30,8 +30,7 @@ import mcb.persistenz.filter.MatchesAlleListener;
 import mcb.persistenz.filter.MatchesSucheListener;
 import mcb.persistenz.filter.NichtGemeldeteFilter;
 
-public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleListener, MatchesSucheListener,
-		SendCompleteListener {
+public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleListener, MatchesSucheListener, SendCompleteListener {
 
 	private static final long serialVersionUID = -4920258782523646842L;
 	private JCheckBoxMenuItem alle;
@@ -133,6 +132,11 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 	}
 
 	@Override
+	protected AdresseMitListePanel createPanel() {
+		return new AdresseMitListePanel();
+	}
+
+	@Override
 	public void dispose() {
 		HibernateStarter.stopHibernate();
 		super.dispose();
@@ -154,11 +158,6 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 		}
 	}
 
-	@Override
-	protected AdresseMitListePanel createPanel() {
-		return new AdresseMitListePanel();
-	}
-
 	protected void importieren() {
 		JFileChooser chooser = new JFileChooser();
 		int result = chooser.showOpenDialog(this);
@@ -168,6 +167,7 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 	}
 
 	public void matchesAllePerformed() {
+		this.alle.setSelected(true);
 		this.alle.setSelected(true);
 	}
 
