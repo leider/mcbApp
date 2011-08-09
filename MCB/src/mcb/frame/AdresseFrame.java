@@ -128,7 +128,8 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 			buffer.append(adresse.getEmail());
 			buffer.append(", ");
 		}
-		return buffer.toString();
+		String text = buffer.toString();
+		return text.substring(0, Math.min(text.length(), 100));
 	}
 
 	@Override
