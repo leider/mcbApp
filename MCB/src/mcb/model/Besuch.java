@@ -46,6 +46,15 @@ public class Besuch extends McbModel implements Comparable<Besuch> {
 		return this.treffen;
 	}
 
+	/**
+	 * for JSON
+	 * 
+	 * @param adresse
+	 */
+	public void setAdresse(Adresse adresse) {
+		this.adresse = adresse;
+	}
+
 	public void setFruehstueckFuer(int anzahl, FruehstuecksTag tag) {
 		tag.setFruehstueck(this, anzahl);
 	}
@@ -56,6 +65,24 @@ public class Besuch extends McbModel implements Comparable<Besuch> {
 
 	protected void setFruehstueckSonntag(int anzahl) {
 		this.fruehstueckSonntag = anzahl;
+	}
+
+	/**
+	 * For JSON
+	 * 
+	 * @param id
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * For JSON
+	 * 
+	 * @param treffen
+	 */
+	public void setTreffen(Treffen treffen) {
+		this.treffen = treffen;
 	}
 
 	@Override

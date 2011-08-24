@@ -65,7 +65,7 @@ public class ApplicationData {
 		return null;
 	}
 
-	public static List<Adresse> getAlleAdressen() {
+	public static List<Adresse> getFilteredAdressen() {
 		List<Adresse> result = new ArrayList<Adresse>();
 		for (Adresse adresse : ApplicationData.adressen) {
 			if (ApplicationData.filter.matches(adresse)) {
@@ -90,7 +90,7 @@ public class ApplicationData {
 
 	public static List<Adresse> getEmailAdressen() {
 		List<Adresse> result = new ArrayList<Adresse>();
-		List<Adresse> alleAdressen = ApplicationData.getAlleAdressen();
+		List<Adresse> alleAdressen = ApplicationData.getFilteredAdressen();
 		for (Adresse adresse : alleAdressen) {
 			if (adresse.hatGueltigeEmail()) {
 				result.add(adresse);
@@ -161,6 +161,17 @@ public class ApplicationData {
 		});
 	}
 
+	public static void saveAdresseAlsNeu(final Adresse adresse) throws McbException {
+		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
+
+			@Override
+			public void runIn(PersistenceActionPerformer persistenceActionPerformer) {
+				persistenceActionPerformer.save(adresse);
+				ApplicationData.adressen.add(adresse);
+			}
+		});
+	}
+
 	public static void saveTreffen(final Treffen theTreffen) throws McbException {
 		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
 
@@ -172,6 +183,17 @@ public class ApplicationData {
 					ApplicationData.treffen.add(theTreffen);
 				}
 
+			}
+		});
+	}
+
+	public static void saveTreffenAlsNeu(final Treffen theTreffen) throws McbException {
+		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
+
+			@Override
+			public void runIn(PersistenceActionPerformer persistenceActionPerformer) {
+				persistenceActionPerformer.save(theTreffen);
+				ApplicationData.treffen.add(theTreffen);
 			}
 		});
 	}

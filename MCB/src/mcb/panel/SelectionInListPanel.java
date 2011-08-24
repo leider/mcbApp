@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
 import mcb.persistenz.ApplicationData;
@@ -22,6 +23,7 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 	private static final long serialVersionUID = -3683947066010395220L;
 	private SelectionInList<T> modelliste;
 	private JList list;
+	private JTextField anzahlText;
 	private PresentationModel<T> detailModel;
 
 	public SelectionInListPanel() {
@@ -68,6 +70,9 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 		if (!this.modelliste.getList().isEmpty()) {
 			this.modelliste.setSelectionIndex(0);
 		}
+		this.anzahlText = new JTextField();
+		this.add(this.anzahlText, BorderLayout.SOUTH);
+		this.anzahlText.setText(String.valueOf(this.getContents().size()));
 	}
 
 	protected abstract void loescheObjekt(T objekt) throws McbException;
@@ -87,5 +92,6 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 
 	public void updateModelliste() {
 		this.modelliste.setList(this.getContents());
+		this.anzahlText.setText(String.valueOf(this.getContents().size()));
 	}
 }

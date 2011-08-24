@@ -25,7 +25,7 @@ public class TestDatabaseInitializer {
 		transaction.commit();
 		session.close();
 
-		List<Adresse> alleAdressen = ApplicationData.getAlleAdressen();
+		List<Adresse> alleAdressen = ApplicationData.getFilteredAdressen();
 		System.out.println(alleAdressen.size());
 		HibernateStarter.stopHibernate();
 	}

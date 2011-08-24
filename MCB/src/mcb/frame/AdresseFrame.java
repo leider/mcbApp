@@ -1,6 +1,7 @@
 package mcb.frame;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -11,12 +12,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
 
 import mcb.mail.MailSender;
 import mcb.mail.SendCompleteListener;
 import mcb.model.Adresse;
 import mcb.panel.AdresseMitListePanel;
 import mcb.persistenz.ApplicationData;
+import mcb.persistenz.ExcelExporter;
 import mcb.persistenz.HibernateStarter;
 import mcb.persistenz.ImAndExporter;
 import mcb.persistenz.filter.AuslandFilter;
@@ -42,12 +45,21 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 
 	@Override
 	protected void addExtraMenu(JMenuBar bar) {
+		Action exportTreffenAction = new AbstractAction("Export Treffen") {
+
+			private static final long serialVersionUID = 8568897588247326614L;
+
+			public void actionPerformed(ActionEvent e) {
+				AdresseFrame.this.exportiereTreffen();
+			}
+		};
+
 		Action exportAction = new AbstractAction("Export Alle") {
 
 			private static final long serialVersionUID = 8568897588247326614L;
 
 			public void actionPerformed(ActionEvent e) {
-				AdresseFrame.this.exportieren(true);
+				AdresseFrame.this.exportiereAdressen(true);
 			}
 		};
 
@@ -56,7 +68,16 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 			private static final long serialVersionUID = 8568897588247326614L;
 
 			public void actionPerformed(ActionEvent e) {
-				AdresseFrame.this.exportieren(false);
+				AdresseFrame.this.exportiereAdressen(false);
+			}
+		};
+
+		Action exportToExcelAction = new AbstractAction("Export Auswahl nach Excel") {
+
+			private static final long serialVersionUID = 8568897588247326614L;
+
+			public void actionPerformed(ActionEvent e) {
+				AdresseFrame.this.exportiereNachExcel();
 			}
 		};
 
@@ -78,6 +99,15 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 			}
 		};
 
+		Action importTreffenAction = new AbstractAction("Import Treffen") {
+
+			private static final long serialVersionUID = 8568897588247326614L;
+
+			public void actionPerformed(ActionEvent e) {
+				AdresseFrame.this.importiereTreffen();
+			}
+		};
+
 		Action treffenAction = new AbstractAction("Treffen bearbeiten...") {
 
 			private static final long serialVersionUID = 8568897588247326614L;
@@ -89,9 +119,12 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 
 		JMenu admin = new JMenu("Administration");
 		bar.add(admin);
+		admin.add(exportTreffenAction);
 		admin.add(exportAction);
 		admin.add(exportAuswahlAction);
+		admin.add(exportToExcelAction);
 		admin.add(emailAdressenAusgeben);
+		admin.add(importTreffenAction);
 		admin.add(importAction);
 		admin.addSeparator();
 		admin.add(treffenAction);
@@ -151,19 +184,60 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 		}
 	}
 
-	protected void exportieren(boolean alleAdressen) {
+	protected void exportiereAdressen(boolean alleAdressen) {
+		this.exportieren(alleAdressen, false);
+	}
+
+	protected void exportieren(boolean alleAdressen, boolean treffen) {
 		JFileChooser chooser = new JFileChooser();
 		int result = chooser.showSaveDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
-			ImAndExporter.exportAdressen(chooser.getSelectedFile(), alleAdressen);
+			if (treffen) {
+				ImAndExporter.exportTreffen(chooser.getSelectedFile());
+			} else {
+				ImAndExporter.exportAdressen(chooser.getSelectedFile(), alleAdressen);
+			}
 		}
+	}
+
+	protected void exportiereNachExcel() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileFilter(new FileFilter() {
+
+			@Override
+			public boolean accept(File f) {
+				return f.getName().endsWith(".xls");
+			}
+
+			@Override
+			public String getDescription() {
+				return "Excel";
+			}
+		});
+		int result = chooser.showSaveDialog(this);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			new ExcelExporter().exportiereAdressen(chooser.getSelectedFile());
+		}
+	}
+
+	protected void exportiereTreffen() {
+		this.exportieren(true, true);
 	}
 
 	protected void importieren() {
 		JFileChooser chooser = new JFileChooser();
 		int result = chooser.showOpenDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
-			ImAndExporter.importiere(chooser.getSelectedFile());
+			ImAndExporter.importiereAdressen(chooser.getSelectedFile());
+			this.updateListe();
+		}
+	}
+
+	protected void importiereTreffen() {
+		JFileChooser chooser = new JFileChooser();
+		int result = chooser.showOpenDialog(this);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			ImAndExporter.importiereTreffen(chooser.getSelectedFile());
 		}
 	}
 

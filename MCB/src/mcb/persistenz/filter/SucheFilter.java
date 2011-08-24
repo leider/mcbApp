@@ -20,10 +20,13 @@ public class SucheFilter implements AdresseFilter {
 		if (this.listener != null) {
 			this.listener.matchesSuchePerformed();
 		}
-		return this.matches(adresse.getName()) || this.matches(adresse.getVorname());
+		return this.matches(adresse.getName()) || this.matches(adresse.getVorname()) || this.matches(adresse.getEmail());
 	}
 
 	private boolean matches(String string) {
+		if (string == null) {
+			return false;
+		}
 		return string.toLowerCase().contains(this.sucheText.toLowerCase());
 	}
 

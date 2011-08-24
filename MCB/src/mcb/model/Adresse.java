@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import mcb.persistenz.ApplicationData;
+import flexjson.JSON;
 
 public class Adresse extends McbModel {
 
@@ -122,6 +123,7 @@ public class Adresse extends McbModel {
 		return "-".equals(string) ? "" : string;
 	}
 
+	@JSON(include = false)
 	public Besuch getAktuellenBesuch() {
 		for (Besuch besuch : this.getBesuchteTreffen()) {
 			if (besuch.getTreffen().isAktuell()) {
@@ -151,6 +153,7 @@ public class Adresse extends McbModel {
 		return this.geburtstag;
 	}
 
+	@JSON(include = false)
 	public String getGeburtstagString() {
 		if (this.geburtstag != null) {
 			return ApplicationData.DATE_FORMAT.format(this.geburtstag);
@@ -160,6 +163,10 @@ public class Adresse extends McbModel {
 
 	public String getLand() {
 		return this.land;
+	}
+
+	public String getLandFullname() {
+		return this.getFullnameFor(this.land);
 	}
 
 	public String getName() {
@@ -178,6 +185,7 @@ public class Adresse extends McbModel {
 		return this.strasse;
 	}
 
+	@JSON(include = false)
 	public List<Besuch> getVergangeneTreffen() {
 		List<Besuch> result = new ArrayList<Besuch>();
 		for (Besuch besuch : this.getBesuchteTreffen()) {
@@ -197,6 +205,7 @@ public class Adresse extends McbModel {
 		return this.email != null && this.email.trim().length() > 0 && !this.isEmailfehler();
 	}
 
+	@JSON(include = false)
 	public boolean isEmailfehler() {
 		return this.getFehlergrund() != null && !this.getFehlergrund().equals("");
 	}

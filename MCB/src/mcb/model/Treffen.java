@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import mcb.persistenz.ApplicationData;
+import flexjson.JSON;
 
 public class Treffen extends McbModel implements Comparable<Treffen> {
 
@@ -39,6 +40,7 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 		return this.beschreibung;
 	}
 
+	@JSON(include = false)
 	public String getEmailPreviewText() {
 		return this.getEmailPreviewText("Vorname");
 	}
@@ -57,6 +59,7 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 		return this.ersterTag;
 	}
 
+	@JSON(include = false)
 	public String getErsterTagString() {
 		if (this.ersterTag != null) {
 			return ApplicationData.DATE_FORMAT.format(this.ersterTag);
@@ -64,6 +67,7 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 		return "";
 	}
 
+	@JSON(include = false)
 	public int getJahr() {
 		Treffen.cal.setTime(this.ersterTag);
 		return Treffen.cal.get(Calendar.YEAR);
@@ -73,6 +77,7 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 		return this.letzterTag;
 	}
 
+	@JSON(include = false)
 	public String getLetzterTagString() {
 		if (this.letzterTag != null) {
 			return ApplicationData.DATE_FORMAT.format(this.letzterTag);
@@ -84,10 +89,12 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 		return this.name;
 	}
 
+	@JSON(include = false)
 	public String getVonBisString() {
 		return this.getErsterTagString() + " - " + this.getLetzterTagString();
 	}
 
+	@JSON(include = false)
 	public boolean isAktuell() {
 		try {
 			String heuteString = ApplicationData.DATE_FORMAT.format(new Date());
@@ -102,6 +109,7 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 		return false;
 	}
 
+	@JSON(include = false)
 	public boolean isGespann() {
 		try {
 			String ersterJuliString = "01.07." + this.getJahr();

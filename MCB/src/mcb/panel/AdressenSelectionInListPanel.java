@@ -25,7 +25,7 @@ public class AdressenSelectionInListPanel extends SelectionInListPanel<Adresse> 
 
 	@Override
 	protected List<Adresse> getContents() {
-		return ApplicationData.getAlleAdressen();
+		return ApplicationData.getFilteredAdressen();
 	}
 
 	@Override

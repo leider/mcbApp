@@ -44,6 +44,10 @@ public class PersistenceActionPerformer {
 		}
 	}
 
+	public void save(McbModel model) {
+		this.session.save(model);
+	}
+
 	public void saveOrUpdate(McbModel model) {
 		McbModel oldModel = null;
 		if (model.getId() != null) {
