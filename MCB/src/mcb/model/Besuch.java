@@ -4,7 +4,7 @@ public class Besuch extends McbModel implements Comparable<Besuch> {
 
 	private static final long serialVersionUID = -941602649174788569L;
 
-	private Adresse adresse;
+	private McbModel adresse;
 
 	private Treffen treffen;
 
@@ -16,7 +16,7 @@ public class Besuch extends McbModel implements Comparable<Besuch> {
 		super();
 	}
 
-	public Besuch(Adresse adresse, Treffen treffen) {
+	public Besuch(McbModel adresse, Treffen treffen) {
 		super();
 		this.adresse = adresse;
 		this.treffen = treffen;
@@ -26,7 +26,7 @@ public class Besuch extends McbModel implements Comparable<Besuch> {
 		return this.getTreffen().compareTo(o.getTreffen());
 	}
 
-	public Adresse getAdresse() {
+	public McbModel getAdresse() {
 		return this.adresse;
 	}
 
@@ -51,7 +51,7 @@ public class Besuch extends McbModel implements Comparable<Besuch> {
 	 * 
 	 * @param adresse
 	 */
-	public void setAdresse(Adresse adresse) {
+	public void setAdresse(McbModel adresse) {
 		this.adresse = adresse;
 	}
 

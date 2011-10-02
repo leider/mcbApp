@@ -1,5 +1,6 @@
 package mcb.persistenz;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,13 +15,15 @@ import mcb.model.Treffen;
 import mcb.persistenz.filter.AdresseFilter;
 import mcb.persistenz.filter.AlleFilter;
 import mcb.persistenz.filter.SucheFilter;
-
-import org.hibernate.Query;
-import org.hibernate.classic.Session;
+import mcb.persistenz.json.ImAndExporter;
 
 import com.jgoodies.binding.list.ArrayListModel;
 
 public class ApplicationData {
+
+	private static final File TREFFEN_FILE = new File("./data/treffen.json");
+
+	private static final File ADRESSEN_FILE = new File("./data/adressen.json");
 
 	public static final AlleFilter ALLE_FILTER = new AlleFilter();
 
@@ -28,7 +31,7 @@ public class ApplicationData {
 
 	public static final DateFormat DATE_FORMAT = DateFormat.getDateInstance();
 
-	static List<Adresse> adressen = new ArrayListModel<Adresse>();
+	public static List<Adresse> adressen = new ArrayListModel<Adresse>();
 
 	static List<Treffen> treffen = new ArrayListModel<Treffen>();
 
@@ -37,13 +40,21 @@ public class ApplicationData {
 	private static AdresseFilter filter = ApplicationData.ALLE_FILTER;
 
 	static {
-		HibernateStarter.initHibernate();
 		ApplicationData.loadDaten();
 	}
 
-	static void closeSession(Session session) {
-		session.close();
-		ApplicationData.summaries.initForBesuche();
+	public static void add(Adresse adresse) {
+		if (adresse.isNeu()) {
+			adresse.setId(ApplicationData.nextIdForAdressen());
+		}
+		ApplicationData.adressen.add(adresse);
+	}
+
+	public static void add(Treffen treffen) {
+		if (treffen.isNeu()) {
+			treffen.setId(ApplicationData.nextIdForTreffen());
+		}
+		ApplicationData.treffen.add(treffen);
 	}
 
 	public static List<Besuch> getAktuelleBesuche() {
@@ -65,6 +76,21 @@ public class ApplicationData {
 		return null;
 	}
 
+	public static List<Treffen> getAlleTreffen() {
+		return ApplicationData.treffen;
+	}
+
+	public static List<Adresse> getEmailAdressen() {
+		List<Adresse> result = new ArrayList<Adresse>();
+		List<Adresse> alleAdressen = ApplicationData.getFilteredAdressen();
+		for (Adresse adresse : alleAdressen) {
+			if (adresse.hatGueltigeEmail()) {
+				result.add(adresse);
+			}
+		}
+		return result;
+	}
+
 	public static List<Adresse> getFilteredAdressen() {
 		List<Adresse> result = new ArrayList<Adresse>();
 		for (Adresse adresse : ApplicationData.adressen) {
@@ -81,21 +107,6 @@ public class ApplicationData {
 
 		};
 		Collections.sort(result, adresseComparator);
-		return result;
-	}
-
-	public static List<Treffen> getAlleTreffen() {
-		return ApplicationData.treffen;
-	}
-
-	public static List<Adresse> getEmailAdressen() {
-		List<Adresse> result = new ArrayList<Adresse>();
-		List<Adresse> alleAdressen = ApplicationData.getFilteredAdressen();
-		for (Adresse adresse : alleAdressen) {
-			if (adresse.hatGueltigeEmail()) {
-				result.add(adresse);
-			}
-		}
 		return result;
 	}
 
@@ -117,89 +128,50 @@ public class ApplicationData {
 		return ApplicationData.summaries;
 	}
 
-	@SuppressWarnings("unchecked")
 	private static void loadDaten() {
-		Session session = HibernateStarter.getSessionFactory().openSession();
-		Query query = session.createQuery("from Adresse");
-		ApplicationData.adressen.addAll(query.list());
-		query = session.createQuery("from Treffen");
-		ApplicationData.treffen.addAll(query.list());
-		Collections.sort(ApplicationData.treffen);
-		ApplicationData.closeSession(session);
+		ImAndExporter.importiereTreffen(ApplicationData.TREFFEN_FILE);
+		ImAndExporter.importiereAdressen(ApplicationData.ADRESSEN_FILE);
+		ApplicationData.summaries.initForBesuche();
 	}
 
-	public static void loescheModel(final McbModel model) throws McbException {
-		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
+	public static void loescheModel(final McbModel model) {
+		if (model instanceof Adresse) {
+			ApplicationData.adressen.remove(model);
+			ImAndExporter.exportAdressen(ApplicationData.ADRESSEN_FILE);
+		}
+		if (model instanceof Treffen) {
+			ApplicationData.treffen.remove(model);
+			ImAndExporter.exportTreffen(ApplicationData.TREFFEN_FILE);
+		}
 
-			@Override
-			public void runIn(PersistenceActionPerformer persistenceActionPerformer) {
-				persistenceActionPerformer.delete(model);
-				if (model instanceof Adresse) {
-					ApplicationData.adressen.remove(model);
-				}
-				if (model instanceof Treffen) {
-					ApplicationData.treffen.remove(model);
-				}
-			}
-		});
 	}
 
-	public static void saveAdresse(final Adresse adresse) throws McbException {
-		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
-
-			@Override
-			public void runIn(PersistenceActionPerformer persistenceActionPerformer) {
-				for (McbModel besuch : adresse.getBesuchteTreffen()) {
-					persistenceActionPerformer.saveOrUpdate(besuch);
-				}
-				boolean neu = adresse.getId() == null;
-				persistenceActionPerformer.saveOrUpdate(adresse);
-				if (neu) {
-					ApplicationData.adressen.add(adresse);
-				}
-			}
-		});
+	private static Long nextIdFor(List<? extends McbModel> originals) {
+		List<McbModel> models = new ArrayList<McbModel>(originals);
+		if (models.isEmpty()) {
+			return Long.valueOf(1);
+		}
+		Collections.sort(models, new McbModel.Comp());
+		return Long.valueOf(models.get(0).getId().longValue() + 1);
 	}
 
-	public static void saveAdresseAlsNeu(final Adresse adresse) throws McbException {
-		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
-
-			@Override
-			public void runIn(PersistenceActionPerformer persistenceActionPerformer) {
-				persistenceActionPerformer.save(adresse);
-				ApplicationData.adressen.add(adresse);
-			}
-		});
+	private static Long nextIdForAdressen() {
+		return ApplicationData.nextIdFor(ApplicationData.adressen);
 	}
 
-	public static void saveTreffen(final Treffen theTreffen) throws McbException {
-		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
-
-			@Override
-			public void runIn(PersistenceActionPerformer persistenceActionPerformer) {
-				boolean neu = theTreffen.getId() == null;
-				persistenceActionPerformer.saveOrUpdate(theTreffen);
-				if (neu) {
-					ApplicationData.treffen.add(theTreffen);
-				}
-
-			}
-		});
+	private static Long nextIdForTreffen() {
+		return ApplicationData.nextIdFor(ApplicationData.treffen);
 	}
 
-	public static void saveTreffenAlsNeu(final Treffen theTreffen) throws McbException {
-		new PersistenceActionPerformer().performInTransaction(new TransactionAction() {
+	public static void saveAdresse(final Adresse adresse) {
+		ImAndExporter.exportAdressen(ApplicationData.ADRESSEN_FILE);
+	}
 
-			@Override
-			public void runIn(PersistenceActionPerformer persistenceActionPerformer) {
-				persistenceActionPerformer.save(theTreffen);
-				ApplicationData.treffen.add(theTreffen);
-			}
-		});
+	public static void saveTreffen(final Treffen treffen) {
+		ImAndExporter.exportTreffen(ApplicationData.TREFFEN_FILE);
 	}
 
 	public static void setFilter(AdresseFilter theFilter) {
 		ApplicationData.filter = theFilter;
 	}
-
 }

@@ -3,17 +3,25 @@ package mcb.model;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Comparator;
 import java.util.logging.Logger;
 
 import com.jgoodies.binding.beans.Model;
 
 public abstract class McbModel extends Model {
 
+	public static class Comp implements Comparator<McbModel> {
+		@Override
+		public int compare(McbModel a1, McbModel a2) {
+			return (int) (a2.getId().longValue() - a1.getId().longValue());
+		}
+	}
+
 	static final Logger LOGGER = Logger.getLogger(McbModel.class.getName());
 
 	private static final long serialVersionUID = 1L;
 
-	protected Long id;
+	protected long id = 0;
 
 	@Override
 	public boolean equals(Object obj) {
@@ -27,14 +35,7 @@ public abstract class McbModel extends Model {
 			return false;
 		}
 		McbModel other = (McbModel) obj;
-		if (this.id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!this.id.equals(other.id)) {
-			return false;
-		}
-		return true;
+		return this.id != other.id;
 	}
 
 	public Long getId() {
@@ -45,8 +46,16 @@ public abstract class McbModel extends Model {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (this.id == null ? 0 : this.id.hashCode());
+		result = (int) (prime * result + this.id);
 		return result;
+	}
+
+	public boolean isNeu() {
+		return this.getId() == 0;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String toLogString() {

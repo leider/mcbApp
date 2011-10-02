@@ -18,7 +18,7 @@ public class TreffenSelectionInListPanel extends SelectionInListPanel<Treffen> {
 	protected Treffen createNewModel() throws McbException {
 		Treffen neu = new Treffen();
 		neu.setName("");
-		ApplicationData.saveTreffen(neu);
+		ApplicationData.add(neu);
 		return neu;
 	}
 
