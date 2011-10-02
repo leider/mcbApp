@@ -24,6 +24,10 @@ public class ImAndExporter {
 
 	public static void exportAdressen(File file) {
 		try {
+			if (!file.exists()) {
+				file.getParentFile().mkdir();
+				file.createNewFile();
+			}
 			FileOutputStream stream = new FileOutputStream(file);
 			OutputStreamWriter writer = new OutputStreamWriter(stream, "ISO-8859-1");
 			JSONSerializer jsonSerializer = new JSONSerializer();
@@ -43,6 +47,10 @@ public class ImAndExporter {
 
 	public static void exportTreffen(File file) {
 		try {
+			if (!file.exists()) {
+				file.getParentFile().mkdir();
+				file.createNewFile();
+			}
 			FileOutputStream stream = new FileOutputStream(file);
 			OutputStreamWriter writer = new OutputStreamWriter(stream, "ISO-8859-1");
 			JSONSerializer jsonSerializer = new JSONSerializer();
@@ -59,15 +67,17 @@ public class ImAndExporter {
 
 	public static void importiereAdressen(File file) {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line = reader.readLine();
-			JSONDeserializer<Adresse> jsonDeserializer = new JSONDeserializer<Adresse>();
-			jsonDeserializer.use(Adresse.class, new AdresseFactory());
-			jsonDeserializer.use(Besuch.class, new BesuchFactory());
-			while (line != null) {
-				Adresse adresse = jsonDeserializer.deserialize(line);
-				ApplicationData.add(adresse);
-				line = reader.readLine();
+			if (file.exists()) {
+				BufferedReader reader = new BufferedReader(new FileReader(file));
+				String line = reader.readLine();
+				JSONDeserializer<Adresse> jsonDeserializer = new JSONDeserializer<Adresse>();
+				jsonDeserializer.use(Adresse.class, new AdresseFactory());
+				jsonDeserializer.use(Besuch.class, new BesuchFactory());
+				while (line != null) {
+					Adresse adresse = jsonDeserializer.deserialize(line);
+					ApplicationData.add(adresse);
+					line = reader.readLine();
+				}
 			}
 		} catch (IOException e) {
 			ImAndExporter.LOGGER.fatal(e.getMessage(), e);
@@ -76,13 +86,15 @@ public class ImAndExporter {
 
 	public static void importiereTreffen(File file) {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line = reader.readLine();
-			JSONDeserializer<Treffen> jsonDeserializer = new JSONDeserializer<Treffen>();
-			while (line != null) {
-				Treffen result = jsonDeserializer.deserialize(line);
-				ApplicationData.add(result);
-				line = reader.readLine();
+			if (file.exists()) {
+				BufferedReader reader = new BufferedReader(new FileReader(file));
+				String line = reader.readLine();
+				JSONDeserializer<Treffen> jsonDeserializer = new JSONDeserializer<Treffen>();
+				while (line != null) {
+					Treffen result = jsonDeserializer.deserialize(line);
+					ApplicationData.add(result);
+					line = reader.readLine();
+				}
 			}
 		} catch (IOException e) {
 			ImAndExporter.LOGGER.fatal(e.getMessage(), e);
