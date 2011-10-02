@@ -16,11 +16,10 @@ public class BesuchFactory implements ObjectFactory {
 	@Override
 	public Object instantiate(ObjectBinder context, Object value, Type targetType, Class targetClass) {
 		Besuch besuch = (Besuch) new BeanObjectFactory().instantiate(context, value, targetType, targetClass);
-		besuch.setId(null);
 		Map<String, Object> valueMap = (Map<String, Object>) value;
 		for (Treffen treffen : ApplicationData.getAlleTreffen()) {
 			Map<String, Object> treffenMap = (Map<String, Object>) valueMap.get("treffen");
-			if (treffen.getId().longValue() == ((Number) treffenMap.get("id")).longValue()) {
+			if (treffen.getId() == ((Number) treffenMap.get("id")).longValue()) {
 				besuch.setTreffen(treffen);
 			}
 		}

@@ -146,13 +146,13 @@ public class ApplicationData {
 
 	}
 
-	private static Long nextIdFor(List<? extends McbModel> originals) {
+	private static long nextIdFor(List<? extends McbModel> originals) {
 		List<McbModel> models = new ArrayList<McbModel>(originals);
 		if (models.isEmpty()) {
 			return Long.valueOf(1);
 		}
 		Collections.sort(models, new McbModel.Comp());
-		return Long.valueOf(models.get(0).getId().longValue() + 1);
+		return models.get(0).getId() + 1;
 	}
 
 	private static Long nextIdForAdressen() {

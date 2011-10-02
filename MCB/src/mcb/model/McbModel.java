@@ -13,7 +13,7 @@ public abstract class McbModel extends Model {
 	public static class Comp implements Comparator<McbModel> {
 		@Override
 		public int compare(McbModel a1, McbModel a2) {
-			return (int) (a2.getId().longValue() - a1.getId().longValue());
+			return (int) (a2.getId() - a1.getId());
 		}
 	}
 
@@ -35,10 +35,10 @@ public abstract class McbModel extends Model {
 			return false;
 		}
 		McbModel other = (McbModel) obj;
-		return this.id != other.id;
+		return this.id == other.id;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return this.id;
 	}
 
@@ -54,7 +54,7 @@ public abstract class McbModel extends Model {
 		return this.getId() == 0;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

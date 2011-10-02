@@ -216,7 +216,6 @@ public class AdressePanel extends ModelPanel<Adresse> {
 			adresse.addAktuellesTreffen();
 			ApplicationData.saveAdresse(adresse);
 		} else {
-			ApplicationData.loescheModel(adresse.getAktuellenBesuch());
 			adresse.removeAktuellesTreffen();
 			ApplicationData.saveAdresse(adresse);
 		}
