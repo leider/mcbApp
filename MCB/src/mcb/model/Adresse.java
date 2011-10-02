@@ -1,8 +1,5 @@
 package mcb.model;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,30 +28,6 @@ public class Adresse extends McbModel {
 	public static final String FEHLERGRUND = "fehlergrund";
 
 	public static final String VERGANGENE_TREFFEN = "vergangeneTreffen";
-
-	public static void writeHeaderOn(Writer writer) throws IOException {
-		writer.write("id");
-		writer.write(";");
-		writer.write(Adresse.VORNAME);
-		writer.write(";");
-		writer.write(Adresse.NAME);
-		writer.write(";");
-		writer.write(Adresse.EMAIL);
-		writer.write(";");
-		writer.write(Adresse.STRASSE);
-		writer.write(";");
-		writer.write(Adresse.LAND);
-		writer.write(";");
-		writer.write(Adresse.PLZ);
-		writer.write(";");
-		writer.write(Adresse.ORT);
-		writer.write(";");
-		writer.write(Adresse.GESPANN);
-		writer.write(";");
-		writer.write(Adresse.SOLO);
-		writer.write(";");
-		writer.write("\n");
-	}
 
 	private String name;
 	private String vorname;
@@ -117,10 +90,6 @@ public class Adresse extends McbModel {
 		if (!this.besuchteTreffen.contains(treffen)) {
 			this.besuchteTreffen.add(new Besuch(this, treffen));
 		}
-	}
-
-	private String convertMinusToEmpty(String string) {
-		return "-".equals(string) ? "" : string;
 	}
 
 	@JSON(include = false)
@@ -218,40 +187,6 @@ public class Adresse extends McbModel {
 		return this.solo;
 	}
 
-	public void parse(String line) {
-		try {
-			System.out.println(line);
-			String[] tokens = line.split(";");
-			System.out.println(tokens.length);
-			String idString = tokens[0];
-			if (idString.length() > 0) {
-				this.id = Long.valueOf(idString);
-			}
-			this.setVorname(this.convertMinusToEmpty(tokens[1]));
-			this.setName(this.convertMinusToEmpty(tokens[2]));
-			this.setEmail(this.convertMinusToEmpty(tokens[3]));
-			this.setStrasse(this.convertMinusToEmpty(tokens[4]));
-			String land2 = tokens[5];
-			this.setLand(land2.equals("-") ? "D" : land2);
-			this.setPlz(this.convertMinusToEmpty(tokens[6]));
-			this.setOrt(this.convertMinusToEmpty(tokens[7]));
-			this.setGespann(tokens[8].equalsIgnoreCase("x"));
-			this.setSolo(tokens[9].equalsIgnoreCase("x"));
-			DateFormat format = DateFormat.getDateInstance();
-			String tokenFuenf = tokens[10];
-			if (!tokenFuenf.equals("-")) {
-				try {
-					this.setGeburtstag(format.parse(tokenFuenf));
-				} catch (Exception e) {
-					// dann halt nicht
-				}
-			}
-			// setEmailfehler(tokens[11].equalsIgnoreCase("x"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void removeAktuellesTreffen() {
 		this.besuchteTreffen.remove(this.getAktuellenBesuch());
 	}
@@ -341,44 +276,8 @@ public class Adresse extends McbModel {
 		return false;
 	}
 
-	private String toEmptyString(String string) {
-		return string == null ? "" : string;
-	}
-
 	@Override
 	public String toString() {
 		return (this.vorname != null ? this.vorname : "") + " " + (this.name != null ? this.name : "");
-	}
-
-	public void writeOn(Writer writer, boolean alle) throws IOException {
-		writer.write(this.getId().toString());
-		writer.write(";");
-		writer.write(this.toEmptyString(this.getVorname()));
-		writer.write(";");
-		writer.write(this.toEmptyString(this.getName()));
-		writer.write(";");
-		writer.write(this.toEmptyString(this.getEmail()));
-		writer.write(";");
-		writer.write(this.toEmptyString(this.getStrasse()));
-		writer.write(";");
-		String landText = this.toEmptyString(this.getLand());
-		if (!alle) {
-			landText = this.getFullnameFor(landText);
-		}
-		writer.write(landText);
-		writer.write(";");
-		writer.write(this.toEmptyString(this.getPlz()));
-		writer.write(";");
-		String ortText = this.toEmptyString(this.getOrt());
-		if (!alle) {
-			ortText = ortText.toUpperCase();
-		}
-		writer.write(ortText);
-		writer.write(";");
-		writer.write(this.isGespann() ? "x" : "");
-		writer.write(";");
-		writer.write(this.isSolo() ? "x" : "");
-		writer.write(";");
-		writer.write("\n");
 	}
 }

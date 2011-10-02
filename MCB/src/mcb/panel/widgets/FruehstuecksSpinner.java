@@ -12,7 +12,6 @@ import mcb.model.Adresse;
 import mcb.model.FruehstuecksTag;
 import mcb.panel.AdressePanel;
 import mcb.persistenz.ApplicationData;
-import mcb.persistenz.McbException;
 
 public class FruehstuecksSpinner extends JPanel {
 
@@ -38,11 +37,7 @@ public class FruehstuecksSpinner extends JPanel {
 			return;
 		}
 		adresse.getAktuellenBesuch().setFruehstueckFuer(this.getValue(), this.tag);
-		try {
-			ApplicationData.saveAdresse(adresse);
-		} catch (McbException e) {
-			this.adressePanel.handleMcbException(e);
-		}
+		ApplicationData.saveAdresse(adresse);
 	}
 
 	public int getValue() {

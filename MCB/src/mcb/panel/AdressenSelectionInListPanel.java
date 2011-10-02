@@ -19,7 +19,7 @@ public class AdressenSelectionInListPanel extends SelectionInListPanel<Adresse> 
 		Adresse neu = new Adresse();
 		neu.setVorname("");
 		neu.setName("");
-		ApplicationData.saveAdresse(neu);
+		ApplicationData.add(neu);
 		return neu;
 	}
 

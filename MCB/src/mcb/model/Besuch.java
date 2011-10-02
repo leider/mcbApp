@@ -1,10 +1,10 @@
 package mcb.model;
 
-public class Besuch extends McbModel implements Comparable<Besuch> {
+public class Besuch implements Comparable<Besuch> {
 
 	private static final long serialVersionUID = -941602649174788569L;
 
-	private Adresse adresse;
+	private McbModel adresse;
 
 	private Treffen treffen;
 
@@ -16,7 +16,7 @@ public class Besuch extends McbModel implements Comparable<Besuch> {
 		super();
 	}
 
-	public Besuch(Adresse adresse, Treffen treffen) {
+	public Besuch(McbModel adresse, Treffen treffen) {
 		super();
 		this.adresse = adresse;
 		this.treffen = treffen;
@@ -26,7 +26,36 @@ public class Besuch extends McbModel implements Comparable<Besuch> {
 		return this.getTreffen().compareTo(o.getTreffen());
 	}
 
-	public Adresse getAdresse() {
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		Besuch other = (Besuch) obj;
+		if (this.adresse == null) {
+			if (other.adresse != null) {
+				return false;
+			}
+		} else if (!this.adresse.equals(other.adresse)) {
+			return false;
+		}
+		if (this.treffen == null) {
+			if (other.treffen != null) {
+				return false;
+			}
+		} else if (!this.treffen.equals(other.treffen)) {
+			return false;
+		}
+		return true;
+	}
+
+	public McbModel getAdresse() {
 		return this.adresse;
 	}
 
@@ -46,12 +75,21 @@ public class Besuch extends McbModel implements Comparable<Besuch> {
 		return this.treffen;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (this.adresse == null ? 0 : this.adresse.hashCode());
+		result = prime * result + (this.treffen == null ? 0 : this.treffen.hashCode());
+		return result;
+	}
+
 	/**
 	 * for JSON
 	 * 
 	 * @param adresse
 	 */
-	public void setAdresse(Adresse adresse) {
+	public void setAdresse(McbModel adresse) {
 		this.adresse = adresse;
 	}
 
@@ -70,15 +108,6 @@ public class Besuch extends McbModel implements Comparable<Besuch> {
 	/**
 	 * For JSON
 	 * 
-	 * @param id
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
-	 * For JSON
-	 * 
 	 * @param treffen
 	 */
 	public void setTreffen(Treffen treffen) {
@@ -89,4 +118,5 @@ public class Besuch extends McbModel implements Comparable<Besuch> {
 	public String toString() {
 		return this.getTreffen().toString();
 	}
+
 }

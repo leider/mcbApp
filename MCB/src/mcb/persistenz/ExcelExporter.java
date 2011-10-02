@@ -11,6 +11,7 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 import mcb.model.Adresse;
+import mcb.persistenz.json.ImAndExporter;
 
 public class ExcelExporter {
 	private static final int ID = 0;

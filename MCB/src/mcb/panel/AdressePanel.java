@@ -20,7 +20,6 @@ import mcb.model.Besuch;
 import mcb.model.FruehstuecksTag;
 import mcb.panel.widgets.FruehstuecksSpinner;
 import mcb.persistenz.ApplicationData;
-import mcb.persistenz.McbException;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
@@ -132,11 +131,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
 			return;
 		}
 		adresse.getAktuellenBesuch().setFruehstueckFuer(fruehstueckFeld.getValue(), this.getTagFuerFruehstueckSpinner(fruehstueckFeld));
-		try {
-			ApplicationData.saveAdresse(adresse);
-		} catch (McbException e) {
-			this.handleMcbException(e);
-		}
+		ApplicationData.saveAdresse(adresse);
 	}
 
 	protected void fruehstueckSamstagChanged() {
@@ -217,17 +212,12 @@ public class AdressePanel extends ModelPanel<Adresse> {
 			this.meldungCheckbox.setSelected(false);
 			return;
 		}
-		try {
-			if (this.meldungCheckbox.isSelected()) {
-				adresse.addAktuellesTreffen();
-				ApplicationData.saveAdresse(adresse);
-			} else {
-				ApplicationData.loescheModel(adresse.getAktuellenBesuch());
-				adresse.removeAktuellesTreffen();
-				ApplicationData.saveAdresse(adresse);
-			}
-		} catch (McbException e) {
-			this.handleMcbException(e);
+		if (this.meldungCheckbox.isSelected()) {
+			adresse.addAktuellesTreffen();
+			ApplicationData.saveAdresse(adresse);
+		} else {
+			adresse.removeAktuellesTreffen();
+			ApplicationData.saveAdresse(adresse);
 		}
 		this.updateCheckboxes();
 	}

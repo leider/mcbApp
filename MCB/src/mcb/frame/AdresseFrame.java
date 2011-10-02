@@ -20,8 +20,6 @@ import mcb.model.Adresse;
 import mcb.panel.AdresseMitListePanel;
 import mcb.persistenz.ApplicationData;
 import mcb.persistenz.ExcelExporter;
-import mcb.persistenz.HibernateStarter;
-import mcb.persistenz.ImAndExporter;
 import mcb.persistenz.filter.AuslandFilter;
 import mcb.persistenz.filter.DeutschlandFilter;
 import mcb.persistenz.filter.EinladungEmailFilter;
@@ -45,33 +43,6 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 
 	@Override
 	protected void addExtraMenu(JMenuBar bar) {
-		Action exportTreffenAction = new AbstractAction("Export Treffen") {
-
-			private static final long serialVersionUID = 8568897588247326614L;
-
-			public void actionPerformed(ActionEvent e) {
-				AdresseFrame.this.exportiereTreffen();
-			}
-		};
-
-		Action exportAction = new AbstractAction("Export Alle") {
-
-			private static final long serialVersionUID = 8568897588247326614L;
-
-			public void actionPerformed(ActionEvent e) {
-				AdresseFrame.this.exportiereAdressen(true);
-			}
-		};
-
-		Action exportAuswahlAction = new AbstractAction("Export Auswahl") {
-
-			private static final long serialVersionUID = 8568897588247326614L;
-
-			public void actionPerformed(ActionEvent e) {
-				AdresseFrame.this.exportiereAdressen(false);
-			}
-		};
-
 		Action exportToExcelAction = new AbstractAction("Export Auswahl nach Excel") {
 
 			private static final long serialVersionUID = 8568897588247326614L;
@@ -90,24 +61,6 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 			}
 		};
 
-		Action importAction = new AbstractAction("Import Alle") {
-
-			private static final long serialVersionUID = 8568897588247326614L;
-
-			public void actionPerformed(ActionEvent e) {
-				AdresseFrame.this.importieren();
-			}
-		};
-
-		Action importTreffenAction = new AbstractAction("Import Treffen") {
-
-			private static final long serialVersionUID = 8568897588247326614L;
-
-			public void actionPerformed(ActionEvent e) {
-				AdresseFrame.this.importiereTreffen();
-			}
-		};
-
 		Action treffenAction = new AbstractAction("Treffen bearbeiten...") {
 
 			private static final long serialVersionUID = 8568897588247326614L;
@@ -119,13 +72,8 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 
 		JMenu admin = new JMenu("Administration");
 		bar.add(admin);
-		admin.add(exportTreffenAction);
-		admin.add(exportAction);
-		admin.add(exportAuswahlAction);
 		admin.add(exportToExcelAction);
 		admin.add(emailAdressenAusgeben);
-		admin.add(importTreffenAction);
-		admin.add(importAction);
 		admin.addSeparator();
 		admin.add(treffenAction);
 
@@ -170,33 +118,11 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 		return new AdresseMitListePanel();
 	}
 
-	@Override
-	public void dispose() {
-		HibernateStarter.stopHibernate();
-		super.dispose();
-	}
-
 	protected void emailAdressen() {
 		String message = this.createEmailConfirmationMessage();
 		int sendReally = JOptionPane.showConfirmDialog(this, message);
 		if (sendReally == JOptionPane.OK_OPTION) {
 			SwingUtilities.invokeLater(new MailSender(this));
-		}
-	}
-
-	protected void exportiereAdressen(boolean alleAdressen) {
-		this.exportieren(alleAdressen, false);
-	}
-
-	protected void exportieren(boolean alleAdressen, boolean treffen) {
-		JFileChooser chooser = new JFileChooser();
-		int result = chooser.showSaveDialog(this);
-		if (result == JFileChooser.APPROVE_OPTION) {
-			if (treffen) {
-				ImAndExporter.exportTreffen(chooser.getSelectedFile());
-			} else {
-				ImAndExporter.exportAdressen(chooser.getSelectedFile(), alleAdressen);
-			}
 		}
 	}
 
@@ -217,27 +143,6 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 		int result = chooser.showSaveDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			new ExcelExporter().exportiereAdressen(chooser.getSelectedFile());
-		}
-	}
-
-	protected void exportiereTreffen() {
-		this.exportieren(true, true);
-	}
-
-	protected void importieren() {
-		JFileChooser chooser = new JFileChooser();
-		int result = chooser.showOpenDialog(this);
-		if (result == JFileChooser.APPROVE_OPTION) {
-			ImAndExporter.importiereAdressen(chooser.getSelectedFile());
-			this.updateListe();
-		}
-	}
-
-	protected void importiereTreffen() {
-		JFileChooser chooser = new JFileChooser();
-		int result = chooser.showOpenDialog(this);
-		if (result == JFileChooser.APPROVE_OPTION) {
-			ImAndExporter.importiereTreffen(chooser.getSelectedFile());
 		}
 	}
 
