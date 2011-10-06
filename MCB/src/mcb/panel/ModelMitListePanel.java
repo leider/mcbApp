@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import mcb.frame.FilterAction;
+import mcb.frame.actions.FilterAction;
 import mcb.persistenz.McbException;
 
 import com.jgoodies.binding.PresentationModel;

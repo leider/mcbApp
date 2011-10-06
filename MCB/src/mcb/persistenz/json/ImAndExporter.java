@@ -2,9 +2,10 @@ package mcb.persistenz.json;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import mcb.model.Adresse;
@@ -68,7 +69,7 @@ public class ImAndExporter {
 	public static void importiereAdressen(File file) {
 		try {
 			if (file.exists()) {
-				BufferedReader reader = new BufferedReader(new FileReader(file));
+				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "ISO-8859-1"));
 				String line = reader.readLine();
 				JSONDeserializer<Adresse> jsonDeserializer = new JSONDeserializer<Adresse>();
 				jsonDeserializer.use(Adresse.class, new AdresseFactory());
@@ -87,7 +88,7 @@ public class ImAndExporter {
 	public static void importiereTreffen(File file) {
 		try {
 			if (file.exists()) {
-				BufferedReader reader = new BufferedReader(new FileReader(file));
+				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "ISO-8859-1"));
 				String line = reader.readLine();
 				JSONDeserializer<Treffen> jsonDeserializer = new JSONDeserializer<Treffen>();
 				while (line != null) {

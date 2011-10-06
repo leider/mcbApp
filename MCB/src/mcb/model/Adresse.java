@@ -4,9 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mcb.persistenz.ApplicationData;
 import flexjson.JSON;
@@ -41,34 +39,6 @@ public class Adresse extends McbModel {
 	private String email;
 	private String fehlergrund;
 	private List<Besuch> besuchteTreffen = new ArrayList<Besuch>();
-
-	private static Map<String, String> landNameMap;
-
-	static {
-		Adresse.landNameMap = new HashMap<String, String>();
-		Adresse.landNameMap.put("D", "");
-		Adresse.landNameMap.put("F", "Frankreich");
-		Adresse.landNameMap.put("NL", "Niederlande");
-		Adresse.landNameMap.put("A", "÷sterreich");
-		Adresse.landNameMap.put("B", "Belgien");
-		Adresse.landNameMap.put("CH", "Schweiz");
-		Adresse.landNameMap.put("CZ", "Tschechien");
-		Adresse.landNameMap.put("DK", "D‰nemark");
-		Adresse.landNameMap.put("E", "Spanien");
-		Adresse.landNameMap.put("FIN", "Finnland");
-		Adresse.landNameMap.put("FL", "Liechtenstein");
-		Adresse.landNameMap.put("GB", "Groﬂbritannien");
-		Adresse.landNameMap.put("GR", "Griechenland");
-		Adresse.landNameMap.put("H", "Ungarn");
-		Adresse.landNameMap.put("HR", "Kroatien");
-		Adresse.landNameMap.put("I", "Italien");
-		Adresse.landNameMap.put("IRL", "Irland");
-		Adresse.landNameMap.put("L", "Luxemburg");
-		Adresse.landNameMap.put("N", "Norwegen");
-		Adresse.landNameMap.put("P", "Portugal");
-		Adresse.landNameMap.put("PL", "Polen");
-		Adresse.landNameMap.put("S", "Schweden");
-	}
 
 	public Adresse() {
 		super();
@@ -115,7 +85,7 @@ public class Adresse extends McbModel {
 	}
 
 	private String getFullnameFor(String landText) {
-		return Adresse.landNameMap.get(landText).toUpperCase();
+		return Laender.landFuerKuerzel(landText);
 	}
 
 	public Date getGeburtstag() {
@@ -125,7 +95,7 @@ public class Adresse extends McbModel {
 	@JSON(include = false)
 	public String getGeburtstagString() {
 		if (this.geburtstag != null) {
-			return ApplicationData.DATE_FORMAT.format(this.geburtstag);
+			return ApplicationData.formatDate(this.geburtstag);
 		}
 		return "";
 	}
@@ -208,7 +178,7 @@ public class Adresse extends McbModel {
 	public void setGeburtstagString(String geburtstag) {
 		try {
 			String oldValue = this.getGeburtstagString();
-			this.geburtstag = ApplicationData.DATE_FORMAT.parse(geburtstag);
+			this.geburtstag = ApplicationData.parseDate(geburtstag);
 			this.firePropertyChange(Adresse.GEBURTSTAG, oldValue, this.getGeburtstagString());
 		} catch (ParseException e) {
 			this.firePropertyChange(Adresse.GEBURTSTAG, null, this.getGeburtstagString());

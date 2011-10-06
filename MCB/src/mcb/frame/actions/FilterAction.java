@@ -1,7 +1,8 @@
-package mcb.frame;
+package mcb.frame.actions;
 
 import java.awt.event.ActionEvent;
 
+import mcb.frame.SimpleFrame;
 import mcb.panel.McbAction;
 import mcb.persistenz.ApplicationData;
 import mcb.persistenz.filter.AdresseFilter;

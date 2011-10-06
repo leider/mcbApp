@@ -1,10 +1,16 @@
 package mcb.persistenz;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import mcb.model.Adresse;
@@ -29,7 +35,7 @@ public class ApplicationData {
 
 	public static final SucheFilter SUCHE_FILTER = new SucheFilter();
 
-	public static final DateFormat DATE_FORMAT = DateFormat.getDateInstance();
+	private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance();
 
 	public static List<Adresse> adressen = new ArrayListModel<Adresse>();
 
@@ -40,6 +46,7 @@ public class ApplicationData {
 	private static AdresseFilter filter = ApplicationData.ALLE_FILTER;
 
 	static {
+		ApplicationData.backupDaten();
 		ApplicationData.loadDaten();
 	}
 
@@ -55,6 +62,44 @@ public class ApplicationData {
 			treffen.setId(ApplicationData.nextIdForTreffen());
 		}
 		ApplicationData.treffen.add(treffen);
+	}
+
+	private static void backupDaten() {
+		try {
+			String treffenPath = ApplicationData.TREFFEN_FILE.getCanonicalPath();
+			ApplicationData.copyFile(ApplicationData.TREFFEN_FILE, new File(treffenPath + new Date().getTime()));
+			String adressenPath = ApplicationData.ADRESSEN_FILE.getCanonicalPath();
+			ApplicationData.copyFile(ApplicationData.ADRESSEN_FILE, new File(adressenPath + new Date().getTime()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void copyFile(File sourceFile, File destFile) throws IOException {
+		if (!destFile.exists()) {
+			destFile.createNewFile();
+		}
+
+		FileChannel source = null;
+		FileChannel destination = null;
+		try {
+			source = new FileInputStream(sourceFile).getChannel();
+			destination = new FileOutputStream(destFile).getChannel();
+			destination.transferFrom(source, 0, source.size());
+		} finally {
+			if (source != null) {
+				source.close();
+			}
+			if (destination != null) {
+				destination.close();
+			}
+		}
+	}
+
+	public static String formatDate(Date date) {
+		synchronized (ApplicationData.DATE_FORMAT) {
+			return ApplicationData.DATE_FORMAT.format(date);
+		}
 	}
 
 	public static List<Besuch> getAktuelleBesuche() {
@@ -161,6 +206,12 @@ public class ApplicationData {
 
 	private static Long nextIdForTreffen() {
 		return ApplicationData.nextIdFor(ApplicationData.treffen);
+	}
+
+	public static Date parseDate(String string) throws ParseException {
+		synchronized (ApplicationData.DATE_FORMAT) {
+			return ApplicationData.DATE_FORMAT.parse(string);
+		}
 	}
 
 	public static void saveAdresse(final Adresse adresse) {

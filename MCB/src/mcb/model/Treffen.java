@@ -62,7 +62,7 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 	@JSON(include = false)
 	public String getErsterTagString() {
 		if (this.ersterTag != null) {
-			return ApplicationData.DATE_FORMAT.format(this.ersterTag);
+			return ApplicationData.formatDate(this.ersterTag);
 		}
 		return "";
 	}
@@ -80,7 +80,7 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 	@JSON(include = false)
 	public String getLetzterTagString() {
 		if (this.letzterTag != null) {
-			return ApplicationData.DATE_FORMAT.format(this.letzterTag);
+			return ApplicationData.formatDate(this.letzterTag);
 		}
 		return "";
 	}
@@ -97,8 +97,8 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 	@JSON(include = false)
 	public boolean isAktuell() {
 		try {
-			String heuteString = ApplicationData.DATE_FORMAT.format(new Date());
-			Date heute = ApplicationData.DATE_FORMAT.parse(heuteString);
+			String heuteString = ApplicationData.formatDate(new Date());
+			Date heute = ApplicationData.parseDate(heuteString);
 			if (heute.compareTo(this.getErsterTag()) < 0 || heute.compareTo(this.getLetzterTag()) > 0) {
 				return false;
 			}
@@ -113,7 +113,7 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 	public boolean isGespann() {
 		try {
 			String ersterJuliString = "01.07." + this.getJahr();
-			Date ersterJuli = ApplicationData.DATE_FORMAT.parse(ersterJuliString);
+			Date ersterJuli = ApplicationData.parseDate(ersterJuliString);
 			return this.getErsterTag().compareTo(ersterJuli) < 0;
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -139,7 +139,7 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 	public void setErsterTagString(String erster) {
 		try {
 			String oldValue = this.getErsterTagString();
-			this.ersterTag = ApplicationData.DATE_FORMAT.parse(erster);
+			this.ersterTag = ApplicationData.parseDate(erster);
 			this.firePropertyChange(Treffen.ERSTER_TAG, oldValue, this.getErsterTagString());
 		} catch (ParseException e) {
 			this.firePropertyChange(Treffen.ERSTER_TAG, null, this.getErsterTagString());
@@ -153,7 +153,7 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 	public void setLetzterTagString(String letzter) {
 		try {
 			String oldValue = this.getLetzterTagString();
-			this.letzterTag = ApplicationData.DATE_FORMAT.parse(letzter);
+			this.letzterTag = ApplicationData.parseDate(letzter);
 			this.firePropertyChange(Treffen.LETZTER_TAG, oldValue, this.getLetzterTagString());
 		} catch (ParseException e) {
 			this.firePropertyChange(Treffen.LETZTER_TAG, null, this.getLetzterTagString());

@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -17,7 +16,9 @@ import javax.swing.ListModel;
 
 import mcb.model.Adresse;
 import mcb.model.Besuch;
+import mcb.model.Fehlergruende;
 import mcb.model.FruehstuecksTag;
+import mcb.model.Laender;
 import mcb.panel.widgets.FruehstuecksSpinner;
 import mcb.persistenz.ApplicationData;
 
@@ -155,15 +156,12 @@ public class AdressePanel extends ModelPanel<Adresse> {
 	}
 
 	private void initComponents() {
-		String[] countries = { "A", "B", "CH", "CZ", "D", "DK", "E", "F", "FIN", "FL", "GB", "GR", "H", "HR", "I", "IRL", "L", "N", "NL",
-				"P", "PL", "S" };
-		ListModel countryListModel = new ArrayListModel<String>(Arrays.asList(countries));
+		ListModel countryListModel = new ArrayListModel<String>(Laender.getAlleKurzel());
 		ValueModel countryModel = this.presentationModel.getBufferedModel(Adresse.LAND);
 		SelectionInList<String> countrySil = new SelectionInList<String>(countryListModel, countryModel);
 		this.landTextfield = BasicComponentFactory.createComboBox(countrySil);
 
-		String[] fehlergruende = { "", "Empfänger existiert nicht", "Mailbox voll", "Email aus Spamgründen nicht akzeptiert" };
-		ListModel fehlerListModel = new ArrayListModel<String>(Arrays.asList(fehlergruende));
+		ListModel fehlerListModel = new ArrayListModel<String>(Fehlergruende.alleGruende());
 		ValueModel fehlerModel = this.presentationModel.getBufferedModel(Adresse.FEHLERGRUND);
 		SelectionInList<String> fehlerSil = new SelectionInList<String>(fehlerListModel, fehlerModel);
 		this.emailgrundTextfield = BasicComponentFactory.createComboBox(fehlerSil);

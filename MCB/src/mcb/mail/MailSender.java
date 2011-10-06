@@ -7,6 +7,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.swing.SwingUtilities;
 
 import mcb.model.Adresse;
 import mcb.persistenz.ApplicationData;
@@ -16,7 +17,7 @@ import org.apache.log4j.Logger;
 public class MailSender implements Runnable {
 
 	private Session session;
-	private Date jetzt = new Date();
+	protected Date jetzt = new Date();
 	private SendCompleteListener listener;
 	static final Logger LOGGER = Logger.getLogger(MailSender.class.getName());
 
@@ -25,7 +26,7 @@ public class MailSender implements Runnable {
 		this.listener = theListener;
 	}
 
-	private Session getSession() {
+	protected Session getSession() {
 		if (this.session == null) {
 			this.session = MailSessionFactory.createSession();
 		}
@@ -34,31 +35,32 @@ public class MailSender implements Runnable {
 
 	@Override
 	public void run() {
-		String subject = ApplicationData.getNeuestesTreffen().getBeschreibung();
 		for (Adresse adresse : ApplicationData.getEmailAdressen()) {
-			String to = adresse.getEmail();
-			String body = ApplicationData.getNeuestesTreffen().getEmailPreviewText(adresse.getVorname());
 			try {
-				this.send(to, subject, body);
+				this.send(adresse);
 			} catch (Exception e) {
 				MailSender.LOGGER.fatal(e.getMessage(), e);
 			}
 		}
-		this.listener.messagesSent();
+		Runnable communicateAllSent = new Runnable() {
+
+			@Override
+			public void run() {
+				MailSender.this.listener.messagesSent();
+			}
+		};
+		SwingUtilities.invokeLater(communicateAllSent);
 	}
 
-	public void send(String to, String subject, String body) throws Exception {
+	private void send(Adresse adresse) throws Exception {
 		MimeMessage message = new MimeMessage(this.getSession());
-		String from = MailSessionFactory.from;
-		String replyto = MailSessionFactory.replyto;
-		message.addRecipient(RecipientType.TO, new InternetAddress(to));
-		message.addRecipient(RecipientType.BCC, new InternetAddress(replyto));
-		message.addFrom(new InternetAddress[] { new InternetAddress(from) });
-		message.setReplyTo(new InternetAddress[] { new InternetAddress(replyto) });
-		message.setSubject(subject);
+		message.addRecipient(RecipientType.TO, new InternetAddress(adresse.getEmail()));
+		message.addRecipient(RecipientType.BCC, new InternetAddress(MailSessionFactory.replyto));
+		message.addFrom(new InternetAddress[] { new InternetAddress(MailSessionFactory.from) });
+		message.setReplyTo(new InternetAddress[] { new InternetAddress(MailSessionFactory.replyto) });
+		message.setSubject(ApplicationData.getNeuestesTreffen().getBeschreibung());
 		message.setSentDate(this.jetzt);
-		message.setText(body, "UTF-8");
-
+		message.setText(ApplicationData.getNeuestesTreffen().getEmailPreviewText(adresse.getVorname()), "UTF-8");
 		Transport.send(message);
 	}
 

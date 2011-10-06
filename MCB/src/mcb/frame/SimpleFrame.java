@@ -10,6 +10,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
 
+import mcb.frame.actions.FilterAction;
 import mcb.panel.ModelMitListePanel;
 import mcb.persistenz.filter.AdresseFilter;
 

@@ -32,7 +32,7 @@ public class ExcelExporter {
 			WritableWorkbook workbook = Workbook.createWorkbook(file);
 			WritableSheet sheet = workbook.createSheet("Report", 0);
 			this.writeHeader(sheet);
-			for (Adresse adresse : ApplicationData.adressen) {
+			for (Adresse adresse : ApplicationData.getFilteredAdressen()) {
 				this.writeAdresse(adresse, sheet);
 			}
 			workbook.write();
