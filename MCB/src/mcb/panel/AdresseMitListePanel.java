@@ -12,11 +12,11 @@ import javax.swing.JToolBar;
 
 import mcb.model.Adresse;
 import mcb.model.Summaries;
-import mcb.persistenz.ApplicationData;
 import mcb.persistenz.McbException;
 import mcb.persistenz.PersistenceStore;
 import mcb.persistenz.filter.AlleFilter;
 import mcb.persistenz.filter.SelectedFilter;
+import mcb.persistenz.filter.SucheFilter;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
@@ -58,8 +58,8 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 				if ("".equals(text)) {
 					SelectedFilter.set(AlleFilter.getInstance());
 				} else {
-					ApplicationData.SUCHE_FILTER.setSucheText(text);
-					SelectedFilter.set(ApplicationData.SUCHE_FILTER);
+					SucheFilter.getInstance().setSucheText(text);
+					SelectedFilter.set(SucheFilter.getInstance());
 				}
 				AdresseMitListePanel.this.updateListe();
 			}
@@ -97,7 +97,7 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 
 	@Override
 	protected void speichereModel(Adresse model) throws McbException {
-		this.persistenceStore.saveAdresse(model);
+		this.persistenceStore.saveAll();
 	}
 
 	@Override

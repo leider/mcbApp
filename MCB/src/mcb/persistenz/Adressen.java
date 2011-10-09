@@ -7,14 +7,11 @@ import java.util.List;
 
 import mcb.model.Adresse;
 import mcb.model.Besuch;
-import mcb.persistenz.filter.AdresseFilter;
-import mcb.persistenz.filter.AlleFilter;
+import mcb.persistenz.filter.SelectedFilter;
 
 import com.jgoodies.binding.list.ArrayListModel;
 
 public class Adressen {
-
-	private AdresseFilter filter = AlleFilter.getInstance();
 
 	private List<Adresse> adressen = new ArrayListModel<Adresse>();
 
@@ -53,7 +50,7 @@ public class Adressen {
 	public List<Adresse> getFilteredAdressen() {
 		List<Adresse> result = new ArrayList<Adresse>();
 		for (Adresse adresse : this.adressen) {
-			if (this.filter.matches(adresse)) {
+			if (SelectedFilter.get().matches(adresse)) {
 				result.add(adresse);
 			}
 		}
@@ -77,7 +74,4 @@ public class Adressen {
 		this.adressen.remove(adresse);
 	}
 
-	public void setFilter(AdresseFilter theFilter) {
-		this.filter = theFilter;
-	}
 }

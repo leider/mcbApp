@@ -5,6 +5,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import mcb.persistenz.PersistenceStore;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -16,7 +18,7 @@ public class TestMailSending {
 		String to = "leider@me.com";
 		String subject = "Test";
 		String body = "Body mit Ümläuten ßßß";
-		MailSender r = new MailSender(null);
+		MailSender r = new MailSender(null, new PersistenceStore().getTreffens().getNeuestesTreffen());
 		MimeMessage message = new MimeMessage(r.getSession());
 		String from = MailSessionFactory.from;
 		String replyto = MailSessionFactory.replyto;

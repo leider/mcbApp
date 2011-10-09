@@ -12,7 +12,7 @@ import mcb.model.Adresse;
 import mcb.model.Besuch;
 import mcb.model.Treffen;
 import mcb.persistenz.Adressen;
-import mcb.persistenz.ApplicationData;
+import mcb.persistenz.Treffens;
 
 import org.apache.log4j.Logger;
 
@@ -46,7 +46,7 @@ public class ImAndExporter {
 		}
 	}
 
-	public static void exportTreffen(File file) {
+	public static void exportTreffen(File file, Treffens treffens) {
 		try {
 			if (!file.exists()) {
 				file.getParentFile().mkdir();
@@ -55,7 +55,7 @@ public class ImAndExporter {
 			FileOutputStream stream = new FileOutputStream(file);
 			OutputStreamWriter writer = new OutputStreamWriter(stream, "ISO-8859-1");
 			JSONSerializer jsonSerializer = new JSONSerializer();
-			for (Treffen treffen : ApplicationData.getAlleTreffen()) {
+			for (Treffen treffen : treffens.getAlleTreffen()) {
 				writer.write(jsonSerializer.serialize(treffen));
 				writer.write("\n");
 			}
@@ -66,17 +66,16 @@ public class ImAndExporter {
 		}
 	}
 
-	public static void importiereAdressen(File file, Adressen adressen) {
+	public static void importiereAdressen(File file, Adressen adressen, Treffens treffens) {
 		try {
 			if (file.exists()) {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "ISO-8859-1"));
 				String line = reader.readLine();
 				JSONDeserializer<Adresse> jsonDeserializer = new JSONDeserializer<Adresse>();
 				jsonDeserializer.use(Adresse.class, new AdresseFactory());
-				jsonDeserializer.use(Besuch.class, new BesuchFactory());
+				jsonDeserializer.use(Besuch.class, new BesuchFactory(treffens));
 				while (line != null) {
-					Adresse adresse = jsonDeserializer.deserialize(line);
-					adressen.add(adresse);
+					adressen.add(jsonDeserializer.deserialize(line));
 					line = reader.readLine();
 				}
 			}
@@ -85,15 +84,14 @@ public class ImAndExporter {
 		}
 	}
 
-	public static void importiereTreffen(File file) {
+	public static void importiereTreffen(File file, Treffens treffens) {
 		try {
 			if (file.exists()) {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "ISO-8859-1"));
 				String line = reader.readLine();
 				JSONDeserializer<Treffen> jsonDeserializer = new JSONDeserializer<Treffen>();
 				while (line != null) {
-					Treffen result = jsonDeserializer.deserialize(line);
-					ApplicationData.add(result);
+					treffens.add(jsonDeserializer.deserialize(line));
 					line = reader.readLine();
 				}
 			}

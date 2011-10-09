@@ -1,9 +1,14 @@
 package mcb.persistenz.filter;
 
 import mcb.model.Adresse;
+import mcb.model.Treffen;
 import mcb.panel.McbAction;
 
-public class EinladungEmailFilter implements AdresseFilter {
+public class EinladungEmailFilter extends AbstractEinladungsFilter {
+
+	public EinladungEmailFilter(Treffen neuestesTreffen) {
+		super(neuestesTreffen);
+	}
 
 	public int getKeyMask() {
 		return McbAction.EINLADUNGEN_EMAIL;
@@ -14,6 +19,6 @@ public class EinladungEmailFilter implements AdresseFilter {
 	}
 
 	public boolean matches(Adresse adresse) {
-		return adresse.sollEinladungErhalten() && adresse.hatGueltigeEmail();
+		return adresse.sollEinladungErhalten(this.neuestesTreffen) && adresse.hatGueltigeEmail();
 	}
 }

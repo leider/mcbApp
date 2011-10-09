@@ -5,8 +5,19 @@ import mcb.panel.McbAction;
 
 public class SucheFilter implements AdresseFilter {
 
+	private final static SucheFilter instance = new SucheFilter();
+
+	public static SucheFilter getInstance() {
+		return SucheFilter.instance;
+	}
+
 	private String sucheText = "";
+
 	private MatchesSucheListener listener;
+
+	private SucheFilter() {
+		super();
+	}
 
 	public int getKeyMask() {
 		return McbAction.SUCHE;

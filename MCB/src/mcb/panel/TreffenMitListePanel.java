@@ -31,7 +31,7 @@ public class TreffenMitListePanel extends ModelMitListePanel<Treffen> {
 
 	@Override
 	protected void speichereModel(Treffen model) throws McbException {
-		this.persistenceStore.saveTreffen(model);
+		this.persistenceStore.saveAll();
 	}
 
 }

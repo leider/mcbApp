@@ -34,7 +34,7 @@ public class EmailAction extends AbstractAction {
 		String message = text.substring(0, Math.min(text.length(), 100));
 		int sendReally = JOptionPane.showConfirmDialog(this.adresseFrame, message);
 		if (sendReally == JOptionPane.OK_OPTION) {
-			new Thread(new MailSender(this.adresseFrame)).run();
+			new Thread(new MailSender(this.adresseFrame, this.adresseFrame.getNeuestesTreffen())).run();
 		}
 	}
 }

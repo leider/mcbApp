@@ -212,17 +212,17 @@ public class AdressePanel extends ModelPanel<Adresse> {
 			return;
 		}
 		if (this.meldungCheckbox.isSelected()) {
-			adresse.addAktuellesTreffen();
-			this.persistenceStore.saveAdresse(adresse);
+			adresse.addTreffen(this.persistenceStore.getTreffens().getAktuellesTreffen());
+			this.persistenceStore.saveAll();
 		} else {
 			adresse.removeAktuellesTreffen();
-			this.persistenceStore.saveAdresse(adresse);
+			this.persistenceStore.saveAll();
 		}
 		this.updateCheckboxes();
 	}
 
 	public void saveAdresse(Adresse adresse) {
-		this.persistenceStore.saveAdresse(adresse);
+		this.persistenceStore.saveAll();
 	}
 
 	@Override

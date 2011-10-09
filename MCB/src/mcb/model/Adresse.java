@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import mcb.persistenz.ApplicationData;
 import mcb.persistenz.DateFormatter;
 import flexjson.JSON;
 
@@ -43,10 +42,6 @@ public class Adresse extends McbModel {
 
 	public Adresse() {
 		super();
-	}
-
-	public void addAktuellesTreffen() {
-		this.addTreffen(ApplicationData.getAktuellesTreffen());
 	}
 
 	public void addTreffen(Treffen treffen) {
@@ -234,8 +229,7 @@ public class Adresse extends McbModel {
 		this.firePropertyChange(Adresse.VORNAME, oldValue, this.vorname);
 	}
 
-	public boolean sollEinladungErhalten() {
-		Treffen neuestesTreffen = ApplicationData.getNeuestesTreffen();
+	public boolean sollEinladungErhalten(Treffen neuestesTreffen) {
 		if (neuestesTreffen.isGespann() && !this.isGespann()) {
 			return false;
 		}

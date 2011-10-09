@@ -2,8 +2,6 @@ package mcb.model;
 
 public class Besuch implements Comparable<Besuch> {
 
-	private static final long serialVersionUID = -941602649174788569L;
-
 	private McbModel adresse;
 
 	private Treffen treffen;

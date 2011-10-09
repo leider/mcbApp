@@ -3,9 +3,9 @@ package mcb.panel;
 import java.util.List;
 
 import mcb.model.Treffen;
-import mcb.persistenz.ApplicationData;
 import mcb.persistenz.McbException;
 import mcb.persistenz.PersistenceStore;
+import mcb.persistenz.Treffens;
 
 public class TreffenSelectionInListPanel extends SelectionInListPanel<Treffen> {
 
@@ -19,18 +19,23 @@ public class TreffenSelectionInListPanel extends SelectionInListPanel<Treffen> {
 	protected Treffen createNewModel() throws McbException {
 		Treffen neu = new Treffen();
 		neu.setName("");
-		ApplicationData.add(neu);
+		this.treffens().add(neu);
 		return neu;
 	}
 
 	@Override
 	protected List<Treffen> getContents() {
-		return ApplicationData.getAlleTreffen();
+		return this.treffens().getAlleTreffen();
 	}
 
 	@Override
-	protected void loescheObjekt(Treffen objekt) throws McbException {
-		this.persistenceStore.loescheModel(objekt);
+	protected void loescheObjekt(Treffen treffen) throws McbException {
+		this.treffens().remove(treffen);
+		this.persistenceStore.saveAll();
+	}
+
+	private Treffens treffens() {
+		return this.persistenceStore.getTreffens();
 	}
 
 }

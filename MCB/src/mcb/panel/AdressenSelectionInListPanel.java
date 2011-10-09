@@ -30,6 +30,7 @@ public class AdressenSelectionInListPanel extends SelectionInListPanel<Adresse> 
 
 	@Override
 	protected void loescheObjekt(Adresse adresse) throws McbException {
-		this.persistenceStore.loescheModel(adresse);
+		this.persistenceStore.getAdressen().remove(adresse);
+		this.persistenceStore.saveAll();
 	}
 }

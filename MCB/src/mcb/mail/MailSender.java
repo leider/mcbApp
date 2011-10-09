@@ -10,7 +10,7 @@ import javax.mail.internet.MimeMessage;
 import javax.swing.SwingUtilities;
 
 import mcb.model.Adresse;
-import mcb.persistenz.ApplicationData;
+import mcb.model.Treffen;
 
 import org.apache.log4j.Logger;
 
@@ -20,10 +20,12 @@ public class MailSender implements Runnable {
 	protected Date jetzt = new Date();
 	private SendCompleteListener listener;
 	static final Logger LOGGER = Logger.getLogger(MailSender.class.getName());
+	private final Treffen neuestesTreffen;
 
-	public MailSender(SendCompleteListener theListener) {
+	public MailSender(SendCompleteListener theListener, Treffen neuestesTreffen) {
 		super();
 		this.listener = theListener;
+		this.neuestesTreffen = neuestesTreffen;
 	}
 
 	protected Session getSession() {
@@ -58,9 +60,9 @@ public class MailSender implements Runnable {
 		message.addRecipient(RecipientType.BCC, new InternetAddress(MailSessionFactory.replyto));
 		message.addFrom(new InternetAddress[] { new InternetAddress(MailSessionFactory.from) });
 		message.setReplyTo(new InternetAddress[] { new InternetAddress(MailSessionFactory.replyto) });
-		message.setSubject(ApplicationData.getNeuestesTreffen().getBeschreibung());
+		message.setSubject(this.neuestesTreffen.getBeschreibung());
 		message.setSentDate(this.jetzt);
-		message.setText(ApplicationData.getNeuestesTreffen().getEmailPreviewText(adresse.getVorname()), "UTF-8");
+		message.setText(this.neuestesTreffen.getEmailPreviewText(adresse.getVorname()), "UTF-8");
 		Transport.send(message);
 	}
 

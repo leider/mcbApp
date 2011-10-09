@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.Date;
 
-import mcb.model.Adresse;
 import mcb.model.Summaries;
 import mcb.model.Treffen;
 import mcb.persistenz.json.ImAndExporter;
@@ -18,7 +17,9 @@ public class PersistenceStore {
 
 	private static final File ADRESSEN_FILE = new File("./data/adressen.json");
 
-	private Adressen adressen = new Adressen();
+	private final Adressen adressen = new Adressen();
+
+	private final Treffens treffens = new Treffens();
 
 	public PersistenceStore() {
 		super();
@@ -40,7 +41,6 @@ public class PersistenceStore {
 		if (!destFile.exists()) {
 			destFile.createNewFile();
 		}
-
 		FileChannel source = null;
 		FileChannel destination = null;
 		try {
@@ -61,29 +61,25 @@ public class PersistenceStore {
 		return this.adressen;
 	}
 
+	public Treffens getTreffens() {
+		return this.treffens;
+	}
+
 	private void loadDaten() {
-		ImAndExporter.importiereTreffen(PersistenceStore.TREFFEN_FILE);
-		ImAndExporter.importiereAdressen(PersistenceStore.ADRESSEN_FILE, this.adressen);
+		ImAndExporter.importiereTreffen(PersistenceStore.TREFFEN_FILE, this.treffens);
+		ImAndExporter.importiereAdressen(PersistenceStore.ADRESSEN_FILE, this.adressen, this.treffens);
 		Summaries.getInstance().initForBesuche(this.adressen);
 	}
 
-	public void loescheModel(Adresse model) {
-		this.adressen.remove(model);
-		this.saveAdresse(null);
-	}
-
 	public void loescheModel(Treffen model) {
-		ApplicationData.treffen.remove(model);
-		ImAndExporter.exportTreffen(PersistenceStore.TREFFEN_FILE);
+		this.treffens.remove(model);
+		this.saveAll();
 	}
 
-	public void saveAdresse(final Adresse adresse) {
+	public void saveAll() {
 		Summaries.getInstance().update();
+		ImAndExporter.exportTreffen(PersistenceStore.TREFFEN_FILE, this.treffens);
 		ImAndExporter.exportAdressen(PersistenceStore.ADRESSEN_FILE, this.adressen);
-	}
-
-	public void saveTreffen(final Treffen treffen) {
-		ImAndExporter.exportTreffen(PersistenceStore.TREFFEN_FILE);
 	}
 
 	private void startup() {

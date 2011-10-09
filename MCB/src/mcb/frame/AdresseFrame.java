@@ -12,8 +12,8 @@ import mcb.frame.actions.ExcelExportAction;
 import mcb.frame.actions.OpenTreffenAction;
 import mcb.mail.SendCompleteListener;
 import mcb.model.Adresse;
+import mcb.model.Treffen;
 import mcb.panel.AdresseMitListePanel;
-import mcb.persistenz.ApplicationData;
 import mcb.persistenz.PersistenceStore;
 import mcb.persistenz.filter.AlleFilter;
 import mcb.persistenz.filter.AuslandFilter;
@@ -26,6 +26,7 @@ import mcb.persistenz.filter.KeineEinladungFilter;
 import mcb.persistenz.filter.MatchesAlleListener;
 import mcb.persistenz.filter.MatchesSucheListener;
 import mcb.persistenz.filter.NichtGemeldeteFilter;
+import mcb.persistenz.filter.SucheFilter;
 
 public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleListener, MatchesSucheListener, SendCompleteListener {
 
@@ -56,7 +57,7 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 		JMenu filter = new JMenu("Filter");
 		this.alle = this.radioForFilter(AlleFilter.getInstance());
 		filter.add(this.alle);
-		this.suche = this.radioForFilter(ApplicationData.SUCHE_FILTER);
+		this.suche = this.radioForFilter(SucheFilter.getInstance());
 		filter.add(this.suche);
 		filter.addSeparator();
 		filter.add(this.radioForFilter(new DeutschlandFilter()));
@@ -67,12 +68,12 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 		filter.add(this.radioForFilter(new GemeldeteFilter()));
 		filter.add(this.radioForFilter(new NichtGemeldeteFilter()));
 		filter.addSeparator();
-		filter.add(this.radioForFilter(new EinladungEmailFilter()));
-		filter.add(this.radioForFilter(new EinladungPostFilter()));
-		filter.add(this.radioForFilter(new KeineEinladungFilter()));
+		filter.add(this.radioForFilter(new EinladungEmailFilter(this.getNeuestesTreffen())));
+		filter.add(this.radioForFilter(new EinladungPostFilter(this.getNeuestesTreffen())));
+		filter.add(this.radioForFilter(new KeineEinladungFilter(this.getNeuestesTreffen())));
 
 		AlleFilter.getInstance().setMatchesListener(this);
-		ApplicationData.SUCHE_FILTER.setMatchesListener(this);
+		SucheFilter.getInstance().setMatchesListener(this);
 
 		this.alle.setSelected(true);
 		return filter;
@@ -85,6 +86,10 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 
 	public List<Adresse> getEmailAdressen() {
 		return this.persistenceStore.getAdressen().getEmailAdressen();
+	}
+
+	public Treffen getNeuestesTreffen() {
+		return this.persistenceStore.getTreffens().getNeuestesTreffen();
 	}
 
 	@Override
