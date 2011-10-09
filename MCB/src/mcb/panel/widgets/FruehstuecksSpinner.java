@@ -11,7 +11,6 @@ import javax.swing.event.ChangeListener;
 import mcb.model.Adresse;
 import mcb.model.FruehstuecksTag;
 import mcb.panel.AdressePanel;
-import mcb.persistenz.ApplicationData;
 
 public class FruehstuecksSpinner extends JPanel {
 
@@ -32,12 +31,12 @@ public class FruehstuecksSpinner extends JPanel {
 
 	private void fruehstueckChanged() {
 		Adresse adresse = this.adressePanel.getAdresse();
-		if (adresse == null || adresse.getAktuellenBesuch() == null) {
+		if (adresse == null || adresse.getAktuellerBesuch() == null) {
 			this.setValue(0);
 			return;
 		}
-		adresse.getAktuellenBesuch().setFruehstueckFuer(this.getValue(), this.tag);
-		ApplicationData.saveAdresse(adresse);
+		adresse.getAktuellerBesuch().setFruehstueckFuer(this.getValue(), this.tag);
+		this.adressePanel.saveAdresse(adresse);
 	}
 
 	public int getValue() {

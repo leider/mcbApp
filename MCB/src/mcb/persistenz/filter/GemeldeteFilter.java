@@ -14,7 +14,7 @@ public class GemeldeteFilter implements AdresseFilter {
 	}
 
 	public boolean matches(Adresse adresse) {
-		return adresse.getAktuellenBesuch() != null;
+		return adresse.getAktuellerBesuch() != null;
 	}
 
 }

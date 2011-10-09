@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
 import mcb.model.Treffen;
+import mcb.persistenz.PersistenceStore;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
@@ -28,8 +29,9 @@ public class TreffenPanel extends ModelPanel<Treffen> {
 	private JTextField beschreibungTextfield;
 	private JTextArea emailPreviewTextfield;
 
-	public TreffenPanel(PresentationModel<Treffen> presentationModel, BearbeitenAction<Treffen> bearbeitenAction) {
-		super(presentationModel, bearbeitenAction);
+	public TreffenPanel(PresentationModel<Treffen> presentationModel, BearbeitenAction<Treffen> bearbeitenAction,
+			PersistenceStore persistenceStore) {
+		super(presentationModel, bearbeitenAction, persistenceStore);
 		this.initComponents();
 		this.buildPanel();
 	}

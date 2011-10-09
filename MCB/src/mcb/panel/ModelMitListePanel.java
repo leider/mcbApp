@@ -11,6 +11,7 @@ import javax.swing.JSplitPane;
 
 import mcb.frame.actions.FilterAction;
 import mcb.persistenz.McbException;
+import mcb.persistenz.PersistenceStore;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.beans.Model;
@@ -26,9 +27,11 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
 	private List<FilterAction<T>> filterActions;
 
 	private static final long serialVersionUID = -8126517029418193902L;
+	protected final PersistenceStore persistenceStore;
 
-	public ModelMitListePanel() {
+	public ModelMitListePanel(PersistenceStore persistenceStore) {
 		super();
+		this.persistenceStore = persistenceStore;
 		this.initialize();
 	}
 

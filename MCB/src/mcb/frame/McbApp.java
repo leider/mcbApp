@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
+import mcb.persistenz.PersistenceStore;
+
 import org.apache.log4j.Logger;
 
 public class McbApp extends JFrame {
@@ -32,7 +34,7 @@ public class McbApp extends JFrame {
 		Runnable runnable = new Runnable() {
 			public void run() {
 				try {
-					new AdresseFrame();
+					new AdresseFrame(new PersistenceStore());
 				} catch (Exception e) {
 					McbApp.LOGGER.fatal("Failed to launch App", e);
 				}

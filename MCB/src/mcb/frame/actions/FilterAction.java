@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 
 import mcb.frame.SimpleFrame;
 import mcb.panel.McbAction;
-import mcb.persistenz.ApplicationData;
 import mcb.persistenz.filter.AdresseFilter;
+import mcb.persistenz.filter.SelectedFilter;
 
 import com.jgoodies.binding.beans.Model;
 
@@ -22,7 +22,7 @@ public class FilterAction<T extends Model> extends McbAction {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		ApplicationData.setFilter(this.filter);
+		SelectedFilter.set(this.filter);
 		this.frame.updateListe();
 	}
 

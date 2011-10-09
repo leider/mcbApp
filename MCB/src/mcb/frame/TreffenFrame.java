@@ -4,13 +4,14 @@ import javax.swing.JMenuBar;
 
 import mcb.model.Treffen;
 import mcb.panel.TreffenMitListePanel;
+import mcb.persistenz.PersistenceStore;
 
 public class TreffenFrame extends SimpleFrame<Treffen> {
 
 	private static final long serialVersionUID = -6092233954906826211L;
 
-	public TreffenFrame() {
-		super("MCB Treffen");
+	public TreffenFrame(PersistenceStore persistenceStore) {
+		super("MCB Treffen", persistenceStore);
 	}
 
 	@Override
@@ -20,7 +21,7 @@ public class TreffenFrame extends SimpleFrame<Treffen> {
 
 	@Override
 	protected TreffenMitListePanel createPanel() {
-		return new TreffenMitListePanel();
+		return new TreffenMitListePanel(this.persistenceStore);
 	}
 
 }

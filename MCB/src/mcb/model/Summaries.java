@@ -2,7 +2,7 @@ package mcb.model;
 
 import java.util.List;
 
-import mcb.persistenz.ApplicationData;
+import mcb.persistenz.Adressen;
 
 public class Summaries extends McbModel {
 
@@ -12,9 +12,15 @@ public class Summaries extends McbModel {
 	public static final String FRUEHSTUCK_SONNTAG = "fruehstueckSonntag";
 	public static final String ANZAHL_MELDUNGEN = "anzahlMeldungen";
 
-	private List<Besuch> aktuelleBesuche;
+	private static final Summaries instance = new Summaries();
 
-	public Summaries() {
+	public static Summaries getInstance() {
+		return Summaries.instance;
+	}
+
+	private Adressen adressen;
+
+	private Summaries() {
 		super();
 	}
 
@@ -24,13 +30,17 @@ public class Summaries extends McbModel {
 		this.firePropertyChange(Summaries.FRUEHSTUCK_SONNTAG, -1, this.getFruehstueckSonntag());
 	}
 
+	private List<Besuch> getAktuelleBesuche() {
+		return this.adressen.getAktuelleBesuche();
+	}
+
 	public int getAnzahlMeldungen() {
-		return this.aktuelleBesuche.size();
+		return this.getAktuelleBesuche().size();
 	}
 
 	private int getFruehstueck(FruehstuecksTag tag) {
 		int anzahl = 0;
-		for (Besuch besuch : this.aktuelleBesuche) {
+		for (Besuch besuch : this.getAktuelleBesuche()) {
 			anzahl = anzahl + besuch.getFruehstueckFuer(tag);
 		}
 		return anzahl;
@@ -44,8 +54,12 @@ public class Summaries extends McbModel {
 		return this.getFruehstueck(FruehstuecksTag.Sonntag);
 	}
 
-	public void initForBesuche() {
-		this.aktuelleBesuche = ApplicationData.getAktuelleBesuche();
+	public void initForBesuche(Adressen adressen) {
+		this.adressen = adressen;
+		this.firePropertyChanges();
+	}
+
+	public void update() {
 		this.firePropertyChanges();
 	}
 

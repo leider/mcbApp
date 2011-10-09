@@ -20,7 +20,7 @@ import mcb.model.Fehlergruende;
 import mcb.model.FruehstuecksTag;
 import mcb.model.Laender;
 import mcb.panel.widgets.FruehstuecksSpinner;
-import mcb.persistenz.ApplicationData;
+import mcb.persistenz.PersistenceStore;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
@@ -51,8 +51,9 @@ public class AdressePanel extends ModelPanel<Adresse> {
 	private FruehstuecksSpinner fruehstueckSonntagIntegerField;
 	private JButton bearbeitenButton;
 
-	public AdressePanel(PresentationModel<Adresse> presentationModel, BearbeitenAction<Adresse> bearbeitenAction) {
-		super(presentationModel, bearbeitenAction);
+	public AdressePanel(PresentationModel<Adresse> presentationModel, BearbeitenAction<Adresse> bearbeitenAction,
+			PersistenceStore persistenceStore) {
+		super(presentationModel, bearbeitenAction, persistenceStore);
 		this.initComponents();
 		this.buildPanel();
 		this.initListeners();
@@ -125,36 +126,36 @@ public class AdressePanel extends ModelPanel<Adresse> {
 		builder.add(this.fruehstueckSonntagIntegerField, cc.xy(12, row));
 	}
 
-	private void fruehstueckFeldChanged(FruehstuecksSpinner fruehstueckFeld) {
-		Adresse adresse = this.presentationModel.getBean();
-		if (adresse == null || adresse.getAktuellenBesuch() == null) {
-			fruehstueckFeld.setValue(0);
-			return;
-		}
-		adresse.getAktuellenBesuch().setFruehstueckFuer(fruehstueckFeld.getValue(), this.getTagFuerFruehstueckSpinner(fruehstueckFeld));
-		ApplicationData.saveAdresse(adresse);
-	}
-
-	protected void fruehstueckSamstagChanged() {
-		this.fruehstueckFeldChanged(this.fruehstueckSamstagIntegerField);
-	}
-
-	protected void fruehstueckSonntagChanged() {
-		this.fruehstueckFeldChanged(this.fruehstueckSonntagIntegerField);
-	}
-
+	// private void fruehstueckFeldChanged(FruehstuecksSpinner fruehstueckFeld) {
+	// Adresse adresse = this.presentationModel.getBean();
+	// if (adresse == null || adresse.getAktuellerBesuch() == null) {
+	// fruehstueckFeld.setValue(0);
+	// return;
+	// }
+	// adresse.getAktuellerBesuch().setFruehstueckFuer(fruehstueckFeld.getValue(), this.getTagFuerFruehstueckSpinner(fruehstueckFeld));
+	// this.persistenceStore.saveAdresse(adresse);
+	// }
+	//
+	// protected void fruehstueckSamstagChanged() {
+	// this.fruehstueckFeldChanged(this.fruehstueckSamstagIntegerField);
+	// }
+	//
+	// protected void fruehstueckSonntagChanged() {
+	// this.fruehstueckFeldChanged(this.fruehstueckSonntagIntegerField);
+	// }
+	//
 	public Adresse getAdresse() {
 		return this.presentationModel.getBean();
 	}
 
-	private FruehstuecksTag getTagFuerFruehstueckSpinner(FruehstuecksSpinner fruehstueckFeld) {
-		if (fruehstueckFeld == this.fruehstueckSamstagIntegerField) {
-			return FruehstuecksTag.Samstag;
-		}
-		return FruehstuecksTag.Sonntag;
-
-	}
-
+	// private FruehstuecksTag getTagFuerFruehstueckSpinner(FruehstuecksSpinner fruehstueckFeld) {
+	// if (fruehstueckFeld == this.fruehstueckSamstagIntegerField) {
+	// return FruehstuecksTag.Samstag;
+	// }
+	// return FruehstuecksTag.Sonntag;
+	//
+	// }
+	//
 	private void initComponents() {
 		ListModel countryListModel = new ArrayListModel<String>(Laender.getAlleKurzel());
 		ValueModel countryModel = this.presentationModel.getBufferedModel(Adresse.LAND);
@@ -212,12 +213,16 @@ public class AdressePanel extends ModelPanel<Adresse> {
 		}
 		if (this.meldungCheckbox.isSelected()) {
 			adresse.addAktuellesTreffen();
-			ApplicationData.saveAdresse(adresse);
+			this.persistenceStore.saveAdresse(adresse);
 		} else {
 			adresse.removeAktuellesTreffen();
-			ApplicationData.saveAdresse(adresse);
+			this.persistenceStore.saveAdresse(adresse);
 		}
 		this.updateCheckboxes();
+	}
+
+	public void saveAdresse(Adresse adresse) {
+		this.persistenceStore.saveAdresse(adresse);
 	}
 
 	@Override
@@ -239,7 +244,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
 	protected void updateCheckboxes() {
 		Adresse adresse = this.presentationModel.getBean();
 		if (adresse != null) {
-			Besuch aktuellesTreffen = adresse.getAktuellenBesuch();
+			Besuch aktuellesTreffen = adresse.getAktuellerBesuch();
 			if (aktuellesTreffen == null) {
 				this.fruehstueckSamstagIntegerField.setValue(0);
 				this.fruehstueckSonntagIntegerField.setValue(0);

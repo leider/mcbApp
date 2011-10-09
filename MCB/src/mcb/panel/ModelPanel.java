@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import mcb.persistenz.McbException;
+import mcb.persistenz.PersistenceStore;
 
 import org.apache.log4j.Logger;
 
@@ -16,11 +17,13 @@ public abstract class ModelPanel<T extends Model> extends JPanel {
 	protected BearbeitenAction<T> bearbeitenAction;
 	protected PresentationModel<T> presentationModel;
 	protected static final Logger LOGGER = Logger.getLogger(ModelPanel.class.getName());
+	protected final PersistenceStore persistenceStore;
 
-	public ModelPanel(PresentationModel<T> presentationModel, BearbeitenAction<T> bearbeitenAction) {
+	public ModelPanel(PresentationModel<T> presentationModel, BearbeitenAction<T> bearbeitenAction, PersistenceStore persistenceStore) {
 		super();
 		this.presentationModel = presentationModel;
 		this.bearbeitenAction = bearbeitenAction;
+		this.persistenceStore = persistenceStore;
 	}
 
 	public void handleMcbException(McbException e) {

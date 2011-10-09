@@ -35,7 +35,7 @@ public class MailSender implements Runnable {
 
 	@Override
 	public void run() {
-		for (Adresse adresse : ApplicationData.getEmailAdressen()) {
+		for (Adresse adresse : this.listener.getPersistenceStore().getAdressen().getEmailAdressen()) {
 			try {
 				this.send(adresse);
 			} catch (Exception e) {

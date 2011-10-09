@@ -1,8 +1,8 @@
 package mcb.panel;
 
 import mcb.model.Treffen;
-import mcb.persistenz.ApplicationData;
 import mcb.persistenz.McbException;
+import mcb.persistenz.PersistenceStore;
 
 import com.jgoodies.binding.PresentationModel;
 
@@ -10,18 +10,18 @@ public class TreffenMitListePanel extends ModelMitListePanel<Treffen> {
 
 	private static final long serialVersionUID = 444596326461558352L;
 
-	public TreffenMitListePanel() {
-		super();
+	public TreffenMitListePanel(PersistenceStore persistenceStore) {
+		super(persistenceStore);
 	}
 
 	@Override
 	protected SelectionInListPanel<Treffen> createListePanel() {
-		return new TreffenSelectionInListPanel();
+		return new TreffenSelectionInListPanel(this.persistenceStore);
 	}
 
 	@Override
 	protected ModelPanel<Treffen> createModelPanel(PresentationModel<Treffen> model, BearbeitenAction<Treffen> action) {
-		return new TreffenPanel(model, action);
+		return new TreffenPanel(model, action, this.persistenceStore);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class TreffenMitListePanel extends ModelMitListePanel<Treffen> {
 
 	@Override
 	protected void speichereModel(Treffen model) throws McbException {
-		ApplicationData.saveTreffen(model);
+		this.persistenceStore.saveTreffen(model);
 	}
 
 }

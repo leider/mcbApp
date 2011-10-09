@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import mcb.persistenz.ApplicationData;
+import mcb.persistenz.DateFormatter;
 import flexjson.JSON;
 
 public class Adresse extends McbModel {
@@ -63,7 +64,7 @@ public class Adresse extends McbModel {
 	}
 
 	@JSON(include = false)
-	public Besuch getAktuellenBesuch() {
+	public Besuch getAktuellerBesuch() {
 		for (Besuch besuch : this.getBesuchteTreffen()) {
 			if (besuch.getTreffen().isAktuell()) {
 				return besuch;
@@ -95,7 +96,7 @@ public class Adresse extends McbModel {
 	@JSON(include = false)
 	public String getGeburtstagString() {
 		if (this.geburtstag != null) {
-			return ApplicationData.formatDate(this.geburtstag);
+			return DateFormatter.formatDate(this.geburtstag);
 		}
 		return "";
 	}
@@ -158,7 +159,7 @@ public class Adresse extends McbModel {
 	}
 
 	public void removeAktuellesTreffen() {
-		this.besuchteTreffen.remove(this.getAktuellenBesuch());
+		this.besuchteTreffen.remove(this.getAktuellerBesuch());
 	}
 
 	public void setEmail(String email) {
@@ -178,7 +179,7 @@ public class Adresse extends McbModel {
 	public void setGeburtstagString(String geburtstag) {
 		try {
 			String oldValue = this.getGeburtstagString();
-			this.geburtstag = ApplicationData.parseDate(geburtstag);
+			this.geburtstag = DateFormatter.parseDate(geburtstag);
 			this.firePropertyChange(Adresse.GEBURTSTAG, oldValue, this.getGeburtstagString());
 		} catch (ParseException e) {
 			this.firePropertyChange(Adresse.GEBURTSTAG, null, this.getGeburtstagString());

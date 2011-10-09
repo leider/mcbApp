@@ -5,13 +5,14 @@ import java.util.List;
 import mcb.model.Treffen;
 import mcb.persistenz.ApplicationData;
 import mcb.persistenz.McbException;
+import mcb.persistenz.PersistenceStore;
 
 public class TreffenSelectionInListPanel extends SelectionInListPanel<Treffen> {
 
 	private static final long serialVersionUID = -3850904257220547857L;
 
-	public TreffenSelectionInListPanel() {
-		super();
+	public TreffenSelectionInListPanel(PersistenceStore persistenceStore) {
+		super(persistenceStore);
 	}
 
 	@Override
@@ -29,7 +30,7 @@ public class TreffenSelectionInListPanel extends SelectionInListPanel<Treffen> {
 
 	@Override
 	protected void loescheObjekt(Treffen objekt) throws McbException {
-		ApplicationData.loescheModel(objekt);
+		this.persistenceStore.loescheModel(objekt);
 	}
 
 }

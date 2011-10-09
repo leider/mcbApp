@@ -5,7 +5,17 @@ import mcb.panel.McbAction;
 
 public class AlleFilter implements AdresseFilter {
 
+	private static final AlleFilter instance = new AlleFilter();
+
+	public static AlleFilter getInstance() {
+		return AlleFilter.instance;
+	}
+
 	private MatchesAlleListener listener;
+
+	private AlleFilter() {
+		super();
+	}
 
 	public int getKeyMask() {
 		return McbAction.ALLE;

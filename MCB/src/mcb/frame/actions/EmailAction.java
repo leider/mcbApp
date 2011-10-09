@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 import mcb.frame.AdresseFrame;
 import mcb.mail.MailSender;
 import mcb.model.Adresse;
-import mcb.persistenz.ApplicationData;
 
 public class EmailAction extends AbstractAction {
 	private final AdresseFrame adresseFrame;
@@ -23,7 +22,7 @@ public class EmailAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("Es wird eine Einladung verschickt an: ");
-		List<Adresse> emailAdressen = ApplicationData.getEmailAdressen();
+		List<Adresse> emailAdressen = this.adresseFrame.getEmailAdressen();
 		for (Adresse adresse : emailAdressen) {
 			buffer.append(adresse.getEmail());
 			buffer.append(", ");

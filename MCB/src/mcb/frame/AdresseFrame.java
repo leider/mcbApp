@@ -1,5 +1,7 @@
 package mcb.frame;
 
+import java.util.List;
+
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -12,6 +14,8 @@ import mcb.mail.SendCompleteListener;
 import mcb.model.Adresse;
 import mcb.panel.AdresseMitListePanel;
 import mcb.persistenz.ApplicationData;
+import mcb.persistenz.PersistenceStore;
+import mcb.persistenz.filter.AlleFilter;
 import mcb.persistenz.filter.AuslandFilter;
 import mcb.persistenz.filter.DeutschlandFilter;
 import mcb.persistenz.filter.EinladungEmailFilter;
@@ -29,8 +33,8 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 	private JCheckBoxMenuItem alle;
 	private JCheckBoxMenuItem suche;
 
-	public AdresseFrame() {
-		super("MCB");
+	public AdresseFrame(PersistenceStore persistenceStore) {
+		super("MCB", persistenceStore);
 	}
 
 	@Override
@@ -41,16 +45,16 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 
 	private JMenu createAdminMenu() {
 		JMenu admin = new JMenu("Administration");
-		admin.add(new ExcelExportAction(this, "Export Auswahl nach Excel"));
+		admin.add(new ExcelExportAction(this, "Export Auswahl nach Excel", this.persistenceStore));
 		admin.add(new EmailAction(this, "Verschicke Emails..."));
 		admin.addSeparator();
-		admin.add(new OpenTreffenAction("Treffen bearbeiten..."));
+		admin.add(new OpenTreffenAction("Treffen bearbeiten...", this.persistenceStore));
 		return admin;
 	}
 
 	private JMenu createFilterMenu() {
 		JMenu filter = new JMenu("Filter");
-		this.alle = this.radioForFilter(ApplicationData.ALLE_FILTER);
+		this.alle = this.radioForFilter(AlleFilter.getInstance());
 		filter.add(this.alle);
 		this.suche = this.radioForFilter(ApplicationData.SUCHE_FILTER);
 		filter.add(this.suche);
@@ -67,7 +71,7 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 		filter.add(this.radioForFilter(new EinladungPostFilter()));
 		filter.add(this.radioForFilter(new KeineEinladungFilter()));
 
-		ApplicationData.ALLE_FILTER.setMatchesListener(this);
+		AlleFilter.getInstance().setMatchesListener(this);
 		ApplicationData.SUCHE_FILTER.setMatchesListener(this);
 
 		this.alle.setSelected(true);
@@ -76,7 +80,16 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 
 	@Override
 	protected AdresseMitListePanel createPanel() {
-		return new AdresseMitListePanel();
+		return new AdresseMitListePanel(this.persistenceStore);
+	}
+
+	public List<Adresse> getEmailAdressen() {
+		return this.persistenceStore.getAdressen().getEmailAdressen();
+	}
+
+	@Override
+	public PersistenceStore getPersistenceStore() {
+		return this.persistenceStore;
 	}
 
 	public void matchesAllePerformed() {

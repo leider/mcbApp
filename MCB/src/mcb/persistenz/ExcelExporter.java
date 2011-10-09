@@ -1,6 +1,7 @@
 package mcb.persistenz;
 
 import java.io.File;
+import java.util.List;
 
 import jxl.Workbook;
 import jxl.write.Boolean;
@@ -27,12 +28,12 @@ public class ExcelExporter {
 
 	private int row = 0;
 
-	public void exportiereAdressen(File file) {
+	public void exportiereAdressen(File file, List<Adresse> adressenToExport) {
 		try {
 			WritableWorkbook workbook = Workbook.createWorkbook(file);
 			WritableSheet sheet = workbook.createSheet("Report", 0);
 			this.writeHeader(sheet);
-			for (Adresse adresse : ApplicationData.getFilteredAdressen()) {
+			for (Adresse adresse : adressenToExport) {
 				this.writeAdresse(adresse, sheet);
 			}
 			workbook.write();

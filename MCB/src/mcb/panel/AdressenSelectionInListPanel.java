@@ -3,15 +3,15 @@ package mcb.panel;
 import java.util.List;
 
 import mcb.model.Adresse;
-import mcb.persistenz.ApplicationData;
 import mcb.persistenz.McbException;
+import mcb.persistenz.PersistenceStore;
 
 public class AdressenSelectionInListPanel extends SelectionInListPanel<Adresse> {
 
 	private static final long serialVersionUID = -3850904257220547857L;
 
-	public AdressenSelectionInListPanel() {
-		super();
+	public AdressenSelectionInListPanel(PersistenceStore persistenceStore) {
+		super(persistenceStore);
 	}
 
 	@Override
@@ -19,17 +19,17 @@ public class AdressenSelectionInListPanel extends SelectionInListPanel<Adresse> 
 		Adresse neu = new Adresse();
 		neu.setVorname("");
 		neu.setName("");
-		ApplicationData.add(neu);
+		this.persistenceStore.getAdressen().add(neu);
 		return neu;
 	}
 
 	@Override
 	protected List<Adresse> getContents() {
-		return ApplicationData.getFilteredAdressen();
+		return this.persistenceStore.getAdressen().getFilteredAdressen();
 	}
 
 	@Override
 	protected void loescheObjekt(Adresse adresse) throws McbException {
-		ApplicationData.loescheModel(adresse);
+		this.persistenceStore.loescheModel(adresse);
 	}
 }

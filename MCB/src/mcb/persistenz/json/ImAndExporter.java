@@ -10,8 +10,8 @@ import java.io.OutputStreamWriter;
 
 import mcb.model.Adresse;
 import mcb.model.Besuch;
-import mcb.model.McbModel;
 import mcb.model.Treffen;
+import mcb.persistenz.Adressen;
 import mcb.persistenz.ApplicationData;
 
 import org.apache.log4j.Logger;
@@ -23,7 +23,7 @@ public class ImAndExporter {
 
 	public static final Logger LOGGER = Logger.getLogger(ImAndExporter.class.getName());
 
-	public static void exportAdressen(File file) {
+	public static void exportAdressen(File file, Adressen adressen) {
 		try {
 			if (!file.exists()) {
 				file.getParentFile().mkdir();
@@ -35,7 +35,7 @@ public class ImAndExporter {
 			jsonSerializer.include("besuchteTreffen");
 			jsonSerializer.include("besuchteTreffen.treffen.id");
 			jsonSerializer.exclude("besuchteTreffen.treffen.*");
-			for (McbModel adresse : ApplicationData.adressen) {
+			for (Adresse adresse : adressen.alle()) {
 				writer.write(jsonSerializer.serialize(adresse));
 				writer.write("\n");
 			}
@@ -66,7 +66,7 @@ public class ImAndExporter {
 		}
 	}
 
-	public static void importiereAdressen(File file) {
+	public static void importiereAdressen(File file, Adressen adressen) {
 		try {
 			if (file.exists()) {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "ISO-8859-1"));
@@ -76,7 +76,7 @@ public class ImAndExporter {
 				jsonDeserializer.use(Besuch.class, new BesuchFactory());
 				while (line != null) {
 					Adresse adresse = jsonDeserializer.deserialize(line);
-					ApplicationData.add(adresse);
+					adressen.add(adresse);
 					line = reader.readLine();
 				}
 			}

@@ -10,8 +10,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-import mcb.persistenz.ApplicationData;
 import mcb.persistenz.McbException;
+import mcb.persistenz.PersistenceStore;
+import mcb.persistenz.filter.AlleFilter;
+import mcb.persistenz.filter.SelectedFilter;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
@@ -25,9 +27,11 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 	private JList list;
 	private JTextField anzahlText;
 	private PresentationModel<T> detailModel;
+	protected final PersistenceStore persistenceStore;
 
-	public SelectionInListPanel() {
+	public SelectionInListPanel(PersistenceStore persistenceStore) {
 		super();
+		this.persistenceStore = persistenceStore;
 		this.initialize();
 	}
 
@@ -39,7 +43,7 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 	}
 
 	public void createNewAndAdd() throws McbException {
-		ApplicationData.setFilter(ApplicationData.ALLE_FILTER);
+		SelectedFilter.set(AlleFilter.getInstance());
 		T neu = this.createNewModel();
 		this.updateModelliste();
 		this.list.setSelectedValue(neu, true);

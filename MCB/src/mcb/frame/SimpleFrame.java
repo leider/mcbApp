@@ -12,6 +12,7 @@ import javax.swing.WindowConstants;
 
 import mcb.frame.actions.FilterAction;
 import mcb.panel.ModelMitListePanel;
+import mcb.persistenz.PersistenceStore;
 import mcb.persistenz.filter.AdresseFilter;
 
 import com.jgoodies.binding.beans.Model;
@@ -24,8 +25,11 @@ public abstract class SimpleFrame<T extends Model> extends JFrame {
 
 	private ButtonGroup group = new ButtonGroup();
 
-	public SimpleFrame(String string) {
+	protected final PersistenceStore persistenceStore;
+
+	public SimpleFrame(String string, PersistenceStore persistenceStore) {
 		super(string);
+		this.persistenceStore = persistenceStore;
 		this.initialize();
 		this.packCenterAndShow();
 	}

@@ -14,6 +14,9 @@ import mcb.model.Adresse;
 import mcb.model.Summaries;
 import mcb.persistenz.ApplicationData;
 import mcb.persistenz.McbException;
+import mcb.persistenz.PersistenceStore;
+import mcb.persistenz.filter.AlleFilter;
+import mcb.persistenz.filter.SelectedFilter;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
@@ -23,18 +26,18 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 	private static final long serialVersionUID = 444596326461558352L;
 	private JTextField suchText;
 
-	public AdresseMitListePanel() {
-		super();
+	public AdresseMitListePanel(PersistenceStore persistenceStore) {
+		super(persistenceStore);
 	}
 
 	@Override
 	protected SelectionInListPanel<Adresse> createListePanel() {
-		return new AdressenSelectionInListPanel();
+		return new AdressenSelectionInListPanel(this.persistenceStore);
 	}
 
 	@Override
 	protected ModelPanel<Adresse> createModelPanel(PresentationModel<Adresse> model, BearbeitenAction<Adresse> action) {
-		return new AdressePanel(model, action);
+		return new AdressePanel(model, action, this.persistenceStore);
 	}
 
 	@Override
@@ -53,10 +56,10 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 			public void keyReleased(KeyEvent e) {
 				String text = AdresseMitListePanel.this.suchText.getText();
 				if ("".equals(text)) {
-					ApplicationData.setFilter(ApplicationData.ALLE_FILTER);
+					SelectedFilter.set(AlleFilter.getInstance());
 				} else {
 					ApplicationData.SUCHE_FILTER.setSucheText(text);
-					ApplicationData.setFilter(ApplicationData.SUCHE_FILTER);
+					SelectedFilter.set(ApplicationData.SUCHE_FILTER);
 				}
 				AdresseMitListePanel.this.updateListe();
 			}
@@ -67,7 +70,7 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 		});
 		toolBar.addSeparator();
 
-		PresentationModel<Summaries> presentationModel = new PresentationModel<Summaries>(ApplicationData.getSummaries());
+		PresentationModel<Summaries> presentationModel = new PresentationModel<Summaries>(Summaries.getInstance());
 		toolBar.add(new JLabel("Samstag:"));
 		JFormattedTextField samstag = BasicComponentFactory.createIntegerField(presentationModel.getModel(Summaries.FRUEHSTUCK_SAMSTAG));
 		toolBar.add(samstag);
@@ -94,7 +97,7 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 
 	@Override
 	protected void speichereModel(Adresse model) throws McbException {
-		ApplicationData.saveAdresse(model);
+		this.persistenceStore.saveAdresse(model);
 	}
 
 	@Override
