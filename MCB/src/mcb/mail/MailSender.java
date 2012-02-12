@@ -62,7 +62,7 @@ public class MailSender implements Runnable {
 		message.setReplyTo(new InternetAddress[] { new InternetAddress(MailSessionFactory.replyto) });
 		message.setSubject(this.neuestesTreffen.getBeschreibung());
 		message.setSentDate(this.jetzt);
-		message.setText(this.neuestesTreffen.getEmailPreviewText(adresse.getVorname()), "UTF-8");
+		message.setText(this.neuestesTreffen.getEmailPreviewText(adresse.getVorname()));// , "UTF-8");
 		Transport.send(message);
 	}
 

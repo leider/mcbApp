@@ -7,13 +7,11 @@ import javax.mail.internet.MimeMessage;
 
 import mcb.persistenz.PersistenceStore;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class TestMailSending {
 
 	@Test
-	@Ignore
 	public void testSendingWithUmlauts() throws Exception {
 		String to = "leider@me.com";
 		String subject = "Test";
@@ -28,7 +26,7 @@ public class TestMailSending {
 		message.setReplyTo(new InternetAddress[] { new InternetAddress(replyto) });
 		message.setSubject(subject);
 		message.setSentDate(r.jetzt);
-		message.setText(body, "UTF-8");
+		message.setText(body, "ISO-8859-1");
 
 		Transport.send(message);
 	}

@@ -1,5 +1,7 @@
 package mcb.frame;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -76,6 +78,17 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 		SucheFilter.getInstance().setMatchesListener(this);
 
 		this.alle.setSelected(true);
+
+		this.panel.getNeuAction().addPropertyChangeListener(new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent arg0) {
+				if (arg0.getPropertyName().equals("enabled") && arg0.getNewValue().equals(Boolean.TRUE)) {
+					AdresseFrame.this.alle.setSelected(true);
+				}
+			}
+		});
+
 		return filter;
 	}
 
