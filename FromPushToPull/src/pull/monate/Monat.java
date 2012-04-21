@@ -16,23 +16,11 @@ public class Monat implements IMonat
 	protected final IMonat vorgaengerMonat;
 	protected final List<Umsatz> umsaetze = new ArrayList<Umsatz>();
 
-	public Monat(LocalDate date, IMonat monat, List<Umsatz> umsaetze)
+	public Monat(LocalDate date, IMonat monat)
 	{
 		super();
 		this.vorgaengerMonat = monat;
 		this.yearMonth = new YearMonth(date);
-		initUmsaetze(umsaetze);
-	}
-
-	private void initUmsaetze(List<Umsatz> umsaetze)
-	{
-		for (Umsatz umsatz : umsaetze)
-		{
-			if (yearMonth.equals(new YearMonth(umsatz.getDate())))
-			{
-				this.umsaetze.add(umsatz);
-			}
-		}
 	}
 
 	public YearMonth getYearMonth()
@@ -40,6 +28,12 @@ public class Monat implements IMonat
 		return yearMonth;
 	}
 
+	public void addUmsatz(Umsatz umsatz)
+	{
+		umsaetze.add(umsatz);
+	}
+
+	@Override
 	public int getBestand()
 	{
 		int result = vorgaengerMonat.getBestand();

@@ -28,10 +28,12 @@ public class Monate
 		Monat monat = null;
 		for (Monatsdaten monatEinesKontos : monateEinesKontos)
 		{
-			monat = new Monat(monatEinesKontos.getDate(), monat != null ? monat : new DummyMonat(), umsaetze);
+			monat = new Monat(monatEinesKontos.getDate(), monat != null ? monat : new DummyMonat());
 			getMonate().add(monat);
 			monateInMap.put(monat.getYearMonth(), monat);
 		}
+
+		verteileUmsaetzeAufMonate(umsaetze);
 	}
 
 	public List<Monat> getMonate()
@@ -42,6 +44,14 @@ public class Monate
 	public Monat forDate(LocalDate date)
 	{
 		return monateInMap.get(new YearMonth(date));
+	}
+
+	private void verteileUmsaetzeAufMonate(List<Umsatz> umsaetze)
+	{
+		for (Umsatz umsatz : umsaetze)
+		{
+			forDate(umsatz.getDate()).addUmsatz(umsatz);
+		}
 	}
 
 }

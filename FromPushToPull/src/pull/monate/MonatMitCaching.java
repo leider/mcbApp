@@ -15,7 +15,7 @@ public class MonatMitCaching extends Monat
 
 	public MonatMitCaching(LocalDate date, IMonat monat, List<Umsatz> umsaetze)
 	{
-		super(date, monat, umsaetze);
+		super(date, monat);
 	}
 
 	@Override
