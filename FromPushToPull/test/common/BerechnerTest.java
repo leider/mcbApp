@@ -8,17 +8,13 @@ import java.util.List;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
-
-import common.Monatsdaten;
-import common.Umsatz;
-
 public abstract class BerechnerTest
 {
-	protected static final LocalDate APRIL_ULTIMO = new LocalDate(2010, 4, 30);
-	protected static final LocalDate MAI_ULTIMO = new LocalDate(2010, 5, 31);
-	protected final List<Umsatz> umsaetze = new ArrayList<Umsatz>();
-	protected final List<Monatsdaten> monatsdaten = new ArrayList<Monatsdaten>();
+	private static final LocalDate APRIL_ULTIMO = new LocalDate(2010, 4, 30);
+	private static final LocalDate MAI_ULTIMO = new LocalDate(2010, 5, 31);
+	private final List<Monatsdaten> monatsdaten = new ArrayList<Monatsdaten>();
 
+	protected final List<Umsatz> umsaetze = new ArrayList<Umsatz>();
 	protected MonatsdatenBerechner berechner;
 
 	@Test

@@ -28,7 +28,7 @@ public class Monate
 		Monat monat = null;
 		for (Monatsdaten monatEinesKontos : monateEinesKontos)
 		{
-			monat = new Monat(monatEinesKontos.getDate(), monat != null ? monat : new DummyMonat());
+			monat = new MonatMitCaching(monatEinesKontos.getDate(), monat != null ? monat : new DummyMonat());
 			getMonate().add(monat);
 			monateInMap.put(monat.getYearMonth(), monat);
 		}
