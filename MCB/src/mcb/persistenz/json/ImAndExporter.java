@@ -30,7 +30,7 @@ public class ImAndExporter {
 				file.createNewFile();
 			}
 			FileOutputStream stream = new FileOutputStream(file);
-			OutputStreamWriter writer = new OutputStreamWriter(stream, "ISO-8859-1");
+			OutputStreamWriter writer = new OutputStreamWriter(stream, "UTF-8");
 			JSONSerializer jsonSerializer = new JSONSerializer();
 			jsonSerializer.include("besuchteTreffen");
 			jsonSerializer.include("besuchteTreffen.treffen.id");
@@ -53,7 +53,7 @@ public class ImAndExporter {
 				file.createNewFile();
 			}
 			FileOutputStream stream = new FileOutputStream(file);
-			OutputStreamWriter writer = new OutputStreamWriter(stream, "ISO-8859-1");
+			OutputStreamWriter writer = new OutputStreamWriter(stream, "UTF-8");
 			JSONSerializer jsonSerializer = new JSONSerializer();
 			for (Treffen treffen : treffens.getAlleTreffen()) {
 				writer.write(jsonSerializer.serialize(treffen));
@@ -69,7 +69,7 @@ public class ImAndExporter {
 	public static void importiereAdressen(File file, Adressen adressen, Treffens treffens) {
 		try {
 			if (file.exists()) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "ISO-8859-1"));
+				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 				String line = reader.readLine();
 				JSONDeserializer<Adresse> jsonDeserializer = new JSONDeserializer<Adresse>();
 				jsonDeserializer.use(Adresse.class, new AdresseFactory());
@@ -87,7 +87,7 @@ public class ImAndExporter {
 	public static void importiereTreffen(File file, Treffens treffens) {
 		try {
 			if (file.exists()) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "ISO-8859-1"));
+				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 				String line = reader.readLine();
 				JSONDeserializer<Treffen> jsonDeserializer = new JSONDeserializer<Treffen>();
 				while (line != null) {

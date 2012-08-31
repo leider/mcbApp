@@ -51,7 +51,7 @@ public class ExcelExporter {
 		sheet.addCell(new Label(ExcelExporter.NAME, this.row, adresse.getName()));
 		sheet.addCell(new Label(ExcelExporter.EMAIL, this.row, adresse.getEmail()));
 		sheet.addCell(new Label(ExcelExporter.STRASSE, this.row, adresse.getStrasse()));
-		sheet.addCell(new Label(ExcelExporter.LAND, this.row, adresse.getLandFullname()));
+		sheet.addCell(new Label(ExcelExporter.LAND, this.row, adresse.getLandAusgeschrieben()));
 		sheet.addCell(new Label(ExcelExporter.PLZ, this.row, adresse.getPlz()));
 		sheet.addCell(new Label(ExcelExporter.ORT, this.row, adresse.getOrt()));
 		sheet.addCell(new Boolean(ExcelExporter.GESPANN, this.row, adresse.isGespann()));

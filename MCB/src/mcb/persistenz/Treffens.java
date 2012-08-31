@@ -7,11 +7,9 @@ import java.util.List;
 
 import mcb.model.Treffen;
 
-import com.jgoodies.binding.list.ArrayListModel;
-
 public class Treffens {
 
-	private List<Treffen> treffen = new ArrayListModel<Treffen>();
+	private List<Treffen> treffen = new ArrayList<Treffen>();
 
 	public void add(Treffen treffen) {
 		if (treffen.isNeu()) {
@@ -30,21 +28,14 @@ public class Treffens {
 	}
 
 	public List<Treffen> getAlleTreffen() {
-		return this.treffen;
+		return this.sortedTreffen();
 	}
 
 	public Treffen getNeuestesTreffen() {
 		if (this.getAlleTreffen().isEmpty()) {
 			return null;
 		}
-		List<Treffen> treffenCopy = new ArrayList<Treffen>(this.getAlleTreffen());
-		Collections.sort(treffenCopy, new Comparator<Treffen>() {
-
-			public int compare(Treffen t1, Treffen t2) {
-				return -1 * t1.getErsterTag().compareTo(t2.getErsterTag());
-			}
-		});
-		return treffenCopy.get(0);
+		return this.sortedTreffen().get(0);
 	}
 
 	private Long nextIdForTreffen() {
@@ -53,6 +44,17 @@ public class Treffens {
 
 	public void remove(Treffen treffen) {
 		this.treffen.remove(treffen);
+	}
+
+	private List<Treffen> sortedTreffen() {
+		List<Treffen> treffenCopy = new ArrayList<Treffen>(this.treffen);
+		Collections.sort(treffenCopy, new Comparator<Treffen>() {
+
+			public int compare(Treffen t1, Treffen t2) {
+				return -1 * t1.getErsterTag().compareTo(t2.getErsterTag());
+			}
+		});
+		return treffenCopy;
 	}
 
 }

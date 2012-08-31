@@ -9,11 +9,9 @@ import mcb.model.Adresse;
 import mcb.model.Besuch;
 import mcb.persistenz.filter.SelectedFilter;
 
-import com.jgoodies.binding.list.ArrayListModel;
-
 public class Adressen {
 
-	private List<Adresse> adressen = new ArrayListModel<Adresse>();
+	private List<Adresse> adressen = new ArrayList<Adresse>();
 
 	public void add(Adresse adresse) {
 		if (adresse.isNeu()) {

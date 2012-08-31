@@ -80,10 +80,6 @@ public class Adresse extends McbModel {
 		return this.fehlergrund;
 	}
 
-	private String getFullnameFor(String landText) {
-		return Laender.landFuerKuerzel(landText);
-	}
-
 	public Date getGeburtstag() {
 		return this.geburtstag;
 	}
@@ -100,8 +96,8 @@ public class Adresse extends McbModel {
 		return this.land;
 	}
 
-	public String getLandFullname() {
-		return this.getFullnameFor(this.land);
+	public String getLandAusgeschrieben() {
+		return Laender.landFuerKuerzel(this.land);
 	}
 
 	public String getName() {
