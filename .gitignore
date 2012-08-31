@@ -3,6 +3,6 @@
 .metadata
 bin/
 *.html
-
+*.class
 
 MCB/mcbApp.log
