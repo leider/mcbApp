@@ -15,7 +15,7 @@ public class TestMailSending {
 	public void testSendingWithUmlauts() throws Exception {
 		String to = "leider@me.com";
 		String subject = "Test";
-		String body = "Body mit Ümläuten ßßß";
+		String body = "Body mit †mlŠuten ššš";
 		MailSender r = new MailSender(null, new PersistenceStore().getTreffens().getNeuestesTreffen());
 		MimeMessage message = new MimeMessage(r.getSession());
 		String from = MailSessionFactory.from;
