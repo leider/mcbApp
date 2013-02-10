@@ -34,6 +34,7 @@ public class MailSessionFactory {
 
 		properties.setProperty("mail.smtp.host", mailProperties.getProperty("smtp"));
 		properties.setProperty("mail.smtp.port", mailProperties.getProperty("port"));
+		properties.put("mail.smtp.starttls.enable", "true");
 
 		return Session.getInstance(properties, authenticator);
 	}
