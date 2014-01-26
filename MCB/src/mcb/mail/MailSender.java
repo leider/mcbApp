@@ -80,9 +80,9 @@ public class MailSender implements Runnable {
 
 		Multipart multipart = new MimeMultipart();
 
-		MimeBodyPart textBodyPart = new MimeBodyPart();
-		textBodyPart.setText(this.neuestesTreffen.getEmailPreviewText(adresse.getVorname()));// , "UTF-8");
-		multipart.addBodyPart(textBodyPart);
+		MimeBodyPart htmlBodyPart = new MimeBodyPart();
+		htmlBodyPart.setContent(this.neuestesTreffen.getEmailPreviewText(adresse.getVorname()), "text/html");
+		multipart.addBodyPart(htmlBodyPart);
 
 		MimeBodyPart messageBodyPart = new MimeBodyPart();
 		String file = MailSessionFactory.attachmentName;
