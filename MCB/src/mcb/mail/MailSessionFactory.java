@@ -31,7 +31,7 @@ public class MailSessionFactory {
 		Properties properties = new Properties();
 		properties.setProperty("mail.smtp.submitter", username);
 		properties.setProperty("mail.smtp.auth", "true");
-
+		properties.setProperty("mail.smtp.ssl.trust", "*");
 		properties.setProperty("mail.smtp.host", mailProperties.getProperty("smtp"));
 		properties.setProperty("mail.smtp.port", mailProperties.getProperty("port"));
 		properties.put("mail.smtp.starttls.enable", "true");
