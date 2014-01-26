@@ -9,7 +9,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JavaMail"/>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.17-bin.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/flexjson"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JExcelapi"/>
 	<classpathentry kind="output" path="bin"/>
