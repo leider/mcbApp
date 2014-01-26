@@ -24,6 +24,7 @@ public class Adresse extends McbModel {
 	public static final String SOLO = "solo";
 	public static final String EMAIL = "email";
 	public static final String FEHLERGRUND = "fehlergrund";
+	public static final String MCB_MITGLIED = "mitglied";
 
 	public static final String VERGANGENE_TREFFEN = "vergangeneTreffen";
 
@@ -38,6 +39,7 @@ public class Adresse extends McbModel {
 	private boolean solo;
 	private String email;
 	private String fehlergrund;
+	private boolean mitglied;
 	private List<Besuch> besuchteTreffen = new ArrayList<Besuch>();
 
 	public Adresse() {
@@ -98,6 +100,10 @@ public class Adresse extends McbModel {
 
 	public String getLandAusgeschrieben() {
 		return Laender.landFuerKuerzel(this.land);
+	}
+
+	public boolean isMitglied() {
+		return this.mitglied;
 	}
 
 	public String getName() {
@@ -187,6 +193,12 @@ public class Adresse extends McbModel {
 		String oldValue = this.getLand();
 		this.land = land;
 		this.firePropertyChange(Adresse.LAND, oldValue, this.land);
+	}
+
+	public void setMitglied(boolean mitglied) {
+		boolean oldValue = this.isMitglied();
+		this.mitglied = mitglied;
+		this.firePropertyChange(Adresse.MCB_MITGLIED, oldValue, this.mitglied);
 	}
 
 	public void setName(String name) {

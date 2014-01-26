@@ -24,6 +24,7 @@ import mcb.persistenz.filter.EinladungEmailFilter;
 import mcb.persistenz.filter.EinladungPostFilter;
 import mcb.persistenz.filter.EmailKaputtFilter;
 import mcb.persistenz.filter.GemeldeteFilter;
+import mcb.persistenz.filter.IstMitgliedFilter;
 import mcb.persistenz.filter.KeineEinladungFilter;
 import mcb.persistenz.filter.MatchesAlleListener;
 import mcb.persistenz.filter.MatchesSucheListener;
@@ -73,6 +74,8 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 		filter.add(this.radioForFilter(new EinladungEmailFilter(this.getNeuestesTreffen())));
 		filter.add(this.radioForFilter(new EinladungPostFilter(this.getNeuestesTreffen())));
 		filter.add(this.radioForFilter(new KeineEinladungFilter(this.getNeuestesTreffen())));
+		filter.addSeparator();
+		filter.add(this.radioForFilter(new IstMitgliedFilter()));
 
 		AlleFilter.getInstance().setMatchesListener(this);
 		SucheFilter.getInstance().setMatchesListener(this);

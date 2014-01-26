@@ -50,6 +50,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
 	private FruehstuecksSpinner fruehstueckSamstagIntegerField;
 	private FruehstuecksSpinner fruehstueckSonntagIntegerField;
 	private JButton bearbeitenButton;
+	private JCheckBox mitgliedCheckbox;
 
 	public AdressePanel(PresentationModel<Adresse> presentationModel, BearbeitenAction<Adresse> bearbeitenAction,
 			PersistenceStore persistenceStore) {
@@ -91,6 +92,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
 		row++;
 		builder.addLabel("Geburtstag", cc.xy(2, row));
 		builder.add(this.geburtstagTextfield, cc.xyw(4, row, 5));
+		builder.add(this.mitgliedCheckbox, cc.xyw(10, row, 3, "r,d"));
 		row++;
 		row++;
 		builder.addSeparator("Email", cc.xyw(2, row, 11));
@@ -156,6 +158,8 @@ public class AdressePanel extends ModelPanel<Adresse> {
 		this.besuchListe = BasicComponentFactory.createList(besuchList);
 		this.besuchListe.setEnabled(false);
 		this.meldungCheckbox = new JCheckBox("Meldung");
+		this.mitgliedCheckbox = BasicComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.MCB_MITGLIED),
+				"Mitglied");
 		this.fruehstueckSamstagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Samstag, this);
 		this.fruehstueckSonntagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Sonntag, this);
 		this.bearbeitenButton = new JButton(this.bearbeitenAction);

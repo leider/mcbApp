@@ -19,6 +19,7 @@ public abstract class McbAction extends AbstractAction {
 	public static final int AUSLAND = KeyEvent.VK_M;
 	public static final int NEU = KeyEvent.VK_N;
 	public static final int NICHTGEMELDET = KeyEvent.VK_U;
+	public static final int MITGLIED = KeyEvent.VK_Z;
 	public static final int EINLADUNGEN_EMAIL = 0;
 	public static final int EINLADUNGEN_POST = 0;
 	public static final int KEINE_EINLADUNG = 0;
@@ -41,8 +42,8 @@ public abstract class McbAction extends AbstractAction {
 
 	protected void setAccelerator(int aKeyEventConstant) {
 		if (aKeyEventConstant != 0) {
-			this.accelerator = KeyStroke.getKeyStroke(aKeyEventConstant, (this.isRunningOnMac() ? ActionEvent.META_MASK
-					: ActionEvent.CTRL_MASK));
+			this.accelerator = KeyStroke.getKeyStroke(aKeyEventConstant, this.isRunningOnMac() ? ActionEvent.META_MASK
+					: ActionEvent.CTRL_MASK);
 			this.putValue(Action.ACCELERATOR_KEY, this.accelerator);
 		}
 	}
