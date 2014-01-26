@@ -5,5 +5,5 @@ bin/
 *.html
 *.class
 MCB/mail.properties
-MCB/mcbApp.log.*
+*mcbApp.log*
 MCB Treffen.jar

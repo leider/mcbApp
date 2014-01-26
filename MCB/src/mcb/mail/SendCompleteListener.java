@@ -6,6 +6,8 @@ public interface SendCompleteListener {
 
 	PersistenceStore getPersistenceStore();
 
+	void messagesNotSent();
+
 	void messagesSent();
 
 }

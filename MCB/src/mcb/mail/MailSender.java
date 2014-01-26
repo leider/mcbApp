@@ -2,11 +2,17 @@ package mcb.mail;
 
 import java.util.Date;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Message.RecipientType;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.swing.SwingUtilities;
 
 import mcb.model.Adresse;
@@ -42,6 +48,15 @@ public class MailSender implements Runnable {
 				this.send(adresse);
 			} catch (Exception e) {
 				MailSender.LOGGER.fatal(e.getMessage(), e);
+				Runnable communicateAllSent = new Runnable() {
+
+					@Override
+					public void run() {
+						MailSender.this.listener.messagesNotSent();
+					}
+				};
+				SwingUtilities.invokeLater(communicateAllSent);
+				return;
 			}
 		}
 		Runnable communicateAllSent = new Runnable() {
@@ -62,8 +77,23 @@ public class MailSender implements Runnable {
 		message.setReplyTo(new InternetAddress[] { new InternetAddress(MailSessionFactory.replyto) });
 		message.setSubject(this.neuestesTreffen.getBeschreibung());
 		message.setSentDate(this.jetzt);
-		message.setText(this.neuestesTreffen.getEmailPreviewText(adresse.getVorname()));// , "UTF-8");
+
+		Multipart multipart = new MimeMultipart();
+
+		MimeBodyPart textBodyPart = new MimeBodyPart();
+		textBodyPart.setText(this.neuestesTreffen.getEmailPreviewText(adresse.getVorname()));// , "UTF-8");
+		multipart.addBodyPart(textBodyPart);
+
+		MimeBodyPart messageBodyPart = new MimeBodyPart();
+		String file = MailSessionFactory.attachmentName;
+		String fileName = "einladung.pdf";
+		DataSource source = new FileDataSource(file);
+		messageBodyPart.setDataHandler(new DataHandler(source));
+		messageBodyPart.setFileName(fileName);
+		multipart.addBodyPart(messageBodyPart);
+
+		message.setContent(multipart);
+
 		Transport.send(message);
 	}
-
 }

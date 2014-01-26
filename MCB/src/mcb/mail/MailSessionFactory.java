@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 public class MailSessionFactory {
 	public static String from;
 	public static String replyto;
+	public static String attachmentName;
 	static final Logger LOGGER = Logger.getLogger(MailSessionFactory.class.getName());
 
 	public static Session createSession() {
@@ -48,6 +49,7 @@ public class MailSessionFactory {
 		}
 		MailSessionFactory.from = props.getProperty("from");
 		MailSessionFactory.replyto = props.getProperty("replyto");
+		MailSessionFactory.attachmentName = props.getProperty("attachmentName");
 		return props;
 	}
 

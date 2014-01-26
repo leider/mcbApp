@@ -119,6 +119,11 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 	}
 
 	@Override
+	public void messagesNotSent() {
+		JOptionPane.showMessageDialog(this, "Mails wurden nicht gesendet. Bitte das Log überprüfen.");
+	}
+
+	@Override
 	public void messagesSent() {
 		JOptionPane.showMessageDialog(this, "Mails wurden gesendet.");
 	}
