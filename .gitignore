@@ -1,8 +1,9 @@
 *.class
-.DS_Store
+*.DS_Store
 .metadata
 bin/
 *.html
 *.class
-
-MCB/mcbApp.log
+MCB/mail.properties
+MCB/mcbApp.log.*
+MCB Treffen.jar
