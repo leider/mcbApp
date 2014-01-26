@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Log4J"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Jgoodies Forms"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Jgoodies Binding"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Jgoodies Looks"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/core"/>
-	<classpathentry kind="src" path="src/tutorial"/>
-	<classpathentry kind="src" path="src/extras"/>
-	<classpathentry kind="src" path="src/test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="binding-2.0.6.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Jgoodies Forms"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/Jgoodies Forms"/>
+	<classpathentry exported="true" kind="lib" path="jgoodies-binding-2.10.0.jar" sourcepath="jgoodies-binding-2.10.0-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Jgoodies Binding/jgoodies-binding-2.10.0-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

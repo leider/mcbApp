@@ -24,9 +24,9 @@ import mcb.persistenz.PersistenceStore;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
-import com.jgoodies.binding.list.ArrayListModel;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.ValueModel;
+import com.jgoodies.common.collect.ArrayListModel;
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -126,36 +126,10 @@ public class AdressePanel extends ModelPanel<Adresse> {
 		builder.add(this.fruehstueckSonntagIntegerField, cc.xy(12, row));
 	}
 
-	// private void fruehstueckFeldChanged(FruehstuecksSpinner fruehstueckFeld) {
-	// Adresse adresse = this.presentationModel.getBean();
-	// if (adresse == null || adresse.getAktuellerBesuch() == null) {
-	// fruehstueckFeld.setValue(0);
-	// return;
-	// }
-	// adresse.getAktuellerBesuch().setFruehstueckFuer(fruehstueckFeld.getValue(), this.getTagFuerFruehstueckSpinner(fruehstueckFeld));
-	// this.persistenceStore.saveAdresse(adresse);
-	// }
-	//
-	// protected void fruehstueckSamstagChanged() {
-	// this.fruehstueckFeldChanged(this.fruehstueckSamstagIntegerField);
-	// }
-	//
-	// protected void fruehstueckSonntagChanged() {
-	// this.fruehstueckFeldChanged(this.fruehstueckSonntagIntegerField);
-	// }
-	//
 	public Adresse getAdresse() {
 		return this.presentationModel.getBean();
 	}
 
-	// private FruehstuecksTag getTagFuerFruehstueckSpinner(FruehstuecksSpinner fruehstueckFeld) {
-	// if (fruehstueckFeld == this.fruehstueckSamstagIntegerField) {
-	// return FruehstuecksTag.Samstag;
-	// }
-	// return FruehstuecksTag.Sonntag;
-	//
-	// }
-	//
 	private void initComponents() {
 		ListModel countryListModel = new ArrayListModel<String>(Laender.getAlleKurzel());
 		ValueModel countryModel = this.presentationModel.getBufferedModel(Adresse.LAND);
@@ -189,7 +163,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
 	}
 
 	private void initListeners() {
-		this.presentationModel.addPropertyChangeListener(PresentationModel.PROPERTYNAME_BEAN, new PropertyChangeListener() {
+		this.presentationModel.addPropertyChangeListener(PresentationModel.PROPERTY_BEAN, new PropertyChangeListener() {
 
 			public void propertyChange(PropertyChangeEvent evt) {
 				AdressePanel.this.updateCheckboxes();

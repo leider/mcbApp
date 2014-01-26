@@ -1,7 +1,86 @@
 
                          JGoodies Looks
-                          Version 2.3.1
                           Release Notes
+                        
+
+CHANGES IN 2.5.3 --------------------------------------------------------
+
+    o Compiled against the JGoodies Common 1.5.
+    o Source code cleanup.
+    o Fixed and extended the pom.xml:
+      - added schema
+      - fixed scope for dependencies
+      - added Maven Central deployer
+      - added build data
+
+
+CHANGES IN 2.5.2 --------------------------------------------------------
+
+    o Fixed the broken version in the pom.xml.
+
+
+CHANGES IN 2.5.1 --------------------------------------------------------
+
+    o The javadocs, main and test sources are delivered as JARs.
+
+
+CHANGES IN 2.5.0 --------------------------------------------------------
+
+    o Requires Java 6 and JGoodies Common 1.3.
+    o Removed deprecated code:
+      - LookUtils#IS_LAF_WINDOWS_XP_ENABLED
+      - LookUtils#IS_LOW_RESOLUTION
+    o Generified several members.
+    o Removed code that is obsolete in Java 6.
+    o Simplified the UI class and component setup for Java 6.
+    
+                        
+CHANGES IN 2.4.2 --------------------------------------------------------
+
+BUG FIXES
+
+    o Fixed a potential NPE in Windows- and PlasticFieldCaret#selectAll
+    
+                        
+CHANGES IN 2.4.1 --------------------------------------------------------
+                        
+INTRODUCTION
+
+    This version requires the JGoodies Common library version 1.2.0.
+    
+
+OTHER CHANGES
+
+    o Uses the Common SystemUtils.
+    
+    
+CHANGES IN 2.4.0 --------------------------------------------------------
+                        
+INTRODUCTION
+
+    This version requires Java 5 and the new JGoodies Common library.
+    Make sure that you include jgoodies-common-1.1.1.jar in your
+    classpath when using this Looks version.
+    
+
+BUG FIXES
+
+    o Fixed bug in the FontTest on non-Windows platforms.
+    o Fixed a potential NPE in PlasticFieldCaret#focusLost().
+
+
+OTHER CHANGES
+
+    o Replaced the green Plastic question icon by the standard
+      (blue) help icon. Question dialogs shall use a question mark
+      in the main instruction, not a question icon. 
+      The blue question mark icon is for help messages and help windows.  
+    o Removed obsolete #isBlank implementation.
+    o Removed code used for Java 1.4 that is now obsolete.
+    o Updated HTML docs.
+    
+    
+CHANGES IN 2.3.1 --------------------------------------------------------
                         
 
 INTRODUCTION
@@ -15,12 +94,8 @@ BUG FIXES
     o The Windows classic L&f combo box arrow button paints the arrow icon
       always in black, ignoring the desktop color theme.
     
----------------------------------------------------------------------------
-
-
-                         JGoodies Looks
-                          Version 2.3.0
-                          Release Notes
+    
+CHANGES IN 2.3.0 --------------------------------------------------------
                         
 
 INTRODUCTION

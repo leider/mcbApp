@@ -1,27 +1,353 @@
 
 
                         JGoodies Data Binding
-                            Version 2.0.6
                             Release Notes
-                        
+            
+            
+CHANGES IN 2.10.0 --------------------------------------------------------
 
+    o Generified BindingConverter.
+    o Added ActionBindingBuilder#to(JComboBox).
+    o Added PresentationModel#setComponentEditable(String, boolean).
+    o Added PresentationModel#setComponentEnabled(String, boolean).
+    o Added PresentationModel#setComponentVisible(String, boolean).
+    o Performance improvement in BeanUtils.
+    o PropertyAccessor messages regarding missing getter or setters
+      provide details about the bean, bean class and missing method.
+    o Attempts to read or write a bean property that fail due 
+      to a missing (or non-public) reader or writer now throw
+      a PropertyAccessException not an UnsupportedOperationException.
+    o Improved JavaDocs.
+      
+
+CHANGES IN 2.9.0 --------------------------------------------------------
+
+    This version adds support for binding sorted JTables. It is binary
+    compatible with previous versions. However, there's a significant
+    change in the behavior of the binding to sorted tables.
+    
+    If a JTable has a RowSorter, its selection model reflects the table's 
+    sort state. In other words, sorting modifies the selection indices. 
+    This makes it difficult to share ListSelectionModels for multiple 
+    sorted JTables.
+    
+    In previous Binding versions 
+       Bindings.bind(table, listModel, listSelectionModel)
+    set the given listSelectionModel directly to the table's.
+    Sorting the table via the standard RowSorter mechanism
+    has modified this selection model's indices.
+    
+    Since version 2.9
+       Bindings.bind(table, listModel, listSelectionModel)
+    sets a TableRowSorterListSelectionModel as the table's selection model
+    that is then synchronized with the given listSelectionModel.
+    Sorting the table keeps the listSelectionModel's indices stable.
+    
+    Migration info: If you don't use the JTable RowSorter mechanism,
+    you're done. If you bind to sorted tables without the Bindings class
+    or Binder feature, you're done too.
+    Only if you bind via Bindings or the Binder feature to JTables
+    that use RowSorters, you should be aware that the indices of
+    bound ListSelectionModels do no longer change on sort operations.
+    Likely you can remove code that maps sorted indices to unsorted ones.
+
+
+CHANGES IN 2.8.0 --------------------------------------------------------
+
+    o Since this version is compiled against the JGoodies Common 1.5
+      all Bean and Model subclasses do not serialize listeners.
+    o Removed the deprecated AbstractConverter class that has been
+      replaced by the BindingConverter and ConverterValueModel before.
+    o Removed deprecated constants, that have been replaced before,
+      e.g. PROPERTYNAME_XXX  -> PROPERTY_XXX 
+    o Reduced the former public visibility to protected for methods
+      PresentationModel#beforeBeanChange and #afterBeanChange.
+    o Added PresentationModel#onBeanChanging and #onBeanChanged.
+    o Source code cleanup.
+    o Fixed and extended the pom.xml:
+      - added schema
+      - fixed scope for dependencies
+      - added Maven Central deployer
+      - added build data
+
+
+CHANGES IN 2.7.0 --------------------------------------------------------
+
+    o Added the BindingConverter interface that describes objects
+      that convert binding source values to binding target values
+      and vice versa.
+    o Added ValueModelBindingBuilder#converted(BindingConverter)
+      that is similar but more general than #formatted(Format).
+      For example, you can write:
+      binder.bindBeanProperty("price")
+            .converted(currencyConverter)
+            .to(priceField);
+    o Added ConverterValueModel that wraps a ValueModel and converts
+      values using a BindingConverter.
+    o The conversion classes provided by the ConverterFactory 
+      have been rewritten to implement the BindingConverter interface.
+      These classes are public and can be used
+    o Marked AbstractConverter as deprecated.
+      This class will be removed from a future library version.
+    o Added ObjectBinder#bind(Object[], ListSelectionModel).
+    o Slightly overhauled the binder mechanism:
+      - added ActionObjectBinderImpl (from JSDL Sandbox)
+      - added ActionBeanBinderImpl (from JSDL Sandbox)
+      - added ActionPresentationModelImpl (from JSDL Sandbox)
+      - replaced BasicBinders by the Binders (from JSDL Sandbox)
+      - added internal interfaces for classes not included in this lib:
+        ActionObject, ActionBean, and ActionPresentationModel
+    o Added Bindings#bind(JComboBox, ComboBoxModel, String nullText).
+    o Added ObjectBinder.bind(ComboBoxModel).to(aComboBox) and
+            ObjectBinder.bind(ComboBoxModel).to(aComboBox, aNullText).
+    
+
+CHANGES IN 2.6.1 --------------------------------------------------------
+
+    o Added the PresentationModel() constructor that sets a null bean.
+    o Renamed property constants from PROPERTYNAME_* to PROPERTY_*
+    o The javadocs, main and test sources are delivered as JARs.
+
+
+CHANGES IN 2.6.0 --------------------------------------------------------
+
+    o Requires Java 6 and the JGoodies Common 1.3.
+    o Removed deprecated property constant names from
+      ComponentValueModel that have been replaced by
+      the same constants in ComponentModel before.
+
+
+CHANGES IN 2.5.1 --------------------------------------------------------
+
+    This maintenance update comes with minor implementation improvements 
+    and slightly better documentation.
+
+
+CHANGES IN 2.5.0 --------------------------------------------------------
+
+    Added the interfaces ActionObjectBinder, ActionBeanBinder, and 
+    ActionPresentationModelBinder that add binding capabilities for 
+    Action names to ObjectBinder, BeanBinder, PresentationModelBinder.
+      
+    Implementations will typically look up an Action for a given
+    action name and hand it over to the Action-instance binding
+    of an ObjectBinder implementation.
+      
+    The library does not contain implementations, because there's no
+    popular and public standard that describes and implements how to
+    look up an Action for a name. A popular approach is the JSR 296
+    (Swing Application Framework) that enables developers to annotate
+    methods with @Action that then can be requested for a target object
+    and an action name.
+      
+    Since the JGoodies implementation of the JSR 296 (the JGoodies 
+    "Application" library) is not available to the general public,
+    the JGoodies Application-based implementations of the above 
+    interfaces are not part of the Binding library.
+    
+    However, the new binder interfaces reduce the effort to integrate
+    your custom Action-lookup and binder mechanism that may be based
+    on the JSR 296 or any other Action name registry.
+
+
+CHANGES IN 2.4.1 --------------------------------------------------------
+
+    o ComponentModel extends ObservableBean2 instead of ObservableBean.
+    o Changed the return type for PresentationModel#getComponentModel 
+      and #getBufferedComponentModel to AbstractWrappedValueModel
+      which implements ComponentValueModel but provides more features.
+    
+                        
+CHANGES IN 2.4.0 --------------------------------------------------------
+                        
 INTRODUCTION
+
+    This version is binary incompatible with previous releases
+    and converters behave slightly different due to a new feature.
+    However, the vast majority of API users won't be affected
+    by these changes and can use this update as a compatible version.
+
+CHANGES THAT AFFECT THE COMPATIBILITY
+
+    o Removed ValueModelBindingBuilder#converted(AbstractConverter)
+    o Renamed ValueModelBindingBuilder#converted(Format) to #formatted.
+    o ComponentValueModel is now an interface.
+    o The old ComponentValueModel implementation has been overhauled
+      and is now available as DefaultComponentValueModel.
+    o AbstractConverter extends ComponentValueModel.
+    o AbstractConverter listens to enabled/visible/editable changes,
+      if the wrapped model is a ComponentValueModel
+    o The binding to check boxes, check box menu items, radio buttons,
+      and radio button menu items has been generalized.
+      The Bindings class as well as ValueModelBindingBuilder now accept
+      general AbstractButtons instead of JCheckBox/JRadioButton.
+      The binding style (check box vs. radio choice) depends on the
+      number of parameters; the radio style has the choice parameter.
+      - Bindings#bind(JCheckBox,      ValueModel) is now
+                #bind(AbstractButton, ValueModel).
+      - Bindings#bind(JRadioButton,   ValueModel, Object choice) is now
+                #bind(AbstractButton, ValueModel, Object choice).
+      - ValueModelBindingBuilder#to(JCheckBox) became
+                                #to(AbstractButton).
+      - ValueModelBindingBuilder#to(JRadioButton,   Object) became
+                                #to(AbstractButton, Object).               
+    
+NEW FEATURES
+
+    o Added the ComponentModel interface.
+    o Added AbstractWrappedValueModel.
+    o BeanBinder accepts general beans (required AbstractBean before).
+    o Added check box style binding via Bindings#bind(AbstractButton, 
+                          Object selectedValue,
+                          Object deselectedValue)
+      and bind*(*).to(anAbstractButton, selectedValue, deselectedValue)
+    
+
+OTHER CHANGES
+
+    o Declared methods as static where possible.
+
+
+CHANGES IN 2.3.0 --------------------------------------------------------
+                        
+INTRODUCTION
+
+    This version is backwards compatible with previous releases.
+    It adds a new mechanism to bind bean properties, presentation
+    model properties, SelectionInLists, and Actions to components,
+    see package com.jgoodies.binding.binder. You can now write:
+    
+    PresentationModelBinder binder = 
+        new PresentationModelBinderImpl(model);
+
+    // A property of the presentation model
+    binder.bindProperty("synthetic").to(aComponent);
+               
+    // Bean properties
+    binder.bindBeanProperty(PROPERTY_TITLE)    .to(titleField);
+    binder.bindBeanProperty(PROPERTY_CLASSICAL).to(classicalBox);
+    binder.bindBeanProperty(PROPERTY_ALIGNMENT).to(leftRadio, LEFT);
+    
+    // SelectionInLists
+    binder.bindBeanProperty(PROPERTY_SELECTION)
+          .asSelectionIn(SELECTION_VALUES)     .to(aComboBox);
+    binder.bind(aSelectionInList)              .to(aComboBox)
+    binder.bind(aSelectionInList)              .to(aList)
+    binder.bind(aSelectionInList)              .to(aTable
+            
+    // Actions
+    binder.bind(anAction).to(aButton);
+    binder.bind(anAction).to(aTextField);
+
+            
+OTHER CHANGES
+
+    o Added Bindings#bind(JComboBox, SelectionInList, String nullText)
+      that binds the combo box to a list with an optional element
+      that is mapped to null and displayed with the given nullText.
+
+            
+CHANGES IN 2.2.2 --------------------------------------------------------
+                        
+    This update fixes a minor bug with missing content changes
+    in the LinkedListModel list iterator.        
+
+            
+CHANGES IN 2.2.1 --------------------------------------------------------
+                        
+    This update fixes a critical bug with missing table events
+    in the AbstractTableAdapter that has been introduced in 2.2.0.        
+                
+
+CHANGES IN 2.2.0 --------------------------------------------------------
+                        
+INTRODUCTION
+
+    This maintenance release is a cleanup release where deprecated
+    classes have been removed. Also, it enables a faster lookup of
+    bean classes that have no associated BeanInfo class - as is the
+    case in almost all domain classes.
+
+CHANGES THAT AFFECT THE COMPATIBILITY
+
+    o Removed BeanUtils#getValue(Object)
+    o Removed BeanUtils#setValue(Object, PropertyDescriptor)
+    o Removed BeanUtils#getPropertyDescriptor
+    o Replaced Observable with ObservableBean from Common 1.1.
+    
+NEW FEATURES
+
+    o Added support for binding table's to ListModels.
+      - introduced the ListModelBindable interface
+      - AbstractTableAdapter implement ListModelBindable
+      - added Bindings#bind(JTable, SelectionInList)
+      - added Bindings#bind(JTable, ListModel, ListSelectionModel)   
+      - added BasicComponentFactory#createTable 
+    o Added a feature for faster bean property lookup. 
+      Useful if no bean info classes are used and so the class lookup
+      can be omitted. To setup the faster lookup call PropertyAccessors'
+      #setProvider(new FastPropertyAccessorProviderDraft());
+      The latter ships with the source code extras.
+    o Added BeanAdapter.SimplePropertyAdapter#fireChange(Object, Object).
+    o PropertyAdapter and BeanAdapter are serializable.
+
+OTHER CHANGES
+
+    o BufferedValueModel#setSubject improved to reduce
+      unnecessary read exceptions when the old subject is null.
+    o Suppressed warnings for some tests.
+    o BeanUtils uses ObservableBean and ObservableBean2 instead of Model
+      which will slightly improve the registration of listeners. 
+    o Improved JavaDocs, fixed compiler warnings.
+    o Updated references in the distribution docs.
+    
+    
+CHANGES IN 2.1.0 --------------------------------------------------------
+                        
+    This maintenance release uses and requires the JGoodies Common lib.
+    Make sure that you include jgoodies-common-1.0.0.jar in your
+    classpath when using this Binding version.
+    
+    
+CHANGES THAT AFFECT THE COMPATIBILITY
+
+    o BasicComponentFactory#createCheckBox and #createRadioButton
+      now accept a marked text that may contain a mnemonic marker
+      ('&') to mark the mnemonic and its index. See MnemonicUtils
+      for details about this configuration.
+      Also, the content area of the returned components is now
+      not filled. This is typically, if a check box or radio button
+      is contained in a panel with a gradient background, for example
+      tabbed panes in many Windows L&f configurations.
+    o Removed EmptyDateFormatter and EmptyNumberFormatter.
+      These have been replaced by the new JGoodies Common classes
+      EmptyDateFormat and EmptyNumberFormat. 
+      Adjusted the BasicComponentFactory to use the new classes.
+      
+      
+BUG FIXES
+
+    #134: Binding via Bindings looses AbstractButton properties.
+    
+    
+OTHER CHANGES
+
+    o Marked ArrayListModel, LinkedListModel, and ObservableList
+      as deprecated. These classes have been replaced by new versions
+      from the JGoodies Common library. The Binding classes will be
+      removed from the next Binding version.
+    o Fixed a few JavaDocs.
+    
+    
+CHANGES IN 2.0.6 --------------------------------------------------------
 
     This maintenance release fixes a regression introduced by the
     parameter strings for ValueModels created by BeanAdapters and 
     PropertyAdapters. The #toString method of a ValueModel returned
     by a Bean- or PropertyAdapter on a null bean failed with an NPE.
+
     
--------------------------------------------------------------------------
-Find below release notes for previous versions.
-
-
-                        JGoodies Data Binding
-                            Version 2.0.5
-                            Release Notes
-                        
-
-INTRODUCTION
+CHANGES IN 2.0.5 --------------------------------------------------------
 
     This maintenance release reverts a change made in the Binding 2.0.4
     that lead to an incompatible serialization of Model subclasses.
@@ -30,9 +356,6 @@ INTRODUCTION
     This feature was unused and has now been removed to make version
     2.0.5 binary compatible with versions 2.0.0, 2.0.1, 2.0.2, and 2.0.3.
     
-    
-CHANGES
-
     o Source code improvement: uses arrays for copying listener lists.
     o Replaced LinkedList by ArrayList.
     o Updated the Forms library used for the tutorial to 1.3.0 pre1.
@@ -41,17 +364,7 @@ CHANGES
       titled separators by labels, removed unnecessary separators.
     
     
--------------------------------------------------------------------------
-Find below release notes for previous versions.
-
-
-
-                        JGoodies Data Binding
-                            Version 2.0.4
-                            Release Notes
-                        
-
-INTRODUCTION
+CHANGES IN 2.0.4 --------------------------------------------------------
 
     This maintenance release adds a public API to the delaying classes 
     to check whether there are one or more pending events. The #release 
@@ -59,32 +372,17 @@ INTRODUCTION
     TextComponentConnector, and PropertyConnector can be called 
     multiple times (issue #108).
     
-    
-CHANGES
-
     o Added #isPending to DelayedPropertyChangeHandler, 
       DelayedReadValueModel and DelayedWriteValueModel.
     o More final methods in DelayedPropertyChangeHandler.
     o Added tests for calling release multiple times.
+
     
--------------------------------------------------------------------------
-Find below release notes for previous versions.
-
-
-
-                        JGoodies Data Binding
-                            Version 2.0.3
-                            Release Notes
-                        
-
-INTRODUCTION
+CHANGES IN 2.0.3 --------------------------------------------------------
 
     This maintenance release improves the debug output for subclasses
     of AbstractValueModel and ships improved tutorial sources and 
     slightly improved JavaDocs.
-    
-    
-CHANGES
 
     o Added AbstractValueModel#paramString and #valueString.
     o Implemented #paramString in BufferedValueModel, PropertyAdapter,
@@ -92,22 +390,8 @@ CHANGES
     o Updated the Forms library used for the tutorial to 1.2.0.
     o The download link in the HTML pages points to JGoodies.com.
     
--------------------------------------------------------------------------
-Find below release notes for previous versions.
-
-
-
-                        JGoodies Data Binding
-                            Version 2.0.2
-                            Release Notes
-                        
-
-INTRODUCTION
-
-    This maintenance release includes minor improvements.
     
-    
-OTHER CHANGES
+CHANGES IN 2.0.2 --------------------------------------------------------
 
     #127: PresentationModel constructors shall use the bean type.
           Changed PresentationModel(Object) and
@@ -122,20 +406,7 @@ OTHER CHANGES
     o Updated the Forms library used for the tutorial to 1.2b2.
     
     
--------------------------------------------------------------------------
-Find below release notes for previous versions.
-
-
-
-                        JGoodies Data Binding
-                            Version 2.0.1
-                            Release Notes
-                        
-
-INTRODUCTION
-
-    This maintenance release fixes a minor bug in the SelectionInList.
-    
+CHANGES IN 2.0.1 --------------------------------------------------------
     
 BUGS FIXED
 
@@ -151,18 +422,8 @@ OTHER CHANGES
     o Corrected the IndirectListModel documentation.
     
     
--------------------------------------------------------------------------
-Find below release notes for previous versions.
-
-
-
-                        JGoodies Data Binding
-                            Version 2.0.0
-                            Release Notes
-                        
-
-INTRODUCTION
-
+CHANGES IN 2.0.0 --------------------------------------------------------
+    
     With this major update the JGoodies Binding has been moved to Java 5. 
     Key classes and methods have been generified, sources use annotations, 
     and the code uses the enhanced for loop.

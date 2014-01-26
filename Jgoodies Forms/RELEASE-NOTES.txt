@@ -1,6 +1,211 @@
+                           JGoodies Forms
+                            Release Notes
+                        
+
+CHANGES IN 1.7.2  -----------------------------------------------------
+
+    o Fixed ButtonStackBuilder layout that does no longer 
+      group the layout rows for the contained buttons.
+      Unlike the old behavior, invisible buttons now reduce
+      the layout size of the button stack. Also, we could now 
+      potentially switch the 'honorsVisibility' property.
+    o Fixed exception message references to API methods 
+      that have been replaced.
+    o Fixed ListViewBuilder argument check messages.
+    o Added ListViewBuilder#focusTraversal to specify
+      a custom focus traversal policy.
+    o ListViewBuilder allows to use custom headers.
+    
+
+CHANGES IN 1.7.1  -----------------------------------------------------
+
+    o Requires the JGoodies Common 1.6.0.
+    o Added ListViewBuilder#honorsVisibility to enable API users
+      to keep the overall layout stable, even if a sub view, 
+      for example a details view, becomes invisible.
+    o The ListViewBuilder sets names for unnamed components and
+      those that are implicitly created by the builder.
+    o Added ListViewBuilder#namePrefix to specify a prefix for
+      the component names set by the builder.
+    o Fixed docs.
+    o Updated copyright date.
+
+
+CHANGES IN 1.7.0  -----------------------------------------------------
+
+    o Removed deprecated classes, methods, and constants.
+    o Fixed Forms#centered, #horizontal, #vertical.
+    o Added PanelBuilder#focusTraversal(FocusTraversalPolicy).
+    o Completed JavaDocs for the Forms class.
+    o Fixed some @since tags.
+    o Compiled against the JGoodies Common 1.5.
+    o Source code cleanup.
+    o Fixed and extended the pom.xml:
+      - added schema
+      - fixed scope for dependencies
+      - added Maven Central deployer
+      - added build data
+    
+    
+CHANGES IN 1.6.0  -----------------------------------------------------
+
+    This version is binary incompatible with previous releases.
+    The vast majority of client code isn't affected, because primarily 
+    internal interfaces and their implementations have changed.
+    However, some changes may require a migration, for example 
+    if you have used the deprecated ButtonBarFactory in the past. 
+
+
+    VISUAL INCOMPATIBILITIES
+    o Since 1.6 the PanelBuilder's opaque state is false by default,
+      where it was true before. You can get the old behavior with: 
+          PanelBuilder.setOpaqueDefault(true);
+          
+    o Since 1.6 the DefaultUnitConverter's default test string is
+      BALANCED_AVERAGE_CHARACTER_TEST_STRING where it was "X" before.
+      It is recommended to use the new default, because it scales
+      better with new typefaces on modern windowing systems.
+      You can get the old behavior with:
+          DefaultUnitConverter.getInstance()
+              .setAverageCharacterWidthTestString(
+                  DefaultUnitConverter.OLD_AVERAGE_CHARACTER_TEST_STRING);
+    
+    OTHER CHANGES
+    o Since 1.6 the PanelBuilder's label-for-feature is on by default.
+      The new behavior is recommended. You can get the old behavior with:
+          PanelBuilder.setLabelForFeatureEnabledDefault(false);
+              
+    o Overhauled the ComponentFactory interface:
+      - merged ComponentFactory and ComponentFactory2
+      - removed ComponentFactory2
+      - added #createHeaderLabel(String)
+      - DefaultComponentFactory implements ComponentFactory
+    o Overhauled the I15dPanelBuilder:
+      - merged it with its superclass AbstractI15dPanelBuilder
+      - supports a general StringLocalizer for the String resource access
+      - sets the initial "opaque" property value to false
+    o Renamed FormFactory to FormSpecs.
+    o Removed the deprecated ColumnSpec.MIDDLE; use CENTER instead.
+    o Added ButtonBarBuilder
+      - builds button bars in a platform-independent order
+      - can add sequences of related buttons
+    o Marked ButtonBarBuilder2 as deprecated; use ButtonBarBuilder.
+    o ButtonBarBuilder, ButtonStackBuilder, and ButtonBarBuilder2
+      build focus traversal groups for the contained buttons,
+      if the JGoodies FocusTraversalUtils class is available.
+    o Removed LayoutStyle#isLeftToRightButtonOrder() and its
+      implementations in MacLayoutStyle and WindowsLayoutStyle.
+    o Overhauled the ButtonStackBuilder
+      - removed #ButtonStackBuilder(FormLayout, JPanel)
+      - removed #addButtons
+      - added configuration methods
+      - changed superclass to AbstractButtonPanelBuilder
+    o Changed names in Borders from DIALOG_BORDER to DIALOG,
+      DLU14_BORDER to DLU14, ...
+    o AbstractBuilder#setDefaultComponentFactory has been renamed to
+      #setComponentFactoryDefault.
+    o Fixed and added JavaDocs and JavaDoc comment examples.
+    o Fixed the broken artifact id in the pom.xml.
+      
+
+JGoodies Forms 1.5.1 ------------------------------------------------------
+
+    o Marked the ButtonBarFactory as deprecated. 
+      This class will be removed from the next Forms version.
+    o The javadocs, main and test sources are delivered as JARs.
+
+
+JGoodies Forms 1.5.0 ------------------------------------------------------
+
+    o Requires Java 6 and JGoodies Common 1.3.
+    o Generified several members.
+    o Removed the deprecated ButtonBarBuilder that has been replaced
+      by the ButtonBarBuilder2 before.
+    o Removed DefaultComponentFactory#setTextAndMnemonic that has been
+      marked as deprecated and replaced by MnemonicUtils#configure before.
+    o Marked ColumnSpec#MIDDLE as deprecated; use CENTER instead.
+    o Minor implementation improvements.
+    
+    
+JGoodies Forms 1.4.2 ------------------------------------------------------
+
+    o Declared methods as static where possible.
+    
+    
+JGoodies Forms 1.4.1 ------------------------------------------------------
+
+BUG FIXES
+
+    o Fixed missing synchronization of the lazy LayoutMap creation.
+    
+OTHER CHANGES
+
+    o Requires JGoodies Common 1.2.0
+    
+    
+JGoodies Forms 1.4.0 ------------------------------------------------------
+
+INTRODUCTION
+
+    This version requires Java 5 and the new JGoodies Common library.
+    Make sure that you include jgoodies-common-1.1.1.jar or later 
+    in your classpath when using this Forms version.
+    
+   
+INCOMPATIBLE CHANGES
+
+    o Added LayoutStyle#getLabelComponentPadY().
+    o Added ComponentFactory2#createButton(Action).
+    o The handling of text with mnemonic markers ('&') has changed.
+      However, the changes are minimal and most marked text won't
+      be affected. Nothing changed for single mnemonic markers
+      The difference is how ampersands are handled that shall not 
+      mark the mnemonic character. In version 1.3 all these markers
+      needed to be quoted - before and after the mnemonic marker.
+      Since version 1.4 only the ampersands before the marker shall
+      be quoted.
+      
+      Version 1.3            Version 1.4            Comment
+      Save                   Save                   unchanged
+      &Save                  &Save                  unchanged
+      Save &as               Save &as               unchanged
+      Look & Feel            Look & Feel            unchanged
+      R&&D department        R&&D department        unchanged
+      R&&D d&epartment       R&&D d&epartment       unchanged
+      A&&B &GmbH&&Co KG      A&&B &GmbH&Co KG       change
+      
+      In the last line the ampersand in "mbH&Co KG" does not
+      mark a mnemonic. It must be quoted in version 1.3, 
+      it must not be quoted in 1.4.
+    
+ 
+NEW FEATURES
+
+    o Added ${label-component-gap}, $lcgap, and $lcg as row variables.
+    o Added AbstractBuilder as new builder superclass.
+      It holds a ComponentFactory per instance, that is initialized
+      using the global default ComponentFactory2 instance.
+    o ButtonBarBuilder2 methods return the builder to allow cascades, 
+       e.g.: builder.addButton(...).addSeparator().add(...) etc.
+    o Added DefaultUnitConverter.MODERN_AVERAGE_CHARACTER_TEST_STRING.
+    o Added DefaultUnitConverter.BALANCED_AVERAGE_CHARACTER_TEST_STRING.
+
+
+OTHER CHANGES
+
+    o Moved to Java 5: uses varargs and generics where appropriate.
+    o All classes now use the Common class Preconditions
+      to check preconditions on method state and parameters.
+    o Adjusted and extended tests for handling mnemonics.
+    o Moved tutorial sources and tutorial docs to the upcoming
+      JGoodies Showcase application.
+      
+---------------------------------------------------------------------------
+Find below the change history for older releases.
+
 
                            JGoodies Forms
-                           Version 1.3.0
+                            Version 1.3.0
                             Release Notes
                         
 
@@ -58,22 +263,8 @@ OTHER CHANGES
     o Added tests for the accessible name in FormLabels.
       
       
-ROADMAP
-
-    Forms 1.4
-    o Move to Java 5.
-    o Remove deprecated classes and methods.
-    o Use JGoodies Common.
-
-    Forms 2.0 
-    o API clarification and API extensions.
-    o Bug fixing - even if the fix affects the layout.
-    o Make DLU a general unit.
-    o Change the default unit conversion algorithm.
-    
 ---------------------------------------------------------------------------
 Find below the change history for older releases.
-
 
 
                            JGoodies Forms
