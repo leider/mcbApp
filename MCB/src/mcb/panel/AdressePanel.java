@@ -39,13 +39,13 @@ public class AdressePanel extends ModelPanel<Adresse> {
 	private JTextField strasseTextfield;
 	private JTextField plzTextfield;
 	private JTextField ortTextfield;
-	private JComboBox landTextfield;
+	private JComboBox<?> landTextfield;
 	private JTextField emailTextfield;
-	private JComboBox emailgrundTextfield;
+	private JComboBox<?> emailgrundTextfield;
 	private JCheckBox gespannCheckbox;
 	private JCheckBox soloCheckbox;
 	private JTextField geburtstagTextfield;
-	private JList besuchListe;
+	private JList<?> besuchListe;
 	private JCheckBox meldungCheckbox;
 	private FruehstuecksSpinner fruehstueckSamstagIntegerField;
 	private FruehstuecksSpinner fruehstueckSonntagIntegerField;
@@ -132,13 +132,14 @@ public class AdressePanel extends ModelPanel<Adresse> {
 		return this.presentationModel.getBean();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void initComponents() {
-		ListModel countryListModel = new ArrayListModel<String>(Laender.getAlleKurzel());
+		ListModel<String> countryListModel = new ArrayListModel<String>(Laender.getAlleKurzel());
 		ValueModel countryModel = this.presentationModel.getBufferedModel(Adresse.LAND);
 		SelectionInList<String> countrySil = new SelectionInList<String>(countryListModel, countryModel);
 		this.landTextfield = BasicComponentFactory.createComboBox(countrySil);
 
-		ListModel fehlerListModel = new ArrayListModel<String>(Fehlergruende.alleGruende());
+		ListModel<String> fehlerListModel = new ArrayListModel<String>(Fehlergruende.alleGruende());
 		ValueModel fehlerModel = this.presentationModel.getBufferedModel(Adresse.FEHLERGRUND);
 		SelectionInList<String> fehlerSil = new SelectionInList<String>(fehlerListModel, fehlerModel);
 		this.emailgrundTextfield = BasicComponentFactory.createComboBox(fehlerSil);
@@ -199,7 +200,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
 		this.updateCheckboxes();
 	}
 
-	public void saveAdresse(Adresse adresse) {
+	public void saveAdresse() {
 		this.persistenceStore.saveAll();
 	}
 

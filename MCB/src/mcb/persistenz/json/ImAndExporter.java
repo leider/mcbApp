@@ -21,55 +21,81 @@ import flexjson.JSONSerializer;
 
 public class ImAndExporter {
 
-	public static final Logger LOGGER = Logger.getLogger(ImAndExporter.class.getName());
+	public static void exportAdressen(File file, final Adressen adressen) {
+		DoWithWriter performer = new DoWithWriter() {
+			@Override
+			public void statement(OutputStreamWriter writer) throws IOException {
+				JSONSerializer jsonSerializer = new JSONSerializer();
+				jsonSerializer.include("besuchteTreffen");
+				jsonSerializer.include("besuchteTreffen.treffen.id");
+				jsonSerializer.exclude("besuchteTreffen.treffen.*");
+				for (Adresse adresse : adressen.alle()) {
+					writer.write(jsonSerializer.serialize(adresse));
+					writer.write("\n");
+				}
+			}
+		};
+		ImAndExporter.exportiere(file, performer);
+	}
 
-	public static void exportAdressen(File file, Adressen adressen) {
+	private static void exportiere(File file, DoWithWriter performer) {
+		OutputStreamWriter writer = null;
 		try {
 			if (!file.exists()) {
 				file.getParentFile().mkdir();
 				file.createNewFile();
 			}
 			FileOutputStream stream = new FileOutputStream(file);
-			OutputStreamWriter writer = new OutputStreamWriter(stream, "UTF-8");
-			JSONSerializer jsonSerializer = new JSONSerializer();
-			jsonSerializer.include("besuchteTreffen");
-			jsonSerializer.include("besuchteTreffen.treffen.id");
-			jsonSerializer.exclude("besuchteTreffen.treffen.*");
-			for (Adresse adresse : adressen.alle()) {
-				writer.write(jsonSerializer.serialize(adresse));
-				writer.write("\n");
-			}
+			writer = new OutputStreamWriter(stream, "UTF-8");
+			performer.statement(writer);
 			writer.flush();
 		} catch (IOException e) {
 			ImAndExporter.LOGGER.fatal(e.getMessage(), e);
-			e.printStackTrace();
+		} finally {
+			try {
+				writer.close();
+			} catch (IOException e) {
+				ImAndExporter.LOGGER.fatal(e.getMessage(), e);
+			}
 		}
 	}
 
-	public static void exportTreffen(File file, Treffens treffens) {
-		try {
-			if (!file.exists()) {
-				file.getParentFile().mkdir();
-				file.createNewFile();
+	public static void exportTreffen(File file, final Treffens treffens) {
+		DoWithWriter performer = new DoWithWriter() {
+			@Override
+			public void statement(OutputStreamWriter writer) throws IOException {
+				JSONSerializer jsonSerializer = new JSONSerializer();
+				for (Treffen treffen : treffens.getAlleTreffen()) {
+					writer.write(jsonSerializer.serialize(treffen));
+					writer.write("\n");
+				}
 			}
-			FileOutputStream stream = new FileOutputStream(file);
-			OutputStreamWriter writer = new OutputStreamWriter(stream, "UTF-8");
-			JSONSerializer jsonSerializer = new JSONSerializer();
-			for (Treffen treffen : treffens.getAlleTreffen()) {
-				writer.write(jsonSerializer.serialize(treffen));
-				writer.write("\n");
-			}
-			writer.flush();
-		} catch (IOException e) {
-			ImAndExporter.LOGGER.fatal(e.getMessage(), e);
-			e.printStackTrace();
-		}
+		};
+		ImAndExporter.exportiere(file, performer);
 	}
 
-	public static void importiereAdressen(File file, Adressen adressen, Treffens treffens) {
+	private static void importiere(File file, DoWithReader performer) {
+		BufferedReader reader = null;
 		try {
 			if (file.exists()) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+				reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+				performer.statement(reader);
+			}
+		} catch (IOException e) {
+			ImAndExporter.LOGGER.fatal(e.getMessage(), e);
+		} finally {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				ImAndExporter.LOGGER.fatal(e.getMessage(), e);
+			}
+		}
+	}
+
+	public static void importiereAdressen(File file, final Adressen adressen, final Treffens treffens) {
+		DoWithReader performer = new DoWithReader() {
+			@Override
+			public void statement(BufferedReader reader) throws IOException {
 				String line = reader.readLine();
 				JSONDeserializer<Adresse> jsonDeserializer = new JSONDeserializer<Adresse>();
 				jsonDeserializer.use(Adresse.class, new AdresseFactory());
@@ -79,15 +105,14 @@ public class ImAndExporter {
 					line = reader.readLine();
 				}
 			}
-		} catch (IOException e) {
-			ImAndExporter.LOGGER.fatal(e.getMessage(), e);
-		}
+		};
+		ImAndExporter.importiere(file, performer);
 	}
 
-	public static void importiereTreffen(File file, Treffens treffens) {
-		try {
-			if (file.exists()) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+	public static void importiereTreffen(File file, final Treffens treffens) {
+		DoWithReader performer = new DoWithReader() {
+			@Override
+			public void statement(BufferedReader reader) throws IOException {
 				String line = reader.readLine();
 				JSONDeserializer<Treffen> jsonDeserializer = new JSONDeserializer<Treffen>();
 				while (line != null) {
@@ -95,11 +120,11 @@ public class ImAndExporter {
 					line = reader.readLine();
 				}
 			}
-		} catch (IOException e) {
-			ImAndExporter.LOGGER.fatal(e.getMessage(), e);
-		}
-
+		};
+		ImAndExporter.importiere(file, performer);
 	}
+
+	public static final Logger LOGGER = Logger.getLogger(ImAndExporter.class.getName());
 
 	private ImAndExporter() {
 		super();

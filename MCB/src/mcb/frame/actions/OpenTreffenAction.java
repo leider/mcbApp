@@ -16,6 +16,7 @@ public class OpenTreffenAction extends AbstractAction {
 		this.persistenceStore = persistenceStore;
 	}
 
+	@SuppressWarnings("unused")
 	public void actionPerformed(ActionEvent e) {
 		new TreffenFrame(this.persistenceStore);
 	}

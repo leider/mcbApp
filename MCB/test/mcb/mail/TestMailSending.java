@@ -1,7 +1,6 @@
 package mcb.mail;
 
 import javax.mail.Message.RecipientType;
-import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -28,7 +27,7 @@ public class TestMailSending {
 		message.setSentDate(r.jetzt);
 		message.setText(body, "ISO-8859-1");
 
-		Transport.send(message);
+		// Transport.send(message);
 	}
 
 }

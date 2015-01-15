@@ -64,7 +64,7 @@ public class Adressen {
 		return result;
 	}
 
-	private Long nextIdForAdressen() {
+	private long nextIdForAdressen() {
 		return IdGenerator.nextIdFor(this.adressen);
 	}
 

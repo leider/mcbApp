@@ -38,7 +38,7 @@ public class Treffens {
 		return this.sortedTreffen().get(0);
 	}
 
-	private Long nextIdForTreffen() {
+	private long nextIdForTreffen() {
 		return IdGenerator.nextIdFor(this.treffen);
 	}
 

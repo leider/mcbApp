@@ -36,7 +36,7 @@ public class FruehstuecksSpinner extends JPanel {
 			return;
 		}
 		adresse.getAktuellerBesuch().setFruehstueckFuer(this.getValue(), this.tag);
-		this.adressePanel.saveAdresse(adresse);
+		this.adressePanel.saveAdresse();
 	}
 
 	public int getValue() {

@@ -9,6 +9,10 @@ import javax.swing.KeyStroke;
 
 public abstract class McbAction extends AbstractAction {
 
+	private static boolean isRunningOnMac() {
+		return System.getProperty("mrj.version") != null;
+	}
+
 	public static final int ALLE = KeyEvent.VK_A;
 	public static final int BEARBEITEN = KeyEvent.VK_B;
 	public static final int DEUTSCHLAND = KeyEvent.VK_D;
@@ -22,9 +26,10 @@ public abstract class McbAction extends AbstractAction {
 	public static final int MITGLIED = KeyEvent.VK_Z;
 	public static final int EINLADUNGEN_EMAIL = 0;
 	public static final int EINLADUNGEN_POST = 0;
-	public static final int KEINE_EINLADUNG = 0;
 
+	public static final int KEINE_EINLADUNG = 0;
 	private static final long serialVersionUID = 4150636331971514776L;
+
 	private KeyStroke accelerator;
 
 	public McbAction(String name, int aKeyEventConstant) {
@@ -36,13 +41,9 @@ public abstract class McbAction extends AbstractAction {
 		return this.accelerator;
 	}
 
-	private boolean isRunningOnMac() {
-		return System.getProperty("mrj.version") != null;
-	}
-
 	protected void setAccelerator(int aKeyEventConstant) {
 		if (aKeyEventConstant != 0) {
-			this.accelerator = KeyStroke.getKeyStroke(aKeyEventConstant, this.isRunningOnMac() ? ActionEvent.META_MASK
+			this.accelerator = KeyStroke.getKeyStroke(aKeyEventConstant, McbAction.isRunningOnMac() ? ActionEvent.META_MASK
 					: ActionEvent.CTRL_MASK);
 			this.putValue(Action.ACCELERATOR_KEY, this.accelerator);
 		}

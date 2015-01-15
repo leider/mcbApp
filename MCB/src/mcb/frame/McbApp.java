@@ -10,10 +10,6 @@ import mcb.persistenz.PersistenceStore;
 import org.apache.log4j.Logger;
 
 public class McbApp extends JFrame {
-	static final Logger LOGGER = Logger.getLogger(McbApp.class.getName());
-
-	private static final long serialVersionUID = -6092233954906826211L;
-
 	private static void initializeLookAndFeel() {
 		try {
 			String osName = System.getProperty("os.name");
@@ -32,6 +28,7 @@ public class McbApp extends JFrame {
 	public static void main(String[] args) {
 		McbApp.initializeLookAndFeel();
 		Runnable runnable = new Runnable() {
+			@SuppressWarnings("unused")
 			public void run() {
 				try {
 					new AdresseFrame(new PersistenceStore());
@@ -46,5 +43,9 @@ public class McbApp extends JFrame {
 			EventQueue.invokeLater(runnable);
 		}
 	}
+
+	static final Logger LOGGER = Logger.getLogger(McbApp.class.getName());
+
+	private static final long serialVersionUID = -6092233954906826211L;
 
 }

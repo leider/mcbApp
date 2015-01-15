@@ -1,10 +1,8 @@
 package mcb.persistenz;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-
 import mcb.model.Treffen;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class TreffenTest {
@@ -13,19 +11,19 @@ public class TreffenTest {
 	public void testIsGespannApril() {
 		Treffen treffen = new Treffen();
 		treffen.setErsterTagString("01.04.2009");
-		assertTrue(treffen.isGespann());
+		Assert.assertTrue(treffen.isGespann());
 	}
 
 	@Test
 	public void testIsGespannEmpty() {
-		assertTrue(new Treffen().isGespann());
+		Assert.assertTrue(new Treffen().isGespann());
 	}
 
 	@Test
 	public void testIsGespannOktober() {
 		Treffen treffen = new Treffen();
 		treffen.setErsterTagString("01.10.2009");
-		assertFalse(treffen.isGespann());
+		Assert.assertFalse(treffen.isGespann());
 	}
 
 }

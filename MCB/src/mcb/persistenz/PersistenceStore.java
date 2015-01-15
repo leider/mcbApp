@@ -13,31 +13,18 @@ import mcb.persistenz.json.ImAndExporter;
 
 public class PersistenceStore {
 
-	private static final File TREFFEN_FILE = new File("./data/treffen.json");
-
-	private static final File ADRESSEN_FILE = new File("./data/adressen.json");
-
-	private final Adressen adressen = new Adressen();
-
-	private final Treffens treffens = new Treffens();
-
-	public PersistenceStore() {
-		super();
-		this.startup();
-	}
-
-	private void backupDaten() {
+	private static void backupDaten() {
 		try {
 			String treffenPath = PersistenceStore.TREFFEN_FILE.getCanonicalPath();
-			this.copyFile(PersistenceStore.TREFFEN_FILE, new File(treffenPath + new Date().getTime()));
+			PersistenceStore.copyFile(PersistenceStore.TREFFEN_FILE, new File(treffenPath + new Date().getTime()));
 			String adressenPath = PersistenceStore.ADRESSEN_FILE.getCanonicalPath();
-			this.copyFile(PersistenceStore.ADRESSEN_FILE, new File(adressenPath + new Date().getTime()));
+			PersistenceStore.copyFile(PersistenceStore.ADRESSEN_FILE, new File(adressenPath + new Date().getTime()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void copyFile(File sourceFile, File destFile) throws IOException {
+	private static void copyFile(File sourceFile, File destFile) throws IOException {
 		if (!destFile.exists()) {
 			destFile.createNewFile();
 		}
@@ -55,6 +42,19 @@ public class PersistenceStore {
 				destination.close();
 			}
 		}
+	}
+
+	private static final File TREFFEN_FILE = new File("./data/treffen.json");
+
+	private static final File ADRESSEN_FILE = new File("./data/adressen.json");
+
+	private final Adressen adressen = new Adressen();
+
+	private final Treffens treffens = new Treffens();
+
+	public PersistenceStore() {
+		super();
+		this.startup();
 	}
 
 	public Adressen getAdressen() {
@@ -83,7 +83,7 @@ public class PersistenceStore {
 	}
 
 	private void startup() {
-		this.backupDaten();
+		PersistenceStore.backupDaten();
 		this.loadDaten();
 	}
 

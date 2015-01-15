@@ -24,7 +24,7 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 
 	private static final long serialVersionUID = -3683947066010395220L;
 	private SelectionInList<T> modelliste;
-	private JList list;
+	private JList<?> list;
 	private JTextField anzahlText;
 	private PresentationModel<T> detailModel;
 	protected final PersistenceStore persistenceStore;
