@@ -2,6 +2,41 @@
                             Release Notes
                         
 
+CHANGES IN 1.8.0  -----------------------------------------------------
+
+    This version is binary incompatible with previous versions. However
+    migration is easy, because only rarely used features and internal
+    interfaces have changed. Just check whether you set default values
+    that have been moved to the new FormsSetup class.
+    
+    
+    The internal interface StringLocalizer from JGoodies Common 1.7
+    has been renamed to StringResourceAccessor, and it has been
+    slightly extended. To migrate, update to the JGoodies Common 1.8.
+    
+    o Fixed the conversion from DTP points to pixels.
+    o Added Forms#buttonStack, #checkBoxStack, #radioButtonStack.
+    o Added ButtonBarBuilder#create().
+    o Added ButtonStackBuilder#create().
+    o Moved all global default values to the new FormsSetup:
+      opaque, label-for feature, factory, debug tooltips.
+    o PanelBuilder's label-for feature honors if a label 
+      is already labelling a component.
+    o Added FormLayout#setColumnGroup(int... indices)
+    o Added FormLayout#setRowGroup(int... indices)
+    o FormLayout#setColumnGroups and #setRowGroups check 
+      that each group of indices contains at least two indices.
+    o Added CellConstraints#translate(int dx, int dy).
+    o FormSpecs can tell whether the default alignment has been
+      explicitly set.
+    o Added a special "none" column alignment intended only 
+      for JTable column configurations as implemented 
+      by the classes TableUtils and TableColumns.
+    o Smaller gaps on the Mac.
+    o Column and row specs accept a 0 multiplier, e.g. "0*(p, $lg)".
+    o Improved parser message for negative multiplier designation.
+     
+
 CHANGES IN 1.7.2  -----------------------------------------------------
 
     o Fixed ButtonStackBuilder layout that does no longer 

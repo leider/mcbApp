@@ -3,6 +3,25 @@
                             Release Notes
                         
 
+CHANGES in 1.8.1 -------------------------------------------------------------
+
+    o Marked classes ArrayListModel and LinkedListModel as final.
+    o Replaced files package.html by package-info.java.
+
+
+CHANGES in 1.8.0 -------------------------------------------------------------
+
+    o Fixed an internal message string.
+    o Changed internal types:
+      - Replaced StringLocalizer by StringResourceAccessor
+      - Replaced ResourceBundleLocalizer by ResourceBundleAccessor 
+      - Added IconResourceAccessor
+      - Added StringAndIconResourceAccessor
+      - Added Strings#get(String str, Object... args)
+    o Added SystemUtils#IS_OS_WINDOWS_XP_64_BIT_OR_SERVER_2003.
+    o Added SystemUtils#isLafAqua.
+
+
 CHANGES in 1.7.0 -------------------------------------------------------------
 
     o Added Displayable, ListDisplayable, and TableDisplayable.

@@ -4,6 +4,19 @@
                             Release Notes
             
             
+CHANGES IN 2.12.0 --------------------------------------------------------
+
+    o Minor implementation improvement in BeanBinderImpl's generic types.
+
+
+CHANGES IN 2.11.0 --------------------------------------------------------
+
+    o More strict test for the meta-option text that represents null
+      in combo box bindings; it must not be empty or whitespace.
+    o Updated docs.
+    o Requires JGoodies Common 1.8.
+    
+
 CHANGES IN 2.10.0 --------------------------------------------------------
 
     o Generified BindingConverter.

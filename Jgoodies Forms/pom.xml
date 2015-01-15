@@ -8,7 +8,7 @@
     </parent>
 	<groupId>com.jgoodies</groupId>
 	<artifactId>jgoodies-forms</artifactId>
-	<version>1.7.2</version>
+	<version>1.8.0</version>
 	<packaging>jar</packaging>
 	<name>JGoodies Forms</name>
 	<url>https://forms.java.net/</url>
@@ -20,7 +20,7 @@
 	    <dependency>
 	        <groupId>com.jgoodies</groupId>
 	        <artifactId>jgoodies-common</artifactId>
-	        <version>1.7.0</version>
+	        <version>1.8.0</version>
 	    </dependency>
 	    <dependency>
 	    	<groupId>junit</groupId>
