@@ -1,6 +1,7 @@
 *.class
 *.DS_Store
 .metadata
+.recommenders
 bin/
 *.html
 *.class
