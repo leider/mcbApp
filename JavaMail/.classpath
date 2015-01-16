@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry exported="true" kind="lib" path="dsn.jar"/>
-	<classpathentry exported="true" kind="lib" path="imap.jar"/>
-	<classpathentry exported="true" kind="lib" path="mailapi.jar"/>
-	<classpathentry exported="true" kind="lib" path="pop3.jar"/>
-	<classpathentry exported="true" kind="lib" path="smtp.jar"/>
+	<classpathentry exported="true" kind="lib" path="javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
