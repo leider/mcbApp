@@ -6,7 +6,8 @@ import javax.swing.JPanel;
 import mcb.persistenz.McbException;
 import mcb.persistenz.PersistenceStore;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.beans.Model;
@@ -16,7 +17,7 @@ public abstract class ModelPanel<T extends Model> extends JPanel {
 	private static final long serialVersionUID = -7811326380823888222L;
 	protected BearbeitenAction<T> bearbeitenAction;
 	protected PresentationModel<T> presentationModel;
-	protected static final Logger LOGGER = Logger.getLogger(ModelPanel.class.getName());
+	protected static final Logger LOGGER = LogManager.getLogger();
 	protected final PersistenceStore persistenceStore;
 
 	public ModelPanel(PresentationModel<T> presentationModel, BearbeitenAction<T> bearbeitenAction, PersistenceStore persistenceStore) {

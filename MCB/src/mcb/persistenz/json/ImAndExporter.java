@@ -14,7 +14,8 @@ import mcb.model.Treffen;
 import mcb.persistenz.Adressen;
 import mcb.persistenz.Treffens;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
@@ -124,7 +125,7 @@ public class ImAndExporter {
 		ImAndExporter.importiere(file, performer);
 	}
 
-	public static final Logger LOGGER = Logger.getLogger(ImAndExporter.class.getName());
+	public static final Logger LOGGER = LogManager.getLogger();
 
 	private ImAndExporter() {
 		super();

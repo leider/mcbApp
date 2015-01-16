@@ -7,7 +7,8 @@ import javax.swing.UIManager;
 
 import mcb.persistenz.PersistenceStore;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class McbApp extends JFrame {
 	private static void initializeLookAndFeel() {
@@ -44,7 +45,7 @@ public class McbApp extends JFrame {
 		}
 	}
 
-	static final Logger LOGGER = Logger.getLogger(McbApp.class.getName());
+	static final Logger LOGGER = LogManager.getLogger();
 
 	private static final long serialVersionUID = -6092233954906826211L;
 

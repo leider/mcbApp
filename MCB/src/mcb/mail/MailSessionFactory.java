@@ -8,14 +8,10 @@ import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MailSessionFactory {
-	public static String from;
-	public static String replyto;
-	public static String attachmentName;
-	static final Logger LOGGER = Logger.getLogger(MailSessionFactory.class.getName());
-
 	public static Session createSession() {
 		Properties mailProperties = MailSessionFactory.readProperties();
 
@@ -52,6 +48,13 @@ public class MailSessionFactory {
 		MailSessionFactory.attachmentName = props.getProperty("attachmentName");
 		return props;
 	}
+
+	public static String from;
+	public static String replyto;
+
+	public static String attachmentName;
+
+	static final Logger LOGGER = LogManager.getLogger();
 
 	private MailSessionFactory() {
 		super();

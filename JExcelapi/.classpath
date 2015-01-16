@@ -6,6 +6,5 @@
 			<attribute name="javadoc_location" value="file:/JavaDev/workspaces/mcbApp/JExcelapi/docs/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/Log4J"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

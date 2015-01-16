@@ -18,14 +18,15 @@ import javax.swing.SwingUtilities;
 import mcb.model.Adresse;
 import mcb.model.Treffen;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MailSender implements Runnable {
 
 	private Session session;
 	protected Date jetzt = new Date();
 	private SendCompleteListener listener;
-	static final Logger LOGGER = Logger.getLogger(MailSender.class.getName());
+	static final Logger LOGGER = LogManager.getLogger();
 	private final Treffen neuestesTreffen;
 
 	public MailSender(SendCompleteListener theListener, Treffen neuestesTreffen) {
