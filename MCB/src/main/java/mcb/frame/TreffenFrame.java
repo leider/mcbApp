@@ -8,20 +8,20 @@ import mcb.persistenz.PersistenceStore;
 
 public class TreffenFrame extends SimpleFrame<Treffen> {
 
-	private static final long serialVersionUID = -6092233954906826211L;
+  private static final long serialVersionUID = -6092233954906826211L;
 
-	public TreffenFrame(PersistenceStore persistenceStore) {
-		super("MCB Treffen", persistenceStore);
-	}
+  public TreffenFrame(PersistenceStore persistenceStore) {
+    super("MCB Treffen", persistenceStore);
+  }
 
-	@Override
-	protected void addExtraMenu(JMenuBar bar) {
-		// don't needed here
-	}
+  @Override
+  protected void addExtraMenu(JMenuBar bar) {
+    // don't needed here
+  }
 
-	@Override
-	protected TreffenMitListePanel createPanel() {
-		return new TreffenMitListePanel(this.persistenceStore);
-	}
+  @Override
+  protected TreffenMitListePanel createPanel() {
+    return new TreffenMitListePanel(this.persistenceStore);
+  }
 
 }

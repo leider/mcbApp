@@ -6,19 +6,19 @@ import mcb.panel.McbAction;
 
 public class EinladungPostFilter extends AbstractEinladungsFilter {
 
-	public EinladungPostFilter(Treffen neuestesTreffen) {
-		super(neuestesTreffen);
-	}
+  public EinladungPostFilter(Treffen neuestesTreffen) {
+    super(neuestesTreffen);
+  }
 
-	public int getKeyMask() {
-		return McbAction.EINLADUNGEN_POST;
-	}
+  public int getKeyMask() {
+    return McbAction.EINLADUNGEN_POST;
+  }
 
-	public String getLabel() {
-		return "Einladungen Post";
-	}
+  public String getLabel() {
+    return "Einladungen Post";
+  }
 
-	public boolean matches(Adresse adresse) {
-		return adresse.sollEinladungErhalten(this.neuestesTreffen) && !adresse.hatGueltigeEmail();
-	}
+  public boolean matches(Adresse adresse) {
+    return adresse.sollEinladungErhalten(this.neuestesTreffen) && !adresse.hatGueltigeEmail();
+  }
 }

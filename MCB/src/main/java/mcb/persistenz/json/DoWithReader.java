@@ -5,6 +5,6 @@ import java.io.IOException;
 
 public interface DoWithReader {
 
-	void statement(BufferedReader reader) throws IOException;
+  void statement(BufferedReader reader) throws IOException;
 
 }

@@ -8,16 +8,16 @@ import mcb.frame.TreffenFrame;
 import mcb.persistenz.PersistenceStore;
 
 public class OpenTreffenAction extends AbstractAction {
-	private static final long serialVersionUID = 8568897588247326614L;
-	private final PersistenceStore persistenceStore;
+  private static final long serialVersionUID = 8568897588247326614L;
+  private final PersistenceStore persistenceStore;
 
-	public OpenTreffenAction(String name, PersistenceStore persistenceStore) {
-		super(name);
-		this.persistenceStore = persistenceStore;
-	}
+  public OpenTreffenAction(String name, PersistenceStore persistenceStore) {
+    super(name);
+    this.persistenceStore = persistenceStore;
+  }
 
-	@SuppressWarnings("unused")
-	public void actionPerformed(ActionEvent e) {
-		new TreffenFrame(this.persistenceStore);
-	}
+  @SuppressWarnings("unused")
+  public void actionPerformed(ActionEvent e) {
+    new TreffenFrame(this.persistenceStore);
+  }
 }

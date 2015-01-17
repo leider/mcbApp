@@ -14,49 +14,49 @@ import mcb.panel.AdressePanel;
 
 public class FruehstuecksSpinner extends JPanel {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+  private JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
 
-	private final FruehstuecksTag tag;
+  private final FruehstuecksTag tag;
 
-	private final AdressePanel adressePanel;
+  private final AdressePanel adressePanel;
 
-	public FruehstuecksSpinner(FruehstuecksTag tag, AdressePanel adressePanel) {
-		super(new BorderLayout());
-		this.tag = tag;
-		this.adressePanel = adressePanel;
-		this.init();
-	}
+  public FruehstuecksSpinner(FruehstuecksTag tag, AdressePanel adressePanel) {
+    super(new BorderLayout());
+    this.tag = tag;
+    this.adressePanel = adressePanel;
+    this.init();
+  }
 
-	private void fruehstueckChanged() {
-		Adresse adresse = this.adressePanel.getAdresse();
-		if (adresse == null || adresse.getAktuellerBesuch() == null) {
-			this.setValue(0);
-			return;
-		}
-		adresse.getAktuellerBesuch().setFruehstueckFuer(this.getValue(), this.tag);
-		this.adressePanel.saveAdresse();
-	}
+  private void fruehstueckChanged() {
+    Adresse adresse = this.adressePanel.getAdresse();
+    if (adresse == null || adresse.getAktuellerBesuch() == null) {
+      this.setValue(0);
+      return;
+    }
+    adresse.getAktuellerBesuch().setFruehstueckFuer(this.getValue(), this.tag);
+    this.adressePanel.saveAdresse();
+  }
 
-	public int getValue() {
-		return ((Integer) this.spinner.getValue()).intValue();
-	}
+  public int getValue() {
+    return ((Integer) this.spinner.getValue()).intValue();
+  }
 
-	private void init() {
-		this.add(this.spinner, BorderLayout.CENTER);
-		((SpinnerNumberModel) this.spinner.getModel()).setMinimum(new Integer(0));
-		this.spinner.addChangeListener(new ChangeListener() {
+  private void init() {
+    this.add(this.spinner, BorderLayout.CENTER);
+    ((SpinnerNumberModel) this.spinner.getModel()).setMinimum(new Integer(0));
+    this.spinner.addChangeListener(new ChangeListener() {
 
-			public void stateChanged(ChangeEvent e) {
-				FruehstuecksSpinner.this.fruehstueckChanged();
-			}
+      public void stateChanged(ChangeEvent e) {
+        FruehstuecksSpinner.this.fruehstueckChanged();
+      }
 
-		});
-	}
+    });
+  }
 
-	public void setValue(int anzahl) {
-		this.spinner.setValue(new Integer(anzahl));
-	}
+  public void setValue(int anzahl) {
+    this.spinner.setValue(new Integer(anzahl));
+  }
 
 }

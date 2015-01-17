@@ -10,14 +10,14 @@ import flexjson.factories.BeanObjectFactory;
 
 public class AdresseFactory implements ObjectFactory {
 
-	@SuppressWarnings("rawtypes")
-	@Override
-	public Object instantiate(ObjectBinder context, Object value, Type targetType, Class targetClass) {
-		Adresse adresse = (Adresse) new BeanObjectFactory().instantiate(context, value, targetType, targetClass);
-		for (Besuch besuch : adresse.getBesuchteTreffen()) {
-			besuch.setAdresse(adresse);
-		}
-		return adresse;
-	}
+  @SuppressWarnings("rawtypes")
+  @Override
+  public Object instantiate(ObjectBinder context, Object value, Type targetType, Class targetClass) {
+    Adresse adresse = (Adresse) new BeanObjectFactory().instantiate(context, value, targetType, targetClass);
+    for (Besuch besuch : adresse.getBesuchteTreffen()) {
+      besuch.setAdresse(adresse);
+    }
+    return adresse;
+  }
 
 }

@@ -5,16 +5,16 @@ import mcb.panel.McbAction;
 
 public class DeutschlandFilter implements AdresseFilter {
 
-	public int getKeyMask() {
-		return McbAction.DEUTSCHLAND;
-	}
+  public int getKeyMask() {
+    return McbAction.DEUTSCHLAND;
+  }
 
-	public String getLabel() {
-		return "Nur Deutsche";
-	}
+  public String getLabel() {
+    return "Nur Deutsche";
+  }
 
-	public boolean matches(Adresse adresse) {
-		return adresse.getLand().equals("D");
-	}
+  public boolean matches(Adresse adresse) {
+    return adresse.getLand().equals("D");
+  }
 
 }

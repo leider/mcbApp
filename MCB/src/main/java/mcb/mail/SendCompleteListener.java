@@ -4,10 +4,10 @@ import mcb.persistenz.PersistenceStore;
 
 public interface SendCompleteListener {
 
-	PersistenceStore getPersistenceStore();
+  PersistenceStore getPersistenceStore();
 
-	void messagesNotSent();
+  void messagesNotSent();
 
-	void messagesSent();
+  void messagesSent();
 
 }

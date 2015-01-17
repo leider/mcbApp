@@ -4,9 +4,9 @@ import mcb.model.Adresse;
 
 public interface AdresseFilter {
 
-	int getKeyMask();
+  int getKeyMask();
 
-	String getLabel();
+  String getLabel();
 
-	boolean matches(Adresse adresse);
+  boolean matches(Adresse adresse);
 }

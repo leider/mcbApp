@@ -5,6 +5,6 @@ import java.io.OutputStreamWriter;
 
 public interface DoWithWriter {
 
-	void statement(OutputStreamWriter writer) throws IOException;
+  void statement(OutputStreamWriter writer) throws IOException;
 
 }

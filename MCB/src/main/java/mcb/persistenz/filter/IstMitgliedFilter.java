@@ -5,16 +5,16 @@ import mcb.panel.McbAction;
 
 public class IstMitgliedFilter implements AdresseFilter {
 
-	public int getKeyMask() {
-		return McbAction.MITGLIED;
-	}
+  public int getKeyMask() {
+    return McbAction.MITGLIED;
+  }
 
-	public String getLabel() {
-		return "Nur Mitglieder";
-	}
+  public String getLabel() {
+    return "Nur Mitglieder";
+  }
 
-	public boolean matches(Adresse adresse) {
-		return adresse.isMitglied();
-	}
+  public boolean matches(Adresse adresse) {
+    return adresse.isMitglied();
+  }
 
 }
