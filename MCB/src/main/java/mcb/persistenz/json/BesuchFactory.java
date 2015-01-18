@@ -5,7 +5,7 @@ import java.util.Map;
 
 import mcb.model.Besuch;
 import mcb.model.Treffen;
-import mcb.persistenz.Treffens;
+import mcb.persistenz.filter.Treffens;
 import flexjson.ObjectBinder;
 import flexjson.ObjectFactory;
 import flexjson.factories.BeanObjectFactory;

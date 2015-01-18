@@ -1,4 +1,4 @@
-package mcb.panel;
+package mcb.persistenz.filter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

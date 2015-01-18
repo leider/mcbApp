@@ -2,7 +2,6 @@ package mcb.persistenz.filter;
 
 import mcb.model.Adresse;
 import mcb.model.Treffen;
-import mcb.panel.McbAction;
 
 public class EinladungEmailFilter extends AbstractEinladungsFilter {
 

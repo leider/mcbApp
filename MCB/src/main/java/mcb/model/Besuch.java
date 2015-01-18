@@ -80,15 +80,11 @@ public class Besuch implements Comparable<Besuch> {
 
   /**
    * for JSON
-   * 
+   *
    * @param adresse
    */
   public void setAdresse(McbModel adresse) {
     this.adresse = adresse;
-  }
-
-  public void setFruehstueckFuer(int anzahl, FruehstuecksTag tag) {
-    tag.setFruehstueck(this, anzahl);
   }
 
   protected void setFruehstueckSamstag(int anzahl) {
@@ -101,7 +97,7 @@ public class Besuch implements Comparable<Besuch> {
 
   /**
    * For JSON
-   * 
+   *
    * @param treffen
    */
   public void setTreffen(Treffen treffen) {

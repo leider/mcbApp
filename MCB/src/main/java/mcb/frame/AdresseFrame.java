@@ -9,9 +9,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 
-import mcb.frame.actions.EmailAction;
-import mcb.frame.actions.ExcelExportAction;
-import mcb.frame.actions.OpenTreffenAction;
 import mcb.mail.SendCompleteListener;
 import mcb.model.Adresse;
 import mcb.model.Treffen;

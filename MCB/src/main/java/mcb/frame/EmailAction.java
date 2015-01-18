@@ -1,4 +1,4 @@
-package mcb.frame.actions;
+package mcb.frame;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
-import mcb.frame.AdresseFrame;
 import mcb.mail.MailSender;
 import mcb.model.Adresse;
 

@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-import mcb.persistenz.DateFormatter;
 import flexjson.JSON;
 
 public class Treffen extends McbModel implements Comparable<Treffen> {

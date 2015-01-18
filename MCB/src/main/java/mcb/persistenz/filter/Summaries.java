@@ -1,8 +1,10 @@
-package mcb.model;
+package mcb.persistenz.filter;
 
 import java.util.List;
 
-import mcb.persistenz.Adressen;
+import mcb.model.Besuch;
+import mcb.model.FruehstuecksTag;
+import mcb.model.McbModel;
 
 public class Summaries extends McbModel {
 

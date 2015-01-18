@@ -1,4 +1,4 @@
-package mcb.persistenz;
+package mcb.model;
 
 import java.text.DateFormat;
 import java.text.ParseException;

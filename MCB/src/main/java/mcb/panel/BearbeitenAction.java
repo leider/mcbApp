@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import mcb.persistenz.McbException;
+import mcb.persistenz.filter.McbAction;
 
 import com.jgoodies.binding.beans.Model;
 

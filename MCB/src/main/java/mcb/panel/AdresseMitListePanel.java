@@ -11,12 +11,12 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 import mcb.model.Adresse;
-import mcb.model.Summaries;
 import mcb.persistenz.McbException;
 import mcb.persistenz.PersistenceStore;
 import mcb.persistenz.filter.AlleFilter;
 import mcb.persistenz.filter.SelectedFilter;
 import mcb.persistenz.filter.SucheFilter;
+import mcb.persistenz.filter.Summaries;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;

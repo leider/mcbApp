@@ -1,4 +1,4 @@
-package mcb.frame.actions;
+package mcb.frame;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;

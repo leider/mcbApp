@@ -11,8 +11,8 @@ import java.io.OutputStreamWriter;
 import mcb.model.Adresse;
 import mcb.model.Besuch;
 import mcb.model.Treffen;
-import mcb.persistenz.Adressen;
-import mcb.persistenz.Treffens;
+import mcb.persistenz.filter.Adressen;
+import mcb.persistenz.filter.Treffens;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

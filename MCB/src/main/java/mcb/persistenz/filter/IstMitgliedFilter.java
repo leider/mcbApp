@@ -1,7 +1,6 @@
 package mcb.persistenz.filter;
 
 import mcb.model.Adresse;
-import mcb.panel.McbAction;
 
 public class IstMitgliedFilter implements AdresseFilter {
 

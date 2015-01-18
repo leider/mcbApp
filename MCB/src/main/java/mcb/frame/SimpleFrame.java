@@ -10,14 +10,15 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
 
-import mcb.frame.actions.FilterAction;
 import mcb.panel.ModelMitListePanel;
 import mcb.persistenz.PersistenceStore;
 import mcb.persistenz.filter.AdresseFilter;
+import mcb.persistenz.filter.FilterAction;
+import mcb.persistenz.filter.ListUpdater;
 
 import com.jgoodies.binding.beans.Model;
 
-public abstract class SimpleFrame<T extends Model> extends JFrame {
+public abstract class SimpleFrame<T extends Model> extends JFrame implements ListUpdater {
 
   private static final long serialVersionUID = -3301128307489915655L;
 
@@ -65,7 +66,7 @@ public abstract class SimpleFrame<T extends Model> extends JFrame {
   }
 
   protected JCheckBoxMenuItem radioForFilter(AdresseFilter filter) {
-    FilterAction<T> filterAction = new FilterAction<T>(filter, this);
+    FilterAction filterAction = new FilterAction(filter, this);
     this.panel.addFilterAction(filterAction);
     JCheckBoxMenuItem radioButtonMenuItem = new JCheckBoxMenuItem(filterAction);
     this.group.add(radioButtonMenuItem);

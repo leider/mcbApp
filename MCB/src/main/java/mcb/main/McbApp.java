@@ -1,16 +1,16 @@
-package mcb.frame;
+package mcb.main;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
 import javax.swing.UIManager;
 
+import mcb.frame.AdresseFrame;
 import mcb.persistenz.PersistenceStore;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class McbApp extends JFrame {
+public class McbApp {
   private static void initializeLookAndFeel() {
     try {
       String osName = System.getProperty("os.name");
@@ -46,7 +46,5 @@ public class McbApp extends JFrame {
   }
 
   static final Logger LOGGER = LogManager.getLogger();
-
-  private static final long serialVersionUID = -6092233954906826211L;
 
 }

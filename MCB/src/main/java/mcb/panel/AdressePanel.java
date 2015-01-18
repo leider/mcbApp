@@ -189,7 +189,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
     if (adresse == null || adresse.getAktuellerBesuch() == null) {
       return;
     }
-    adresse.getAktuellerBesuch().setFruehstueckFuer(anzahl, tag);
+    tag.setFruehstueck(adresse.getAktuellerBesuch(), anzahl);
     AdressePanel.this.saveAdresse();
   }
 

@@ -9,9 +9,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import mcb.frame.actions.FilterAction;
 import mcb.persistenz.McbException;
 import mcb.persistenz.PersistenceStore;
+import mcb.persistenz.filter.FilterAction;
+import mcb.persistenz.filter.McbAction;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.beans.Model;
@@ -24,7 +25,7 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
   private McbAction neuAction;
   private McbAction loeschenAction;
   private BearbeitenAction<T> bearbeitenAction;
-  private List<FilterAction<T>> filterActions;
+  private List<FilterAction> filterActions;
 
   private static final long serialVersionUID = -8126517029418193902L;
   protected final PersistenceStore persistenceStore;
@@ -40,7 +41,7 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
     this.switchEnabledForPanels(true);
   }
 
-  public void addFilterAction(FilterAction<T> filterAction) {
+  public void addFilterAction(FilterAction filterAction) {
     this.filterActions.add(filterAction);
   }
 
@@ -127,7 +128,7 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
   }
 
   private void initialize() {
-    this.filterActions = new ArrayList<FilterAction<T>>();
+    this.filterActions = new ArrayList<FilterAction>();
     this.setLayout(new BorderLayout());
     this.listePanel = this.createListePanel();
     this.createCommonActions();

@@ -1,10 +1,9 @@
-package mcb.frame.actions;
+package mcb.frame;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import mcb.frame.TreffenFrame;
 import mcb.persistenz.PersistenceStore;
 
 public class OpenTreffenAction extends AbstractAction {

@@ -5,7 +5,7 @@ import java.util.List;
 import mcb.model.Treffen;
 import mcb.persistenz.McbException;
 import mcb.persistenz.PersistenceStore;
-import mcb.persistenz.Treffens;
+import mcb.persistenz.filter.Treffens;
 
 public class TreffenSelectionInListPanel extends SelectionInListPanel<Treffen> {
 
