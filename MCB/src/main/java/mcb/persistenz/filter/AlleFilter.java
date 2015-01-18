@@ -1,14 +1,16 @@
 package mcb.persistenz.filter;
 
+import java.awt.event.KeyEvent;
+
 import mcb.model.Adresse;
 
 public class AlleFilter implements AdresseFilter {
 
-  private static final AlleFilter instance = new AlleFilter();
-
   public static AlleFilter getInstance() {
     return AlleFilter.instance;
   }
+
+  private static final AlleFilter instance = new AlleFilter();
 
   private MatchesAlleListener listener;
 
@@ -17,7 +19,7 @@ public class AlleFilter implements AdresseFilter {
   }
 
   public int getKeyMask() {
-    return McbAction.ALLE;
+    return KeyEvent.VK_A;
   }
 
   public String getLabel() {

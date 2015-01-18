@@ -4,8 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.UIManager;
 
-import mcb.frame.AdresseFrame;
 import mcb.persistenz.PersistenceStore;
+import mcb.ui.adresse.AdresseFrame;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
