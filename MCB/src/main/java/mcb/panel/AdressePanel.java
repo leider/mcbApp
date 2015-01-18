@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -18,7 +20,7 @@ import mcb.model.Adresse;
 import mcb.model.Besuch;
 import mcb.model.Fehlergruende;
 import mcb.model.FruehstuecksTag;
-import mcb.model.Laender;
+import mcb.model.Land;
 import mcb.panel.widgets.FruehstuecksSpinner;
 import mcb.persistenz.PersistenceStore;
 
@@ -32,6 +34,15 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class AdressePanel extends ModelPanel<Adresse> {
+
+  private static List<String> alleLaenderKurzel() {
+    List<String> result = new ArrayList<String>();
+    Land[] values = Land.values();
+    for (Land land : values) {
+      result.add(land.name());
+    }
+    return result;
+  }
 
   private static final long serialVersionUID = -427646783597528169L;
   private JTextField vornameTextfield;
@@ -53,6 +64,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
   private FruehstuecksSpinner fruehstueckSamstagIntegerField;
   private FruehstuecksSpinner fruehstueckSonntagIntegerField;
   private JButton bearbeitenButton;
+
   private JCheckBox mitgliedCheckbox;
 
   public AdressePanel(PresentationModel<Adresse> presentationModel, BearbeitenAction<Adresse> bearbeitenAction,
@@ -137,7 +149,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
 
   private void initComponents() {
     @SuppressWarnings("rawtypes")
-    ListModel countryListModel = new ArrayListModel<String>(Laender.getAlleKurzel());
+    ListModel countryListModel = new ArrayListModel<String>(AdressePanel.alleLaenderKurzel());
     ValueModel countryModel = this.presentationModel.getBufferedModel(Adresse.LAND);
     SelectionInList<String> countrySil = new SelectionInList<String>(countryListModel, countryModel);
     this.landTextfield = BasicComponentFactory.createComboBox(countrySil);

@@ -98,12 +98,9 @@ public class Adresse extends McbModel {
     return this.land;
   }
 
+  @JSON(include = false)
   public String getLandAusgeschrieben() {
-    return Laender.landFuerKuerzel(this.land);
-  }
-
-  public boolean isMitglied() {
-    return this.mitglied;
+    return Land.landFuerKuerzel(this.land);
   }
 
   public String getName() {
@@ -151,6 +148,10 @@ public class Adresse extends McbModel {
     return this.gespann;
   }
 
+  public boolean isMitglied() {
+    return this.mitglied;
+  }
+
   public boolean isSolo() {
     return this.solo;
   }
@@ -159,9 +160,13 @@ public class Adresse extends McbModel {
     this.besuchteTreffen.remove(this.getAktuellerBesuch());
   }
 
+  public void setBesuchteTreffen(List<Besuch> besuchteTreffen) {
+    this.besuchteTreffen = besuchteTreffen;
+  }
+
   public void setEmail(String email) {
     String oldValue = this.getEmail();
-    this.email = email.trim();
+    this.email = email != null ? email.trim() : null;
     this.firePropertyChange(Adresse.EMAIL, oldValue, this.email);
   }
 
