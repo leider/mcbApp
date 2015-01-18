@@ -8,7 +8,6 @@ import java.nio.channels.FileChannel;
 import java.util.Date;
 
 import mcb.model.Summaries;
-import mcb.model.Treffen;
 import mcb.persistenz.json.ImAndExporter;
 
 public class PersistenceStore {
@@ -69,11 +68,6 @@ public class PersistenceStore {
     ImAndExporter.importiereTreffen(PersistenceStore.TREFFEN_FILE, this.treffens);
     ImAndExporter.importiereAdressen(PersistenceStore.ADRESSEN_FILE, this.adressen, this.treffens);
     Summaries.getInstance().initForBesuche(this.adressen);
-  }
-
-  public void loescheModel(Treffen model) {
-    this.treffens.remove(model);
-    this.saveAll();
   }
 
   public void saveAll() {

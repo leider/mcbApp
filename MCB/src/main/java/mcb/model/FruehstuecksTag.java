@@ -3,7 +3,7 @@ package mcb.model;
 public enum FruehstuecksTag {
   Samstag {
     @Override
-    public int getFruehstueck(Besuch besuch) {
+    public int getAnzahlFruehstueckAm(Besuch besuch) {
       return besuch.getFruehstueckSamstag();
     }
 
@@ -14,7 +14,7 @@ public enum FruehstuecksTag {
   },
   Sonntag {
     @Override
-    public int getFruehstueck(Besuch besuch) {
+    public int getAnzahlFruehstueckAm(Besuch besuch) {
       return besuch.getFruehstueckSonntag();
     }
 
@@ -24,7 +24,7 @@ public enum FruehstuecksTag {
     }
   };
 
-  public abstract int getFruehstueck(Besuch besuch);
+  public abstract int getAnzahlFruehstueckAm(Besuch besuch);
 
   public abstract void setFruehstueck(Besuch besuch, int anzahl);
 }

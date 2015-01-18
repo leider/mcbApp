@@ -1,5 +1,6 @@
 package mcb.panel;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,16 +13,20 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import mcb.model.Adresse;
 import mcb.model.Besuch;
 import mcb.model.Fehlergruende;
 import mcb.model.FruehstuecksTag;
 import mcb.model.Land;
-import mcb.panel.widgets.FruehstuecksSpinner;
 import mcb.persistenz.PersistenceStore;
 
 import com.jgoodies.binding.PresentationModel;
@@ -34,6 +39,42 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class AdressePanel extends ModelPanel<Adresse> {
+
+  private class FruehstuecksSpinner extends JPanel {
+
+    private static final long serialVersionUID = 1L;
+
+    private JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+
+    private final FruehstuecksTag tag;
+
+    public FruehstuecksSpinner(FruehstuecksTag tag) {
+      super(new BorderLayout());
+      this.tag = tag;
+      this.init();
+    }
+
+    public int getValue() {
+      return ((Integer) this.spinner.getValue()).intValue();
+    }
+
+    private void init() {
+      this.add(this.spinner, BorderLayout.CENTER);
+      ((SpinnerNumberModel) this.spinner.getModel()).setMinimum(new Integer(0));
+      this.spinner.addChangeListener(new ChangeListener() {
+
+        public void stateChanged(ChangeEvent e) {
+          AdressePanel.this.fruehstueckChanged(FruehstuecksSpinner.this.getValue(), FruehstuecksSpinner.this.tag);
+        }
+
+      });
+    }
+
+    public void setValue(int anzahl) {
+      this.spinner.setValue(new Integer(anzahl));
+    }
+
+  }
 
   private static List<String> alleLaenderKurzel() {
     List<String> result = new ArrayList<String>();
@@ -143,6 +184,15 @@ public class AdressePanel extends ModelPanel<Adresse> {
     builder.add(this.fruehstueckSonntagIntegerField, cc.xy(12, row));
   }
 
+  private void fruehstueckChanged(int anzahl, FruehstuecksTag tag) {
+    Adresse adresse = AdressePanel.this.getAdresse();
+    if (adresse == null || adresse.getAktuellerBesuch() == null) {
+      return;
+    }
+    adresse.getAktuellerBesuch().setFruehstueckFuer(anzahl, tag);
+    AdressePanel.this.saveAdresse();
+  }
+
   public Adresse getAdresse() {
     return this.presentationModel.getBean();
   }
@@ -174,8 +224,8 @@ public class AdressePanel extends ModelPanel<Adresse> {
     this.besuchListe.setEnabled(false);
     this.meldungCheckbox = new JCheckBox("Meldung");
     this.mitgliedCheckbox = BasicComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.MCB_MITGLIED), "Mitglied");
-    this.fruehstueckSamstagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Samstag, this);
-    this.fruehstueckSonntagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Sonntag, this);
+    this.fruehstueckSamstagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Samstag);
+    this.fruehstueckSonntagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Sonntag);
     this.bearbeitenButton = new JButton(this.bearbeitenAction);
     this.setEnabled(false);
   }
@@ -253,4 +303,5 @@ public class AdressePanel extends ModelPanel<Adresse> {
   protected void updateEmailColor() {
     this.emailTextfield.setBackground(Color.RED);
   }
+
 }

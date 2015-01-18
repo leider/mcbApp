@@ -57,10 +57,6 @@ public class Besuch implements Comparable<Besuch> {
     return this.adresse;
   }
 
-  public int getFruehstueckFuer(FruehstuecksTag tag) {
-    return tag.getFruehstueck(this);
-  }
-
   public int getFruehstueckSamstag() {
     return this.fruehstueckSamstag;
   }
