@@ -6,7 +6,7 @@ import mcb.persistenz.filter.AdresseFilter;
 public class IstMitgliedFilter implements AdresseFilter {
 
   public int getKeyMask() {
-    return FilterAction.MITGLIED;
+    return 0;
   }
 
   public String getLabel() {

@@ -14,7 +14,6 @@ public class FilterAction extends McbAction {
   private AdresseFilter filter;
   private ListUpdater frame;
   public static final int SUCHE = KeyEvent.VK_F;
-  public static final int MITGLIED = 0;
   public static final int NICHTGEMELDET = KeyEvent.VK_U;
   public static final int EMAILKAPUTT = KeyEvent.VK_K;
   public static final int GEMELDET = KeyEvent.VK_G;
