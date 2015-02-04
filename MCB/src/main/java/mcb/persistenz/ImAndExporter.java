@@ -1,4 +1,4 @@
-package mcb.persistenz.json;
+package mcb.persistenz;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,8 +11,10 @@ import java.io.OutputStreamWriter;
 import mcb.model.Adresse;
 import mcb.model.Besuch;
 import mcb.model.Treffen;
-import mcb.persistenz.filter.Adressen;
-import mcb.persistenz.filter.Treffens;
+import mcb.persistenz.json.AdresseFactory;
+import mcb.persistenz.json.BesuchFactory;
+import mcb.persistenz.json.DoWithReader;
+import mcb.persistenz.json.DoWithWriter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -100,7 +102,7 @@ public class ImAndExporter {
         String line = reader.readLine();
         JSONDeserializer<Adresse> jsonDeserializer = new JSONDeserializer<Adresse>();
         jsonDeserializer.use(Adresse.class, new AdresseFactory());
-        jsonDeserializer.use(Besuch.class, new BesuchFactory(treffens));
+        jsonDeserializer.use(Besuch.class, new BesuchFactory(treffens.getAlleTreffen()));
         while (line != null) {
           adressen.add(jsonDeserializer.deserialize(line));
           line = reader.readLine();

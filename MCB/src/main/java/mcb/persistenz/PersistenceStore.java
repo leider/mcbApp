@@ -7,11 +7,6 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.Date;
 
-import mcb.persistenz.filter.Adressen;
-import mcb.persistenz.filter.Summaries;
-import mcb.persistenz.filter.Treffens;
-import mcb.persistenz.json.ImAndExporter;
-
 public class PersistenceStore {
 
   private static void backupDaten() {

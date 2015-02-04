@@ -10,3 +10,5 @@ MCB/mail.properties
 MCB Treffen.jar
 MCB/data
 MCB/target
+*.jar
+dependency-reduced-pom.xml

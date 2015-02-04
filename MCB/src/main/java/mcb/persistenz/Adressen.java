@@ -1,4 +1,4 @@
-package mcb.persistenz.filter;
+package mcb.persistenz;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,6 +7,8 @@ import java.util.List;
 
 import mcb.model.Adresse;
 import mcb.model.Besuch;
+import mcb.persistenz.filter.IdGenerator;
+import mcb.persistenz.filter.SelectedFilter;
 
 public class Adressen {
 

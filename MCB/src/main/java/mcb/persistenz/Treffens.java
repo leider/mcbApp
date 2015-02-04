@@ -1,4 +1,4 @@
-package mcb.persistenz.filter;
+package mcb.persistenz;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import mcb.model.Treffen;
+import mcb.persistenz.filter.IdGenerator;
 
 public class Treffens {
 

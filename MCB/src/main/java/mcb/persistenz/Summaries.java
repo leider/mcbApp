@@ -1,4 +1,4 @@
-package mcb.persistenz.filter;
+package mcb.persistenz;
 
 import java.util.List;
 

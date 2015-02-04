@@ -6,11 +6,13 @@ import javax.mail.internet.MimeMessage;
 
 import mcb.persistenz.PersistenceStore;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class TestMailSending {
 
   @Test
+  @Ignore
   public void testSendingWithUmlauts() throws Exception {
     String to = "leider@me.com";
     String subject = "Test";
