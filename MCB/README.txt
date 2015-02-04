@@ -1,0 +1,1 @@
+run mvn install to produce a self-containing runnable jar
