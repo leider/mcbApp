@@ -283,6 +283,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
     this.geburtstagTextfield.setEditable(enabled);
     this.soloCheckbox.setEnabled(enabled);
     this.emailgrundTextfield.setEnabled(enabled);
+    this.mitgliedCheckbox.setEnabled(enabled);
   }
 
   protected void updateCheckboxes() {
