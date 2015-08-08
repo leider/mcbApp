@@ -1,12 +1,12 @@
 package mcb.persistenz.filter.adressen;
 
 import mcb.model.Adresse;
-import mcb.model.Treffen;
+import mcb.persistenz.PersistenceStore;
 
 public class EinladungPostFilter extends AbstractEinladungsFilter {
 
-  public EinladungPostFilter(Treffen neuestesTreffen) {
-    super(neuestesTreffen);
+  public EinladungPostFilter(PersistenceStore persistenceStore) {
+    super(persistenceStore);
   }
 
   public String getLabel() {
@@ -14,6 +14,6 @@ public class EinladungPostFilter extends AbstractEinladungsFilter {
   }
 
   public boolean matches(Adresse adresse) {
-    return adresse.sollEinladungErhalten(this.neuestesTreffen) && !adresse.hatGueltigeEmail();
+    return adresse.sollEinladungErhalten(this.getNeuestesTreffen()) && !adresse.hatGueltigeEmail();
   }
 }

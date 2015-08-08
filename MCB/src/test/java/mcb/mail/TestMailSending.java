@@ -17,7 +17,22 @@ public class TestMailSending {
     String to = "leider@me.com";
     String subject = "Test";
     String body = "Body mit Ümläuten ßßß";
-    MailSender r = new MailSender(null, new PersistenceStore().getTreffens().getNeuestesTreffen());
+    SendCompleteListener listener = new SendCompleteListener() {
+
+      @Override
+      public PersistenceStore getPersistenceStore() {
+        return new PersistenceStore();
+      }
+
+      @Override
+      public void messagesNotSent() {
+      }
+
+      @Override
+      public void messagesSent() {
+      }
+    };
+    MailSender r = new MailSender(listener);
     MimeMessage message = new MimeMessage(r.getSession());
     String from = MailSessionFactory.from;
     String replyto = MailSessionFactory.replyto;

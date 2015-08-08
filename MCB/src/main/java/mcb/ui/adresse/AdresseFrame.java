@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 
 import mcb.mail.SendCompleteListener;
 import mcb.model.Adresse;
-import mcb.model.Treffen;
 import mcb.persistenz.PersistenceStore;
 import mcb.persistenz.filter.AdresseFilter;
 import mcb.persistenz.filter.AlleFilter;
@@ -70,9 +69,9 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
     filter.add(this.radioForFilter(new GemeldeteFilter()));
     filter.add(this.radioForFilter(new NichtGemeldeteFilter()));
     filter.addSeparator();
-    filter.add(this.radioForFilter(new EinladungEmailFilter(this.getNeuestesTreffen())));
-    filter.add(this.radioForFilter(new EinladungPostFilter(this.getNeuestesTreffen())));
-    filter.add(this.radioForFilter(new KeineEinladungFilter(this.getNeuestesTreffen())));
+    filter.add(this.radioForFilter(new EinladungEmailFilter(this.persistenceStore)));
+    filter.add(this.radioForFilter(new EinladungPostFilter(this.persistenceStore)));
+    filter.add(this.radioForFilter(new KeineEinladungFilter(this.persistenceStore)));
     filter.addSeparator();
     filter.add(this.radioForFilter(new IstMitgliedFilter()));
 
@@ -101,10 +100,6 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 
   public List<Adresse> getEmailAdressen() {
     return this.persistenceStore.getAdressen().getEmailAdressen();
-  }
-
-  public Treffen getNeuestesTreffen() {
-    return this.persistenceStore.getTreffens().getNeuestesTreffen();
   }
 
   @Override

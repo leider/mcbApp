@@ -23,16 +23,18 @@ import org.apache.logging.log4j.Logger;
 
 public class MailSender implements Runnable {
 
+  static final Logger LOGGER = LogManager.getLogger();
   private Session session;
   protected Date jetzt = new Date();
   private SendCompleteListener listener;
-  static final Logger LOGGER = LogManager.getLogger();
-  private final Treffen neuestesTreffen;
 
-  public MailSender(SendCompleteListener theListener, Treffen neuestesTreffen) {
+  public MailSender(SendCompleteListener theListener) {
     super();
     this.listener = theListener;
-    this.neuestesTreffen = neuestesTreffen;
+  }
+
+  public Treffen getNeuestesTreffen() {
+    return this.listener.getPersistenceStore().getTreffens().getNeuestesTreffen();
   }
 
   protected Session getSession() {
@@ -76,13 +78,13 @@ public class MailSender implements Runnable {
     message.addRecipient(RecipientType.BCC, new InternetAddress(MailSessionFactory.replyto));
     message.addFrom(new InternetAddress[] { new InternetAddress(MailSessionFactory.from) });
     message.setReplyTo(new InternetAddress[] { new InternetAddress(MailSessionFactory.replyto) });
-    message.setSubject(this.neuestesTreffen.getBeschreibung());
+    message.setSubject(this.getNeuestesTreffen().getBeschreibung());
     message.setSentDate(this.jetzt);
 
     Multipart multipart = new MimeMultipart();
 
     MimeBodyPart htmlBodyPart = new MimeBodyPart();
-    htmlBodyPart.setContent(this.neuestesTreffen.getEmailPreviewText(adresse.getVorname()), "text/html");
+    htmlBodyPart.setContent(this.getNeuestesTreffen().getEmailPreviewText(adresse.getVorname()), "text/html");
     multipart.addBodyPart(htmlBodyPart);
 
     MimeBodyPart messageBodyPart = new MimeBodyPart();
