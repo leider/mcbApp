@@ -2,11 +2,20 @@ package mcb.persistenz;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Locale;
+
 import mcb.model.Treffen;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TreffenTest {
+
+  @BeforeClass
+  public static void setLocale() {
+    Locale.setDefault(Locale.GERMAN);
+  }
 
   @Test
   public void einNeuesTreffenIstGespann() {
