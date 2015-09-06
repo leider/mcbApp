@@ -33,7 +33,7 @@ public class MailSender implements Runnable {
     this.listener = theListener;
   }
 
-  public Treffen getNeuestesTreffen() {
+  private Treffen getNeuestesTreffen() {
     return this.listener.getPersistenceStore().getTreffens().getNeuestesTreffen();
   }
 
@@ -46,22 +46,23 @@ public class MailSender implements Runnable {
 
   @Override
   public void run() {
+    boolean problemHappened = false;
     for (Adresse adresse : this.listener.getPersistenceStore().getAdressen().getEmailAdressen()) {
       try {
         this.send(adresse);
       } catch (Exception e) {
+        MailSender.LOGGER.fatal("Problem mit Adresse \"" + adresse.getEmail() + "\"");
         MailSender.LOGGER.fatal(e.getMessage(), e);
-        Runnable communicateAllSent = new Runnable() {
-
-          @Override
-          public void run() {
-            MailSender.this.listener.messagesNotSent();
-          }
-        };
-        SwingUtilities.invokeLater(communicateAllSent);
-        return;
+        problemHappened = true;
       }
     }
+    Runnable communicateNotAllSent = new Runnable() {
+
+      @Override
+      public void run() {
+        MailSender.this.listener.messagesNotSent();
+      }
+    };
     Runnable communicateAllSent = new Runnable() {
 
       @Override
@@ -69,7 +70,7 @@ public class MailSender implements Runnable {
         MailSender.this.listener.messagesSent();
       }
     };
-    SwingUtilities.invokeLater(communicateAllSent);
+    SwingUtilities.invokeLater(problemHappened ? communicateNotAllSent : communicateAllSent);
   }
 
   private void send(Adresse adresse) throws Exception {
