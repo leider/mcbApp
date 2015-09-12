@@ -28,10 +28,10 @@ import mcb.model.FruehstuecksTag;
 import mcb.model.Land;
 import mcb.persistenz.PersistenceStore;
 import mcb.ui.base.BearbeitenAction;
+import mcb.ui.base.ComponentFactory;
 import mcb.ui.base.ModelPanel;
 
 import com.jgoodies.binding.PresentationModel;
-import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.common.collect.ArrayListModel;
@@ -117,13 +117,11 @@ public class AdressePanel extends ModelPanel<Adresse> {
   }
 
   private void buildPanel() {
-
     FormBuilder
         .create()
         .columns("3dlu, right:pref, 3dlu, 35dlu, 3dlu, 35dlu, 3dlu, 40dlu, 3dlu, 60dlu, 3dlu, 53dlu, 3dlu")
         .rows(
             "3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu")
-
         .panel(this)
         .add(this.bearbeitenButton).xyw(2, 2, 5)
         .addSeparator("Adresse").xyw(2, 4, 11)
@@ -175,28 +173,28 @@ public class AdressePanel extends ModelPanel<Adresse> {
     ListModel countryListModel = new ArrayListModel<String>(AdressePanel.alleLaenderKurzel());
     ValueModel countryModel = this.presentationModel.getBufferedModel(Adresse.LAND);
     SelectionInList<String> countrySil = new SelectionInList<String>(countryListModel, countryModel);
-    this.landTextfield = BasicComponentFactory.createComboBox(countrySil);
+    this.landTextfield = ComponentFactory.createComboBox(countrySil);
 
     @SuppressWarnings("rawtypes")
     ListModel fehlerListModel = new ArrayListModel<String>(Fehlergruende.alleGruende());
     ValueModel fehlerModel = this.presentationModel.getBufferedModel(Adresse.FEHLERGRUND);
     SelectionInList<String> fehlerSil = new SelectionInList<String>(fehlerListModel, fehlerModel);
-    this.emailgrundTextfield = BasicComponentFactory.createComboBox(fehlerSil);
+    this.emailgrundTextfield = ComponentFactory.createComboBox(fehlerSil);
 
-    this.vornameTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.VORNAME), false);
-    this.nachnameTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.NAME), false);
-    this.strasseTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.STRASSE), false);
-    this.plzTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.PLZ), false);
-    this.ortTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.ORT), false);
-    this.emailTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.EMAIL), false);
-    this.gespannCheckbox = BasicComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.GESPANN), "Gespann");
-    this.soloCheckbox = BasicComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.SOLO), "Solo");
-    this.geburtstagTextfield = BasicComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.GEBURTSTAG), false);
+    this.vornameTextfield = ComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.VORNAME), false);
+    this.nachnameTextfield = ComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.NAME), false);
+    this.strasseTextfield = ComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.STRASSE), false);
+    this.plzTextfield = ComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.PLZ), false);
+    this.ortTextfield = ComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.ORT), false);
+    this.emailTextfield = ComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.EMAIL), false);
+    this.gespannCheckbox = ComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.GESPANN), "Gespann");
+    this.soloCheckbox = ComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.SOLO), "Solo");
+    this.geburtstagTextfield = ComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.GEBURTSTAG), false);
     SelectionInList<Besuch> besuchList = new SelectionInList<Besuch>(this.presentationModel.getBufferedModel(Adresse.VERGANGENE_TREFFEN));
-    this.besuchListe = BasicComponentFactory.createList(besuchList);
+    this.besuchListe = ComponentFactory.createList(besuchList);
     this.besuchListe.setEnabled(false);
     this.meldungCheckbox = new JCheckBox("Meldung");
-    this.mitgliedCheckbox = BasicComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.MCB_MITGLIED), "Mitglied");
+    this.mitgliedCheckbox = ComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.MCB_MITGLIED), "Mitglied");
     this.fruehstueckSamstagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Samstag);
     this.fruehstueckSonntagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Sonntag);
     this.bearbeitenButton = new JButton(this.bearbeitenAction);

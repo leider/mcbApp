@@ -16,18 +16,19 @@ import mcb.persistenz.filter.AlleFilter;
 import mcb.persistenz.filter.SelectedFilter;
 
 import com.jgoodies.binding.PresentationModel;
-import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.beans.Model;
 import com.jgoodies.binding.list.SelectionInList;
 
 public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 
   private static final long serialVersionUID = -3683947066010395220L;
+
   private SelectionInList<T> modelliste;
   @SuppressWarnings("rawtypes")
   private JList list;
   private JTextField anzahlText;
   private PresentationModel<T> detailModel;
+
   protected final PersistenceStore persistenceStore;
 
   public SelectionInListPanel(PersistenceStore persistenceStore) {
@@ -37,7 +38,7 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
   }
 
   private void createList() {
-    this.list = BasicComponentFactory.createList(this.modelliste);
+    this.list = ComponentFactory.createList(this.modelliste);
     Dimension preferredSize = this.list.getPreferredSize();
     preferredSize.width = preferredSize.width + 40;
     this.setMinimumSize(preferredSize);

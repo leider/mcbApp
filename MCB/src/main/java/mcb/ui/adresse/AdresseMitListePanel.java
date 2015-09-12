@@ -22,12 +22,12 @@ import mcb.persistenz.filter.SelectedFilter;
 import mcb.persistenz.filter.adressen.FilterAction;
 import mcb.persistenz.filter.adressen.SucheFilter;
 import mcb.ui.base.BearbeitenAction;
+import mcb.ui.base.ComponentFactory;
 import mcb.ui.base.ModelMitListePanel;
 import mcb.ui.base.ModelPanel;
 import mcb.ui.base.SelectionInListPanel;
 
 import com.jgoodies.binding.PresentationModel;
-import com.jgoodies.binding.adapter.BasicComponentFactory;
 
 public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 
@@ -85,18 +85,18 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 
     PresentationModel<Summaries> presentationModel = new PresentationModel<Summaries>(Summaries.getInstance());
     toolBar.add(new JLabel("Samstag:"));
-    JFormattedTextField samstag = BasicComponentFactory.createIntegerField(presentationModel.getModel(Summaries.FRUEHSTUCK_SAMSTAG));
+    JFormattedTextField samstag = ComponentFactory.createIntegerField(presentationModel.getModel(Summaries.FRUEHSTUCK_SAMSTAG));
     toolBar.add(samstag);
     int kantenlaenge = samstag.getPreferredSize().height;
     samstag.setPreferredSize(new Dimension(3 * kantenlaenge, kantenlaenge));
     samstag.setEditable(false);
     toolBar.add(new JLabel("Sonntag:"));
-    JFormattedTextField sonntag = BasicComponentFactory.createIntegerField(presentationModel.getModel(Summaries.FRUEHSTUCK_SONNTAG));
+    JFormattedTextField sonntag = ComponentFactory.createIntegerField(presentationModel.getModel(Summaries.FRUEHSTUCK_SONNTAG));
     toolBar.add(sonntag);
     sonntag.setPreferredSize(new Dimension(3 * kantenlaenge, kantenlaenge));
     sonntag.setEditable(false);
     toolBar.add(new JLabel("Meldungen:"));
-    JFormattedTextField meldungen = BasicComponentFactory.createIntegerField(presentationModel.getModel(Summaries.ANZAHL_MELDUNGEN));
+    JFormattedTextField meldungen = ComponentFactory.createIntegerField(presentationModel.getModel(Summaries.ANZAHL_MELDUNGEN));
     toolBar.add(meldungen);
     meldungen.setPreferredSize(new Dimension(3 * kantenlaenge, kantenlaenge));
     meldungen.setEditable(false);
