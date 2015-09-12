@@ -15,7 +15,7 @@
 
 	<groupId>MCB</groupId>
 	<artifactId>MCB</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<name>mcbApp</name>
 	<description>Treffen Unterstützung</description>
 	<build>
