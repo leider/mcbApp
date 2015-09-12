@@ -14,7 +14,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
@@ -36,9 +35,7 @@ import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.common.collect.ArrayListModel;
-import com.jgoodies.forms.builder.PanelBuilder;
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.builder.FormBuilder;
 
 public class AdressePanel extends ModelPanel<Adresse> {
 
@@ -78,6 +75,8 @@ public class AdressePanel extends ModelPanel<Adresse> {
 
   }
 
+  private static final long serialVersionUID = -427646783597528169L;
+
   private static List<String> alleLaenderKurzel() {
     List<String> result = new ArrayList<String>();
     Land[] values = Land.values();
@@ -87,7 +86,6 @@ public class AdressePanel extends ModelPanel<Adresse> {
     return result;
   }
 
-  private static final long serialVersionUID = -427646783597528169L;
   private JTextField vornameTextfield;
   private JTextField nachnameTextfield;
   private JTextField strasseTextfield;
@@ -119,71 +117,44 @@ public class AdressePanel extends ModelPanel<Adresse> {
   }
 
   private void buildPanel() {
-    FormLayout layout = new FormLayout(
-        "3dlu, right:pref, 3dlu, 35dlu, 3dlu, 35dlu, 3dlu, 40dlu, 3dlu, 60dlu, 3dlu, 53dlu, 3dlu", // cols
-        "3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu"); // rows
 
-    PanelBuilder builder = new PanelBuilder(layout, this);
-    CellConstraints cc = new CellConstraints();
+    FormBuilder
+        .create()
+        .columns("3dlu, right:pref, 3dlu, 35dlu, 3dlu, 35dlu, 3dlu, 40dlu, 3dlu, 60dlu, 3dlu, 53dlu, 3dlu")
+        .rows(
+            "3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu")
 
-    int row = 2;
-    builder.add(this.bearbeitenButton, cc.xyw(2, row, 5));
-    row++;
-    row++;
-    builder.addSeparator("Adresse", cc.xyw(2, row, 11));
-    row++;
-    row++;
-    builder.addLabel("Vorname, Name", cc.xy(2, row));
-    builder.add(this.vornameTextfield, cc.xyw(4, row, 5));
-    builder.add(this.nachnameTextfield, cc.xyw(10, row, 3));
-    row++;
-    row++;
-    builder.addLabel("Straße", cc.xy(2, row));
-    builder.add(this.strasseTextfield, cc.xyw(4, row, 9));
-    row++;
-    row++;
-    builder.addLabel("Land, PLZ, Ort", cc.xy(2, row));
-    builder.add(this.landTextfield, cc.xy(4, row));
-    builder.add(this.plzTextfield, cc.xy(6, row));
-    builder.add(this.ortTextfield, cc.xyw(8, row, 5));
-    row++;
-    row++;
-    builder.addLabel("Geburtstag", cc.xy(2, row));
-    builder.add(this.geburtstagTextfield, cc.xyw(4, row, 5));
-    builder.add(this.mitgliedCheckbox, cc.xyw(10, row, 3, "r,d"));
-    row++;
-    row++;
-    builder.addSeparator("Email", cc.xyw(2, row, 11));
-    row++;
-    row++;
-    builder.addLabel("Adresse", cc.xy(2, row));
-    builder.add(this.emailTextfield, cc.xyw(4, row, 9));
-    row++;
-    row++;
-    builder.add(this.emailgrundTextfield, cc.xyw(4, row, 9));
-    row++;
-    row++;
-    builder.addSeparator("Fahrzeuge", cc.xyw(2, row, 11));
-    row++;
-    row++;
-    builder.add(this.gespannCheckbox, cc.xyw(4, row, 5));
-    builder.add(this.soloCheckbox, cc.xyw(10, row, 2));
-    row++;
-    row++;
-    builder.addSeparator("vergangene Treffen", cc.xyw(2, row, 5));
-    builder.addSeparator("aktuelles Treffen", cc.xyw(8, row, 5));
-    row++;
-    row++;
-    builder.add(new JScrollPane(this.besuchListe), cc.xywh(2, row, 5, 5));
-    builder.add(this.meldungCheckbox, cc.xyw(8, row, 4));
-    row++;
-    row++;
-    builder.addLabel("Frühstück Samstag", cc.xyw(8, row, 3));
-    builder.add(this.fruehstueckSamstagIntegerField, cc.xy(12, row));
-    row++;
-    row++;
-    builder.addLabel("Frühstück Sonntag", cc.xyw(8, row, 3));
-    builder.add(this.fruehstueckSonntagIntegerField, cc.xy(12, row));
+        .panel(this)
+        .add(this.bearbeitenButton).xyw(2, 2, 5)
+        .addSeparator("Adresse").xyw(2, 4, 11)
+        .addLabel("Vorname, Name").xy(2, 6)
+        .add(this.vornameTextfield).xyw(4, 6, 5)
+        .add(this.nachnameTextfield).xyw(10, 6, 3)
+        .addLabel("Straße").xy(2, 8)
+        .add(this.strasseTextfield).xyw(4, 8, 9)
+        .addLabel("Land, PLZ, Ort").xy(2, 10)
+        .add(this.landTextfield).xy(4, 10)
+        .add(this.plzTextfield).xy(6, 10)
+        .add(this.ortTextfield).xyw(8, 10, 5)
+        .addLabel("Geburtstag").xy(2, 12)
+        .add(this.geburtstagTextfield).xyw(4, 12, 5)
+        .add(this.mitgliedCheckbox).xyw(10, 12, 3, "r,d")
+        .addSeparator("Email").xyw(2, 14, 11)
+        .addLabel("Adresse").xy(2, 16)
+        .add(this.emailTextfield).xyw(4, 16, 9)
+        .add(this.emailgrundTextfield).xyw(4, 18, 9)
+        .addSeparator("Fahrzeuge").xyw(2, 20, 11)
+        .add(this.gespannCheckbox).xyw(4, 22, 5)
+        .add(this.soloCheckbox).xyw(10, 22, 2)
+        .addSeparator("vergangene Treffen").xyw(2, 24, 5)
+        .addSeparator("aktuelles Treffen").xyw(8, 24, 5)
+        .addScrolled(this.besuchListe).xywh(2, 26, 5, 5)
+        .add(this.meldungCheckbox).xyw(8, 26, 4)
+        .addLabel("Frühstück Samstag").xyw(8, 28, 3)
+        .add(this.fruehstueckSamstagIntegerField).xy(12, 28)
+        .addLabel("Frühstück Sonntag").xyw(8, 30, 3)
+        .add(this.fruehstueckSonntagIntegerField).xy(12, 30)
+        .build();
   }
 
   private void fruehstueckChanged(int anzahl, FruehstuecksTag tag) {
