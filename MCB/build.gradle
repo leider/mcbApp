@@ -41,7 +41,7 @@ jar {
 	}
 }
 
-task copyJar(dependsOn: [build, shadowJar], type: Copy) {
+task copyJar(dependsOn: [build, processResources, shadowJar], type: Copy) {
     from 'build/libs'
     into '.'
     include '*all.jar'

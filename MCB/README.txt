@@ -1,1 +1,1 @@
-run mvn install to produce a self-containing runnable jar
+run ./gradlew copyJar to create a self-containing runnable jar
