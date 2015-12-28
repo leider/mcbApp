@@ -13,3 +13,5 @@ MCB/target
 *.jar
 dependency-reduced-pom.xml
 MCB/einladung.pdf
+MCB/.gradle
+MCB/build

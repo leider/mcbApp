@@ -12,7 +12,7 @@ import mcb.persistenz.filter.SelectedFilter;
 
 public class Adressen {
 
-  private List<Adresse> adressen = new ArrayList<Adresse>();
+  private List<Adresse> adressen = new ArrayList<>();
 
   public void add(Adresse adresse) {
     if (adresse.isNeu()) {
@@ -26,7 +26,7 @@ public class Adressen {
   }
 
   public List<Besuch> getAktuelleBesuche() {
-    List<Besuch> result = new ArrayList<Besuch>();
+    List<Besuch> result = new ArrayList<>();
     for (Adresse adresse : this.adressen) {
       if (adresse.getAktuellerBesuch() != null) {
         result.add(adresse.getAktuellerBesuch());
@@ -36,7 +36,7 @@ public class Adressen {
   }
 
   public List<Adresse> getEmailAdressen() {
-    List<Adresse> result = new ArrayList<Adresse>();
+    List<Adresse> result = new ArrayList<>();
     List<Adresse> alleAdressen = this.getFilteredAdressen();
     for (Adresse adresse : alleAdressen) {
       if (adresse.hatGueltigeEmail()) {
@@ -47,7 +47,7 @@ public class Adressen {
   }
 
   public List<Adresse> getFilteredAdressen() {
-    List<Adresse> result = new ArrayList<Adresse>();
+    List<Adresse> result = new ArrayList<>();
     for (Adresse adresse : this.adressen) {
       if (SelectedFilter.get().matches(adresse)) {
         result.add(adresse);

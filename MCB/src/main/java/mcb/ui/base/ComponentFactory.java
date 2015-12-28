@@ -16,13 +16,14 @@ import com.jgoodies.binding.value.BufferedValueModel;
  * temporary class to make future changes in JGoodies easier
  *
  */
+@SuppressWarnings("deprecation")
 public class ComponentFactory {
 
   public static JCheckBox createCheckBox(BufferedValueModel bufferedModel, String markedText) {
     return BasicComponentFactory.createCheckBox(bufferedModel, markedText);
   }
 
-  public static JComboBox createComboBox(SelectionInList<String> selectionInList) {
+  public static JComboBox<?> createComboBox(SelectionInList<String> selectionInList) {
     return BasicComponentFactory.createComboBox(selectionInList);
   }
 
@@ -30,7 +31,7 @@ public class ComponentFactory {
     return BasicComponentFactory.createIntegerField(model);
   }
 
-  public static JList createList(SelectionInList<?> selectionInList) {
+  public static JList<?> createList(SelectionInList<?> selectionInList) {
     return BasicComponentFactory.createList(selectionInList);
   }
 

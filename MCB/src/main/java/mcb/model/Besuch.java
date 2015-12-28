@@ -1,5 +1,8 @@
 package mcb.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public class Besuch implements Comparable<Besuch> {
 
   private McbModel adresse;
@@ -36,21 +39,7 @@ public class Besuch implements Comparable<Besuch> {
       return false;
     }
     Besuch other = (Besuch) obj;
-    if (this.adresse == null) {
-      if (other.adresse != null) {
-        return false;
-      }
-    } else if (!this.adresse.equals(other.adresse)) {
-      return false;
-    }
-    if (this.treffen == null) {
-      if (other.treffen != null) {
-        return false;
-      }
-    } else if (!this.treffen.equals(other.treffen)) {
-      return false;
-    }
-    return true;
+    return new EqualsBuilder().append(this.adresse, other.adresse).append(this.treffen, other.treffen).isEquals();
   }
 
   public McbModel getAdresse() {
@@ -71,11 +60,7 @@ public class Besuch implements Comparable<Besuch> {
 
   @Override
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + (this.adresse == null ? 0 : this.adresse.hashCode());
-    result = prime * result + (this.treffen == null ? 0 : this.treffen.hashCode());
-    return result;
+    return new HashCodeBuilder(17, 31).append(this.adresse).append(this.treffen).toHashCode();
   }
 
   /**

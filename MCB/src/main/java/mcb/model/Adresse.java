@@ -39,7 +39,7 @@ public class Adresse extends McbModel {
   private String email;
   private String fehlergrund;
   private boolean mitglied;
-  private List<Besuch> besuchteTreffen = new ArrayList<Besuch>();
+  private List<Besuch> besuchteTreffen = new ArrayList<>();
 
   public Adresse() {
     super();
@@ -120,7 +120,7 @@ public class Adresse extends McbModel {
 
   @JSON(include = false)
   public List<Besuch> getVergangeneTreffen() {
-    List<Besuch> result = new ArrayList<Besuch>();
+    List<Besuch> result = new ArrayList<>();
     for (Besuch besuch : this.getBesuchteTreffen()) {
       if (!besuch.getTreffen().isAktuell()) {
         result.add(besuch);

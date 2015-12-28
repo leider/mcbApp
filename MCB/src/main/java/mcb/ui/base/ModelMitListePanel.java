@@ -9,23 +9,23 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import com.jgoodies.binding.PresentationModel;
+import com.jgoodies.binding.beans.Model;
+
 import mcb.model.McbException;
 import mcb.persistenz.PersistenceStore;
 import mcb.persistenz.filter.McbAction;
 
-import com.jgoodies.binding.PresentationModel;
-import com.jgoodies.binding.beans.Model;
-
 public abstract class ModelMitListePanel<T extends Model> extends JPanel {
 
+  private static final long serialVersionUID = -8126517029418193902L;
   private ModelPanel<T> modelPanel;
   private SelectionInListPanel<T> listePanel;
   private PresentationModel<T> detailModel;
   private McbAction neuAction;
   private McbAction loeschenAction;
-  private BearbeitenAction<T> bearbeitenAction;
 
-  private static final long serialVersionUID = -8126517029418193902L;
+  private BearbeitenAction<T> bearbeitenAction;
   protected final PersistenceStore persistenceStore;
 
   public ModelMitListePanel(PersistenceStore persistenceStore) {
@@ -97,7 +97,7 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
   }
 
   protected List<McbAction> getAllActionsExceptBearbeiten() {
-    List<McbAction> result = new ArrayList<McbAction>();
+    List<McbAction> result = new ArrayList<>();
     result.add(this.loeschenAction);
     result.add(this.neuAction);
     return result;

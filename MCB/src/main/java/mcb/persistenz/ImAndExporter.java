@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import flexjson.JSONDeserializer;
+import flexjson.JSONSerializer;
 import mcb.model.Adresse;
 import mcb.model.Besuch;
 import mcb.model.Treffen;
@@ -16,13 +21,9 @@ import mcb.persistenz.json.BesuchFactory;
 import mcb.persistenz.json.DoWithReader;
 import mcb.persistenz.json.DoWithWriter;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
-
 public class ImAndExporter {
+
+  public static final Logger LOGGER = LogManager.getLogger();
 
   public static void exportAdressen(File file, final Adressen adressen) {
     DoWithWriter performer = new DoWithWriter() {
@@ -100,7 +101,7 @@ public class ImAndExporter {
       @Override
       public void statement(BufferedReader reader) throws IOException {
         String line = reader.readLine();
-        JSONDeserializer<Adresse> jsonDeserializer = new JSONDeserializer<Adresse>();
+        JSONDeserializer<Adresse> jsonDeserializer = new JSONDeserializer<>();
         jsonDeserializer.use(Adresse.class, new AdresseFactory());
         jsonDeserializer.use(Besuch.class, new BesuchFactory(treffens.getAlleTreffen()));
         while (line != null) {
@@ -117,7 +118,7 @@ public class ImAndExporter {
       @Override
       public void statement(BufferedReader reader) throws IOException {
         String line = reader.readLine();
-        JSONDeserializer<Treffen> jsonDeserializer = new JSONDeserializer<Treffen>();
+        JSONDeserializer<Treffen> jsonDeserializer = new JSONDeserializer<>();
         while (line != null) {
           treffens.add(jsonDeserializer.deserialize(line));
           line = reader.readLine();
@@ -126,8 +127,6 @@ public class ImAndExporter {
     };
     ImAndExporter.importiere(file, performer);
   }
-
-  public static final Logger LOGGER = LogManager.getLogger();
 
   private ImAndExporter() {
     super();

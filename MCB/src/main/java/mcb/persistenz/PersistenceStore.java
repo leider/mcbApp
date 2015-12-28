@@ -9,6 +9,10 @@ import java.util.Date;
 
 public class PersistenceStore {
 
+  private static final File TREFFEN_FILE = new File("./data/treffen.json");
+
+  private static final File ADRESSEN_FILE = new File("./data/adressen.json");
+
   private static void backupDaten() {
     try {
       String treffenPath = PersistenceStore.TREFFEN_FILE.getCanonicalPath();
@@ -24,25 +28,12 @@ public class PersistenceStore {
     if (!destFile.exists()) {
       destFile.createNewFile();
     }
-    FileChannel source = null;
-    FileChannel destination = null;
-    try {
-      source = new FileInputStream(sourceFile).getChannel();
-      destination = new FileOutputStream(destFile).getChannel();
-      destination.transferFrom(source, 0, source.size());
-    } finally {
-      if (source != null) {
-        source.close();
-      }
-      if (destination != null) {
-        destination.close();
-      }
+    try (FileInputStream fileInputStream = new FileInputStream(sourceFile);
+        FileOutputStream destination = new FileOutputStream(destFile);) {
+      FileChannel source = fileInputStream.getChannel();
+      destination.getChannel().transferFrom(source, 0, source.size());
     }
   }
-
-  private static final File TREFFEN_FILE = new File("./data/treffen.json");
-
-  private static final File ADRESSEN_FILE = new File("./data/adressen.json");
 
   private final Adressen adressen = new Adressen();
 

@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
+import com.jgoodies.binding.PresentationModel;
+
 import mcb.model.Adresse;
 import mcb.model.McbException;
 import mcb.persistenz.PersistenceStore;
@@ -27,13 +29,11 @@ import mcb.ui.base.ModelMitListePanel;
 import mcb.ui.base.ModelPanel;
 import mcb.ui.base.SelectionInListPanel;
 
-import com.jgoodies.binding.PresentationModel;
-
 public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
 
   private static final long serialVersionUID = 444596326461558352L;
   private JTextField suchText;
-  private List<FilterAction> filterActions = new ArrayList<FilterAction>();
+  private List<FilterAction> filterActions = new ArrayList<>();
 
   public AdresseMitListePanel(PersistenceStore persistenceStore) {
     super(persistenceStore);
@@ -83,7 +83,7 @@ public class AdresseMitListePanel extends ModelMitListePanel<Adresse> {
     });
     toolBar.addSeparator();
 
-    PresentationModel<Summaries> presentationModel = new PresentationModel<Summaries>(Summaries.getInstance());
+    PresentationModel<Summaries> presentationModel = new PresentationModel<>(Summaries.getInstance());
     toolBar.add(new JLabel("Samstag:"));
     JFormattedTextField samstag = ComponentFactory.createIntegerField(presentationModel.getModel(Summaries.FRUEHSTUCK_SAMSTAG));
     toolBar.add(samstag);

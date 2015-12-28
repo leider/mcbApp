@@ -10,7 +10,7 @@ import mcb.persistenz.filter.IdGenerator;
 
 public class Treffens {
 
-  private List<Treffen> treffen = new ArrayList<Treffen>();
+  private List<Treffen> treffen = new ArrayList<>();
 
   public void add(Treffen treffen) {
     if (treffen.isNeu()) {
@@ -48,7 +48,7 @@ public class Treffens {
   }
 
   private List<Treffen> sortedTreffen() {
-    List<Treffen> treffenCopy = new ArrayList<Treffen>(this.treffen);
+    List<Treffen> treffenCopy = new ArrayList<>(this.treffen);
     Collections.sort(treffenCopy, new Comparator<Treffen>() {
 
       public int compare(Treffen t1, Treffen t2) {

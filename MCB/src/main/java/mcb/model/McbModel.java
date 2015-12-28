@@ -41,10 +41,7 @@ public abstract class McbModel extends Model {
 
   @Override
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = (int) (prime * result + this.id);
-    return result;
+    return (int) (31 + this.id);
   }
 
   public boolean isNeu() {
