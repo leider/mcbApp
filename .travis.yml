@@ -1,3 +1,3 @@
 sudo: false
 language: java
-script: sh -c 'cd MCB && mvn install'
+script: sh -c 'cd MCB && gradle copyJar'
