@@ -1,6 +1,7 @@
 package mcb.mail;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -15,11 +16,11 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.swing.SwingUtilities;
 
-import mcb.model.Adresse;
-import mcb.model.Treffen;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import mcb.model.Adresse;
+import mcb.model.Treffen;
 
 public class MailSender implements Runnable {
 
@@ -47,9 +48,17 @@ public class MailSender implements Runnable {
   @Override
   public void run() {
     boolean problemHappened = false;
-    for (Adresse adresse : this.listener.getPersistenceStore().getAdressen().getEmailAdressen()) {
+    List<Adresse> emailAdressen = this.listener.getPersistenceStore().getAdressen().getEmailAdressen();
+    int anzahl = emailAdressen.size();
+    int aktuell = 1;
+    for (Adresse adresse : emailAdressen) {
       try {
+        this.listener.currentlySending("Mail " + aktuell++ + " von " + anzahl + " an: " + adresse.getEmail());
         this.send(adresse);
+        if (aktuell % 50 == 0) {
+          this.listener.currentlySending("Warte 5 Minuten, bevor die nächsten Mails gesendet werden.");
+          Thread.sleep(5 * 60 * 1000); // alle 50 Mails 5 Minuten pausieren
+        }
       } catch (Exception e) {
         MailSender.LOGGER.fatal("Problem mit Adresse \"" + adresse.getEmail() + "\"");
         MailSender.LOGGER.fatal(e.getMessage(), e);

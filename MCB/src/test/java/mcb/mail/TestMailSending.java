@@ -4,10 +4,10 @@ import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import mcb.persistenz.PersistenceStore;
-
 import org.junit.Ignore;
 import org.junit.Test;
+
+import mcb.persistenz.PersistenceStore;
 
 public class TestMailSending {
 
@@ -18,6 +18,11 @@ public class TestMailSending {
     String subject = "Test";
     String body = "Body mit Ümläuten ßßß";
     SendCompleteListener listener = new SendCompleteListener() {
+
+      @Override
+      public void currentlySending(String infoText) {
+
+      }
 
       @Override
       public PersistenceStore getPersistenceStore() {

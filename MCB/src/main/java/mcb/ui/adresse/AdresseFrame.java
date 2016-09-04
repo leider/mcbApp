@@ -1,10 +1,12 @@
 package mcb.ui.adresse;
 
+import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
@@ -34,6 +36,7 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
   private static final long serialVersionUID = -4920258782523646842L;
   private JCheckBoxMenuItem alle;
   private JCheckBoxMenuItem suche;
+  private JLabel infoLabel;
 
   public AdresseFrame(PersistenceStore persistenceStore) {
     super("MCB", persistenceStore);
@@ -95,7 +98,14 @@ public class AdresseFrame extends SimpleFrame<Adresse> implements MatchesAlleLis
 
   @Override
   protected AdresseMitListePanel createPanel() {
+    this.infoLabel = new JLabel("Informationen...");
+    this.getContentPane().add(this.infoLabel, BorderLayout.SOUTH);
     return new AdresseMitListePanel(this.persistenceStore);
+  }
+
+  @Override
+  public void currentlySending(String infoText) {
+    this.infoLabel.setText(infoText);
   }
 
   public List<Adresse> getEmailAdressen() {
