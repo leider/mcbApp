@@ -3,19 +3,20 @@ package mcb.ui.treffen;
 import java.awt.Font;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+
+import com.jgoodies.binding.PresentationModel;
+import com.jgoodies.forms.builder.FormBuilder;
 
 import mcb.model.Treffen;
 import mcb.persistenz.PersistenceStore;
 import mcb.ui.base.BearbeitenAction;
 import mcb.ui.base.ComponentFactory;
 import mcb.ui.base.ModelPanel;
-
-import com.jgoodies.binding.PresentationModel;
-import com.jgoodies.forms.builder.FormBuilder;
 
 public class TreffenPanel extends ModelPanel<Treffen> {
 
@@ -28,6 +29,8 @@ public class TreffenPanel extends ModelPanel<Treffen> {
   private JTextArea emailTextfield;
   private JTextField beschreibungTextfield;
   private JTextArea emailPreviewTextfield;
+  private JFormattedTextField preisMeldungIntfield;
+  private JFormattedTextField preisFruehstueckIntfield;
 
   public TreffenPanel(PresentationModel<Treffen> presentationModel, BearbeitenAction<Treffen> bearbeitenAction,
       PersistenceStore persistenceStore) {
@@ -38,10 +41,10 @@ public class TreffenPanel extends ModelPanel<Treffen> {
 
   private void buildPanel() {
     FormBuilder
-    .create()
-    .columns("3dlu, right:pref, 3dlu, 60dlu, 3dlu, 30dlu, 3dlu, pref:grow, 3dlu")
-    .rows(
-        "3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, 20dlu, 3dlu")
+        .create()
+        .columns("3dlu, right:pref, 3dlu, 60dlu, 3dlu, right:pref, 3dlu, pref:grow, 3dlu")
+        .rows(
+            "3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, 20dlu, 3dlu")
         .panel(this)
         .add(this.bearbeitenButton).xyw(2, 2, 5)
         .addSeparator("Allgemein").xyw(2, 4, 8)
@@ -51,8 +54,12 @@ public class TreffenPanel extends ModelPanel<Treffen> {
         .add(this.beschreibungTextfield).xyw(4, 8, 5)
         .addLabel("Erster Tag").xy(2, 10)
         .add(this.ersterTagTextfield).xy(4, 10)
+        .addLabel("Meldung").xy(6, 10)
+        .add(this.preisMeldungIntfield).xy(8, 10)
         .addLabel("Letzter Tag").xy(2, 12)
         .add(this.letzterTagTextfield).xy(4, 12)
+        .addLabel("Frühstück").xy(6, 12)
+        .add(this.preisFruehstueckIntfield).xy(8, 12)
         .addLabel("Emailtext").xy(2, 14)
         .add(this.emailScrollfield).xyw(4, 14, 5)
         .build();
@@ -63,6 +70,8 @@ public class TreffenPanel extends ModelPanel<Treffen> {
     this.ersterTagTextfield = ComponentFactory.createTextField(this.presentationModel.getBufferedModel(Treffen.ERSTER_TAG), false);
     this.letzterTagTextfield = ComponentFactory.createTextField(this.presentationModel.getBufferedModel(Treffen.LETZTER_TAG), false);
     this.beschreibungTextfield = ComponentFactory.createTextField(this.presentationModel.getBufferedModel(Treffen.BESCHREIBUNG), false);
+    this.preisMeldungIntfield = ComponentFactory.createIntegerField(this.presentationModel.getBufferedModel(Treffen.PREIS_MELDUNG));
+    this.preisFruehstueckIntfield = ComponentFactory.createIntegerField(this.presentationModel.getBufferedModel(Treffen.PREIS_FRUEHSTUECK));
     this.emailTextfield = ComponentFactory.createTextArea(this.presentationModel.getBufferedModel(Treffen.EMAIL_TEXT), false);
     this.emailTextfield.setRows(20);
     this.emailTextfield.setFont(new Font("Monospaced", Font.PLAIN, 12));
@@ -85,6 +94,8 @@ public class TreffenPanel extends ModelPanel<Treffen> {
     this.nameTextfield.setEditable(enabled);
     this.ersterTagTextfield.setEditable(enabled);
     this.letzterTagTextfield.setEditable(enabled);
+    this.preisFruehstueckIntfield.setEditable(enabled);
+    this.preisMeldungIntfield.setEditable(enabled);
     this.emailTextfield.setEditable(enabled);
     this.emailScrollfield.setViewportView(enabled ? this.emailTextfield : this.emailPreviewTextfield);
   }

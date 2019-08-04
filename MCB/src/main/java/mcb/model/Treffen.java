@@ -16,6 +16,8 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
   public static final String EMAIL_TEXT = "emailText";
   public static final String BESCHREIBUNG = "beschreibung";
   public static final String EMAIL_PREVIEW_TEXT = "emailPreviewText";
+  public static final String PREIS_MELDUNG = "preisMeldung";
+  public static final String PREIS_FRUEHSTUECK = "preisFruehstueck";
 
   private static final long serialVersionUID = -2962721510670946939L;
 
@@ -24,6 +26,8 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
   private Date letzterTag;
   private String emailText;
   private String beschreibung;
+  private Integer preisMeldung = Integer.valueOf(4);
+  private Integer preisFruehstueck = Integer.valueOf(3);
 
   public Treffen() {
     super();
@@ -47,7 +51,8 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
   public String getEmailPreviewText(String vorname) {
     String emailText2 = this.emailText == null ? "" : this.emailText;
 
-    return String.format(emailText2, this.getVonBisString(), this.getBeschreibung(), vorname);
+    return String.format(emailText2, this.getVonBisString(), this.getBeschreibung(), vorname, this.getPreisMeldung(),
+        this.getPreisFruehstueck());
   }
 
   public String getEmailText() {
@@ -86,6 +91,14 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 
   public String getName() {
     return this.name;
+  }
+
+  public Integer getPreisFruehstueck() {
+    return this.preisFruehstueck;
+  }
+
+  public Integer getPreisMeldung() {
+    return this.preisMeldung;
   }
 
   @JSON(include = false)
@@ -161,6 +174,14 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public void setPreisFruehstueck(Integer preisFruehstueck) {
+    this.preisFruehstueck = preisFruehstueck;
+  }
+
+  public void setPreisMeldung(Integer preisMeldung) {
+    this.preisMeldung = preisMeldung;
   }
 
   @Override

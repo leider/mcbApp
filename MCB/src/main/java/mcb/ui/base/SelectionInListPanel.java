@@ -10,14 +10,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
+import com.jgoodies.binding.PresentationModel;
+import com.jgoodies.binding.beans.Model;
+import com.jgoodies.binding.list.SelectionInList;
+
 import mcb.model.McbException;
 import mcb.persistenz.PersistenceStore;
 import mcb.persistenz.filter.AlleFilter;
 import mcb.persistenz.filter.SelectedFilter;
-
-import com.jgoodies.binding.PresentationModel;
-import com.jgoodies.binding.beans.Model;
-import com.jgoodies.binding.list.SelectionInList;
 
 public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 
@@ -57,7 +57,7 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
 
   public PresentationModel<T> getDetailModel() {
     if (this.detailModel == null) {
-      this.detailModel = new PresentationModel<T>(this.modelliste);
+      this.detailModel = new PresentationModel<>(this.modelliste);
     }
     return this.detailModel;
   }

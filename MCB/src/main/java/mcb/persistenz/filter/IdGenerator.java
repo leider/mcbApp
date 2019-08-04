@@ -9,7 +9,7 @@ import mcb.model.McbModel;
 public class IdGenerator {
 
   public static long nextIdFor(List<? extends McbModel> originals) {
-    List<McbModel> models = new ArrayList<McbModel>(originals);
+    List<McbModel> models = new ArrayList<>(originals);
     if (models.isEmpty()) {
       return 1;
     }

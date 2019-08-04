@@ -31,6 +31,10 @@ public class ComponentFactory {
     return BasicComponentFactory.createIntegerField(model);
   }
 
+  public static JFormattedTextField createIntegerField(BufferedValueModel bufferedModel) {
+    return BasicComponentFactory.createIntegerField(bufferedModel, 0);
+  }
+
   public static JList<?> createList(SelectionInList<?> selectionInList) {
     return BasicComponentFactory.createList(selectionInList);
   }

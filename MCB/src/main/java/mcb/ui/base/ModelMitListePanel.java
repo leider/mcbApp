@@ -61,7 +61,7 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
 
     };
 
-    this.bearbeitenAction = new BearbeitenAction<T>(this);
+    this.bearbeitenAction = new BearbeitenAction<>(this);
 
     this.loeschenAction = new McbAction("Löschen", McbAction.LOESCHEN) {
 

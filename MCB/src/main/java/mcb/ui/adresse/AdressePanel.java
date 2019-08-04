@@ -21,21 +21,22 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import mcb.model.Adresse;
-import mcb.model.Besuch;
-import mcb.model.Fehlergruende;
-import mcb.model.FruehstuecksTag;
-import mcb.model.Land;
-import mcb.persistenz.PersistenceStore;
-import mcb.ui.base.BearbeitenAction;
-import mcb.ui.base.ComponentFactory;
-import mcb.ui.base.ModelPanel;
-
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.common.collect.ArrayListModel;
 import com.jgoodies.forms.builder.FormBuilder;
+
+import mcb.model.Adresse;
+import mcb.model.Besuch;
+import mcb.model.Fehlergruende;
+import mcb.model.FruehstuecksTag;
+import mcb.model.Land;
+import mcb.model.Treffen;
+import mcb.persistenz.PersistenceStore;
+import mcb.ui.base.BearbeitenAction;
+import mcb.ui.base.ComponentFactory;
+import mcb.ui.base.ModelPanel;
 
 public class AdressePanel extends ModelPanel<Adresse> {
 
@@ -78,7 +79,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
   private static final long serialVersionUID = -427646783597528169L;
 
   private static List<String> alleLaenderKurzel() {
-    List<String> result = new ArrayList<String>();
+    List<String> result = new ArrayList<>();
     Land[] values = Land.values();
     for (Land land : values) {
       result.add(land.name());
@@ -108,6 +109,8 @@ public class AdressePanel extends ModelPanel<Adresse> {
 
   private JCheckBox mitgliedCheckbox;
 
+  private JTextField gesamtpreisField;
+
   public AdressePanel(PresentationModel<Adresse> presentationModel, BearbeitenAction<Adresse> bearbeitenAction,
       PersistenceStore persistenceStore) {
     super(presentationModel, bearbeitenAction, persistenceStore);
@@ -117,11 +120,13 @@ public class AdressePanel extends ModelPanel<Adresse> {
   }
 
   private void buildPanel() {
+    int preisFruehstueck = this.getAktuellesTreffen().getPreisFruehstueck().intValue();
+
     FormBuilder
         .create()
         .columns("3dlu, right:pref, 3dlu, 35dlu, 3dlu, 35dlu, 3dlu, 40dlu, 3dlu, 60dlu, 3dlu, 53dlu, 3dlu")
         .rows(
-            "3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu")
+            "3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu")
         .panel(this)
         .add(this.bearbeitenButton).xyw(2, 2, 5)
         .addSeparator("Adresse").xyw(2, 4, 11)
@@ -148,37 +153,44 @@ public class AdressePanel extends ModelPanel<Adresse> {
         .addSeparator("aktuelles Treffen").xyw(8, 24, 5)
         .addScrolled(this.besuchListe).xywh(2, 26, 5, 5)
         .add(this.meldungCheckbox).xyw(8, 26, 4)
-        .addLabel("Frühstück Samstag").xyw(8, 28, 3)
+        .addLabel("Frühstück Samstag (" + preisFruehstueck + " Euro)").xyw(8, 28, 3)
         .add(this.fruehstueckSamstagIntegerField).xy(12, 28)
-        .addLabel("Frühstück Sonntag").xyw(8, 30, 3)
+        .addLabel("Frühstück Sonntag (" + preisFruehstueck + " Euro)").xyw(8, 30, 3)
         .add(this.fruehstueckSonntagIntegerField).xy(12, 30)
+        .addLabel("Zu zahlen").xyw(8, 32, 3)
+        .add(this.gesamtpreisField).xy(12, 32)
         .build();
   }
 
   private void fruehstueckChanged(int anzahl, FruehstuecksTag tag) {
-    Adresse adresse = AdressePanel.this.getAdresse();
+    Adresse adresse = this.getAdresse();
     if (adresse == null || adresse.getAktuellerBesuch() == null) {
       return;
     }
     tag.setFruehstueck(adresse.getAktuellerBesuch(), anzahl);
-    AdressePanel.this.saveAdresse();
+    this.updateGesamtpreis();
+    this.saveAdresse();
   }
 
   public Adresse getAdresse() {
     return this.presentationModel.getBean();
   }
 
+  private Treffen getAktuellesTreffen() {
+    return this.persistenceStore.getTreffens().getAktuellesTreffen();
+  }
+
   private void initComponents() {
     @SuppressWarnings("rawtypes")
-    ListModel countryListModel = new ArrayListModel<String>(AdressePanel.alleLaenderKurzel());
+    ListModel countryListModel = new ArrayListModel<>(AdressePanel.alleLaenderKurzel());
     ValueModel countryModel = this.presentationModel.getBufferedModel(Adresse.LAND);
-    SelectionInList<String> countrySil = new SelectionInList<String>(countryListModel, countryModel);
+    SelectionInList<String> countrySil = new SelectionInList<>(countryListModel, countryModel);
     this.landTextfield = ComponentFactory.createComboBox(countrySil);
 
     @SuppressWarnings("rawtypes")
-    ListModel fehlerListModel = new ArrayListModel<String>(Fehlergruende.alleGruende());
+    ListModel fehlerListModel = new ArrayListModel<>(Fehlergruende.alleGruende());
     ValueModel fehlerModel = this.presentationModel.getBufferedModel(Adresse.FEHLERGRUND);
-    SelectionInList<String> fehlerSil = new SelectionInList<String>(fehlerListModel, fehlerModel);
+    SelectionInList<String> fehlerSil = new SelectionInList<>(fehlerListModel, fehlerModel);
     this.emailgrundTextfield = ComponentFactory.createComboBox(fehlerSil);
 
     this.vornameTextfield = ComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.VORNAME), false);
@@ -190,14 +202,16 @@ public class AdressePanel extends ModelPanel<Adresse> {
     this.gespannCheckbox = ComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.GESPANN), "Gespann");
     this.soloCheckbox = ComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.SOLO), "Solo");
     this.geburtstagTextfield = ComponentFactory.createTextField(this.presentationModel.getBufferedModel(Adresse.GEBURTSTAG), false);
-    SelectionInList<Besuch> besuchList = new SelectionInList<Besuch>(this.presentationModel.getBufferedModel(Adresse.VERGANGENE_TREFFEN));
+    SelectionInList<Besuch> besuchList = new SelectionInList<>(this.presentationModel.getBufferedModel(Adresse.VERGANGENE_TREFFEN));
     this.besuchListe = ComponentFactory.createList(besuchList);
     this.besuchListe.setEnabled(false);
-    this.meldungCheckbox = new JCheckBox("Meldung");
+    this.meldungCheckbox = new JCheckBox("Meldung (" + this.getAktuellesTreffen().getPreisMeldung().intValue() + " Euro)");
     this.mitgliedCheckbox = ComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.MCB_MITGLIED), "Mitglied");
     this.fruehstueckSamstagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Samstag);
     this.fruehstueckSonntagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Sonntag);
     this.bearbeitenButton = new JButton(this.bearbeitenAction);
+    this.gesamtpreisField = new JTextField();
+    this.gesamtpreisField.setEditable(false);
     this.setEnabled(false);
   }
 
@@ -206,6 +220,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
 
       public void propertyChange(PropertyChangeEvent evt) {
         AdressePanel.this.updateCheckboxes();
+        AdressePanel.this.updateGesamtpreis();
       }
     });
 
@@ -219,19 +234,20 @@ public class AdressePanel extends ModelPanel<Adresse> {
   }
 
   protected void meldungChanged() {
-    Adresse adresse = this.presentationModel.getBean();
+    Adresse adresse = this.getAdresse();
     if (adresse == null) {
       this.meldungCheckbox.setSelected(false);
       return;
     }
     if (this.meldungCheckbox.isSelected()) {
-      adresse.addTreffen(this.persistenceStore.getTreffens().getAktuellesTreffen());
+      adresse.addTreffen(this.getAktuellesTreffen());
       this.persistenceStore.saveAll();
     } else {
       adresse.removeAktuellesTreffen();
       this.persistenceStore.saveAll();
     }
     this.updateCheckboxes();
+    this.updateGesamtpreis();
   }
 
   public void saveAdresse() {
@@ -256,7 +272,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
   }
 
   protected void updateCheckboxes() {
-    Adresse adresse = this.presentationModel.getBean();
+    Adresse adresse = this.getAdresse();
     if (adresse != null) {
       Besuch aktuellesTreffen = adresse.getAktuellerBesuch();
       if (aktuellesTreffen == null) {
@@ -274,6 +290,25 @@ public class AdressePanel extends ModelPanel<Adresse> {
 
   protected void updateEmailColor() {
     this.emailTextfield.setBackground(Color.RED);
+  }
+
+  protected void updateGesamtpreis() {
+    Adresse adresse = this.getAdresse();
+    if (adresse != null) {
+      Besuch aktuellesTreffen = adresse.getAktuellerBesuch();
+      if (aktuellesTreffen == null) {
+        this.gesamtpreisField.setText("");
+      } else {
+        int fruehstueckSamstag = aktuellesTreffen.getFruehstueckSamstag();
+        int fruehstueckSonntag = aktuellesTreffen.getFruehstueckSonntag();
+
+        Treffen treffen = this.getAktuellesTreffen();
+        int preisFruehstueck = treffen.getPreisFruehstueck().intValue();
+        int preisMeldung = treffen.getPreisMeldung().intValue();
+        int gesamt = (fruehstueckSamstag + fruehstueckSonntag) * preisFruehstueck + preisMeldung;
+        this.gesamtpreisField.setText("" + gesamt + " Euro");
+      }
+    }
   }
 
 }
