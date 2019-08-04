@@ -9,10 +9,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
 
+import com.jgoodies.binding.beans.Model;
+
 import mcb.persistenz.PersistenceStore;
 import mcb.persistenz.filter.ListUpdater;
-
-import com.jgoodies.binding.beans.Model;
 
 public abstract class SimpleFrame<T extends Model> extends JFrame implements ListUpdater {
 
@@ -38,6 +38,7 @@ public abstract class SimpleFrame<T extends Model> extends JFrame implements Lis
     JMenu aktionen = new JMenu("Aktionen");
     bar.add(aktionen);
     aktionen.add(this.panel.getNeuAction());
+    aktionen.add(this.panel.getKopierenAction());
     aktionen.add(this.panel.getLoeschenAction());
     aktionen.add(this.panel.getBearbeitenAction());
     this.addExtraMenu(bar);

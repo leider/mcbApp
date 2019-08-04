@@ -21,6 +21,18 @@ public class Treffen extends McbModel implements Comparable<Treffen> {
 
   private static final long serialVersionUID = -2962721510670946939L;
 
+  public static Treffen fromOther(Treffen current) {
+    Treffen treffen = new Treffen();
+    treffen.setName(current.getName());
+    treffen.setErsterTag(current.getErsterTag());
+    treffen.setLetzterTag(current.getLetzterTag());
+    treffen.setEmailText(current.getEmailText());
+    treffen.setBeschreibung(current.getBeschreibung());
+    treffen.setPreisMeldung(current.getPreisMeldung());
+    treffen.setPreisFruehstueck(current.getPreisFruehstueck());
+    return treffen;
+  }
+
   private String name;
   private Date ersterTag;
   private Date letzterTag;

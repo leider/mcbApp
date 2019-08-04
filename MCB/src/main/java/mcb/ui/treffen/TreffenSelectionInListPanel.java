@@ -17,6 +17,13 @@ public class TreffenSelectionInListPanel extends SelectionInListPanel<Treffen> {
   }
 
   @Override
+  protected Treffen copyCurrent(Treffen current) throws McbException {
+    Treffen neu = Treffen.fromOther(current);
+    this.treffens().add(neu);
+    return neu;
+  }
+
+  @Override
   protected Treffen createNewModel() throws McbException {
     Treffen neu = new Treffen();
     neu.setName("");

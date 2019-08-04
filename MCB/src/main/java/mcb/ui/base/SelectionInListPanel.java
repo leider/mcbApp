@@ -37,6 +37,18 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
     this.initialize();
   }
 
+  public void copyAndAdd() throws McbException {
+    if (!this.hasSelection()) {
+      return;
+    }
+    SelectedFilter.set(AlleFilter.getInstance());
+    T neu = this.copyCurrent(this.getSelection());
+    this.updateModelliste();
+    this.list.setSelectedValue(neu, true);
+  }
+
+  protected abstract T copyCurrent(T current) throws McbException;
+
   private void createList() {
     this.list = ComponentFactory.createList(this.modelliste);
     Dimension preferredSize = this.list.getPreferredSize();
@@ -62,12 +74,16 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
     return this.detailModel;
   }
 
+  private T getSelection() {
+    return this.modelliste.getSelection();
+  }
+
   public boolean hasSelection() {
-    return this.modelliste.getSelection() != null;
+    return this.getSelection() != null;
   }
 
   private void initialize() {
-    this.modelliste = new SelectionInList<T>(this.getContents());
+    this.modelliste = new SelectionInList<>(this.getContents());
     this.setLayout(new BorderLayout());
     this.createList();
     JScrollPane scrollpane = new JScrollPane(this.list);
@@ -84,7 +100,7 @@ public abstract class SelectionInListPanel<T extends Model> extends JPanel {
   protected abstract void loescheObjekt(T objekt) throws McbException;
 
   public void loescheSelection() throws McbException {
-    this.loescheObjekt(this.modelliste.getSelection());
+    this.loescheObjekt(this.getSelection());
     this.updateModelliste();
   }
 

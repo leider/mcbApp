@@ -9,14 +9,16 @@ import javax.swing.KeyStroke;
 
 public abstract class McbAction extends AbstractAction {
 
+  public static final int BEARBEITEN = KeyEvent.VK_B;
+
+  public static final int LOESCHEN = KeyEvent.VK_L;
+  public static final int NEU = KeyEvent.VK_N;
+  public static final int KOPIEREN = KeyEvent.VK_C;
+  private static final long serialVersionUID = 4150636331971514776L;
+
   private static boolean isRunningOnMac() {
     return System.getProperty("mrj.version") != null;
   }
-
-  public static final int BEARBEITEN = KeyEvent.VK_B;
-  public static final int LOESCHEN = KeyEvent.VK_L;
-  public static final int NEU = KeyEvent.VK_N;
-  private static final long serialVersionUID = 4150636331971514776L;
 
   private KeyStroke accelerator;
 

@@ -27,8 +27,21 @@ public class Adresse extends McbModel {
 
   public static final String VERGANGENE_TREFFEN = "vergangeneTreffen";
 
-  private String name;
-  private String vorname;
+  public static Adresse fromOther(Adresse current) {
+    Adresse adresse = new Adresse();
+    adresse.setStrasse(current.getStrasse());
+    adresse.setOrt(current.getOrt());
+    adresse.setPlz(current.getPlz());
+    adresse.setLand(current.getLand());
+    adresse.setGespann(current.isGespann());
+    adresse.setSolo(current.isSolo());
+    adresse.setEmail(current.getEmail());
+    adresse.setMitglied(current.isMitglied());
+    return adresse;
+  }
+
+  private String name = "";
+  private String vorname = "";
   private String strasse;
   private String ort;
   private String plz;
@@ -39,6 +52,7 @@ public class Adresse extends McbModel {
   private String email;
   private String fehlergrund;
   private boolean mitglied;
+
   private List<Besuch> besuchteTreffen = new ArrayList<>();
 
   public Adresse() {

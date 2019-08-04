@@ -24,6 +24,7 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
   private PresentationModel<T> detailModel;
   private McbAction neuAction;
   private McbAction loeschenAction;
+  private McbAction kopierenAction;
 
   private BearbeitenAction<T> bearbeitenAction;
   protected final PersistenceStore persistenceStore;
@@ -62,6 +63,16 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
     };
 
     this.bearbeitenAction = new BearbeitenAction<>(this);
+
+    this.kopierenAction = new McbAction("Kopieren", McbAction.KOPIEREN) {
+
+      private static final long serialVersionUID = -769620071952192523L;
+
+      public void actionPerformed(ActionEvent e) {
+        ModelMitListePanel.this.kopieren();
+      }
+
+    };
 
     this.loeschenAction = new McbAction("Löschen", McbAction.LOESCHEN) {
 
@@ -107,6 +118,10 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
     return this.bearbeitenAction;
   }
 
+  public McbAction getKopierenAction() {
+    return this.kopierenAction;
+  }
+
   public McbAction getLoeschenAction() {
     return this.loeschenAction;
   }
@@ -126,6 +141,15 @@ public abstract class ModelMitListePanel<T extends Model> extends JPanel {
     this.createCommonActions();
     this.createSplitPane();
     this.createToolBar();
+  }
+
+  protected void kopieren() {
+    try {
+      this.listePanel.copyAndAdd();
+      this.bearbeitenAction.actionPerformed(null);
+    } catch (McbException e) {
+      this.handleMcbException(e);
+    }
   }
 
   protected void loeschen() {

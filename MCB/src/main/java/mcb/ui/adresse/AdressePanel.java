@@ -120,7 +120,7 @@ public class AdressePanel extends ModelPanel<Adresse> {
   }
 
   private void buildPanel() {
-    int preisFruehstueck = this.getAktuellesTreffen().getPreisFruehstueck().intValue();
+    int preisFruehstueck = this.getAktuellesTreffen() != null ? this.getAktuellesTreffen().getPreisFruehstueck().intValue() : 0;
 
     FormBuilder
         .create()
@@ -205,7 +205,8 @@ public class AdressePanel extends ModelPanel<Adresse> {
     SelectionInList<Besuch> besuchList = new SelectionInList<>(this.presentationModel.getBufferedModel(Adresse.VERGANGENE_TREFFEN));
     this.besuchListe = ComponentFactory.createList(besuchList);
     this.besuchListe.setEnabled(false);
-    this.meldungCheckbox = new JCheckBox("Meldung (" + this.getAktuellesTreffen().getPreisMeldung().intValue() + " Euro)");
+    int preisMeldung = this.getAktuellesTreffen() != null ? this.getAktuellesTreffen().getPreisMeldung().intValue() : 0;
+    this.meldungCheckbox = new JCheckBox("Meldung (" + preisMeldung + " Euro)");
     this.mitgliedCheckbox = ComponentFactory.createCheckBox(this.presentationModel.getBufferedModel(Adresse.MCB_MITGLIED), "Mitglied");
     this.fruehstueckSamstagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Samstag);
     this.fruehstueckSonntagIntegerField = new FruehstuecksSpinner(FruehstuecksTag.Sonntag);

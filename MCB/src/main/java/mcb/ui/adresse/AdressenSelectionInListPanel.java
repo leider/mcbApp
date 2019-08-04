@@ -16,6 +16,13 @@ public class AdressenSelectionInListPanel extends SelectionInListPanel<Adresse> 
   }
 
   @Override
+  protected Adresse copyCurrent(Adresse current) throws McbException {
+    Adresse neu = Adresse.fromOther(current);
+    this.persistenceStore.getAdressen().add(neu);
+    return neu;
+  }
+
+  @Override
   protected Adresse createNewModel() throws McbException {
     Adresse neu = new Adresse();
     neu.setVorname("");

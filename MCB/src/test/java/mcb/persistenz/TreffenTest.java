@@ -5,10 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Locale;
 
-import mcb.model.Treffen;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import mcb.model.Treffen;
 
 public class TreffenTest {
 
